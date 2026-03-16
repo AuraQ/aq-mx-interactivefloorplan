@@ -1,0 +1,33 @@
+{
+  "serializationVersion": 2,
+  "settingsParts": [
+    {
+      "suppressions": [],
+      "suppressAppStoreWarnings": false,
+      "showSuppressionInfo": true,
+      "type": "Mendix.Modeler.Suppressions.SuppressionRules, Mendix.Modeler.Core, Version=10.24.14.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "suppressions": [],
+      "disabledBestPractices": [],
+      "readRecommendations": [
+        {
+          "code": "MXP008",
+          "locationObjects": [
+            {
+              "uuid": "7001e1d9-f25c-4f24-ad60-8f1b89d7945a",
+              "fullPath": "DeskBooking.PendingBooking"
+            },
+            {
+              "uuid": "498d0b48-b801-4fa9-9f97-e4366a3bfd7e",
+              "fullPath": "DeskBooking.PendingBooking_Session"
+            }
+          ]
+        }
+      ],
+      "suppressedRecommendations": [],
+      "hasShownRecommendationsNotificationForThisApp": true,
+      "type": "Mendix.Modeler.MxAssist.PerformanceBot.Serialization.Configuration.PerformanceBotConfiguration, Mendix.Modeler.MxAssist.PerformanceBot.Serialization, Version=10.24.14.0, Culture=neutral, PublicKeyToken=null"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+    "desk-path": {
+        "__default": {
+            "deselected": {
+                "fill": "#ffffff",
+                "strokeWidth": 0.367791
+            },
+            "selected": {
+                "fill": "#9eb5a8",
+                "strokeWidth": 0.367791
+            }
+        },
+        "available": {
+            "deselected": {
+                "fill": "#ffffff",
+                "strokeWidth": 0.367791
+            },
+            "selected": {
+                "fill": "#9eb5a8",
+                "strokeWidth": 0.367791
+            }
+        },
+        "unavailable": {
+            "deselected": {
+                "fill": "#be8476",
+                "strokeWidth": 0.367791
+            }
+        }
+    },
+    "desk-path-fillrule": {
+        "__default": {
+            "deselected": {
+                "fill": "#ffffff",
+                "fillRule": "evenodd",
+                "strokeWidth": 0.367791
+            },
+            "selected": {
+                "fill": "#9eb5a8",
+                "fillRule": "evenodd",
+                "strokeWidth": 0.367791
+            }
+        },
+        "available": {
+            "deselected": {
+                "fill": "#ffffff",
+                "strokeWidth": 0.367791
+            },
+            "selected": {
+                "fill": "#9eb5a8",
+                "strokeWidth": 0.367791
+            }
+        },
+        "unavailable": {
+            "deselected": {
+                "fill": "#be8476",
+                "strokeWidth": 0.367791
+            }
+        }
+    },
+    "desk-path-nofill": {
+        "__default": {
+            "deselected": {
+                "strokeWidth": 0.367791
+            },
+            "selected": {
+                "strokeWidth": 0.367791
+            }
+        },
+        "available": {
+            "deselected": {
+                "strokeWidth": 0.367791
+            },
+            "selected": {
+                "strokeWidth": 0.367791
+            }
+        }
+    }
+}

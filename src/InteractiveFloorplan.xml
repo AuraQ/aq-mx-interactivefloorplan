@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget
+    id="auraq.interactivefloorplan.InteractiveFloorplan"
+    pluginWidget="true"
+    needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
+>
+    <name>Interactive Floorplan</name>
+    <description>Render interactive floorplan elements on a canvas</description>
+    <icon />
+    <properties>
+
+        <!-- TAB 1: General -->
+        <propertyGroup caption="General">
+            <propertyGroup caption="Canvas">
+                <property key="backgroundColor" type="string">
+                    <caption>Background Color</caption>
+                    <description>The colour of the canvas</description>
+                </property>
+                <property key="backgroundImageBase64" type="attribute" required="false">
+                    <caption>Background Image</caption>
+                    <description>Base64 encoded image data</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="initialZoom" type="attribute" required="false">
+                    <caption>Initial Zoom</caption>
+                    <description>Value indicating the initial zoom level of the canvas</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal" />
+                    </attributeTypes>
+                </property>
+                <property key="initialLeft" type="attribute" required="false">
+                    <caption>Initial Left</caption>
+                    <description>Value indicating the initial left position of the canvas</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal" />
+                    </attributeTypes>
+                </property>
+                <property key="initialTop" type="attribute" required="false">
+                    <caption>Initial Top</caption>
+                    <description>Value indicating the initial top position of the canvas</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal" />
+                    </attributeTypes>
+                </property>
+                <property key="multiselect" type="boolean" defaultValue="false">
+                    <caption>Multi-select</caption>
+                    <description />
+                </property>
+                <property key="elementPropsJson" type="attribute">
+                    <caption>Element Props</caption>
+                    <description>JSON object holding named sets of applicable FabricJs properties</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <!-- TAB 2: Groups (devices) -->
+        <propertyGroup caption="Groups">
+            <propertyGroup caption="Data source">
+                <property key="data" type="datasource" isList="true" required="true">
+                    <caption>Data source</caption>
+                    <description />
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Group attributes">
+                <property key="groupId" type="attribute" dataSource="data">
+                    <caption>Group ID</caption>
+                    <description>An identifier for the group</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="groupIsSelectable" type="attribute" dataSource="data">
+                    <caption>Is Selectable</caption>
+                    <description>Whether a group can be selected</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+                <property key="groupPropsName" type="attribute" dataSource="data">
+                    <caption>Group Props</caption>
+                    <description>Name of a JSON object contained within Element Props</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="groupElementPropsType" type="attribute" dataSource="data">
+                    <caption>Group Element Props Type</caption>
+                    <description>The type of properties for this group's elements</description>
+                    <attributeTypes>
+                        <attributeType name="Enum" />
+                    </attributeTypes>
+                </property>
+                <property key="groupElementsJson" type="attribute" dataSource="data">
+                    <caption>Group Elements</caption>
+                    <description>A JSON array holding configuration for all group elements, for supported elements (Path, Line, Rect, Image)</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <!-- TAB 3: Instance overrides -->
+        <propertyGroup caption="Instance">
+            <propertyGroup caption="Data source">
+                <property key="instanceData" type="datasource" isList="true" required="true">
+                    <caption>Data source (instance)</caption>
+                    <description />
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Instance attributes">
+                <property key="instanceGroupId" type="attribute" dataSource="instanceData">
+                    <caption>Group ID (instance)</caption>
+                    <description>An identifier for the group for an instance of that group</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="instanceGroupStatus" type="attribute" dataSource="instanceData">
+                    <caption>Group Status (instance)</caption>
+                    <description>A value to indicate the status of the group</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Enum" />
+                    </attributeTypes>
+                </property>
+                <property key="instanceGroupIsSelectable" type="attribute" dataSource="instanceData">
+                    <caption>Is Selectable (instance)</caption>
+                    <description>Whether a group can be selected</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <!-- TAB 4: Areas -->
+        <propertyGroup caption="Areas">
+            <propertyGroup caption="Data source">
+                <property key="areaData" type="datasource" isList="true" required="false">
+                    <caption>Area Data</caption>
+                    <description>List of area definitions</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Area attributes">
+                <property key="areaId" type="attribute" dataSource="areaData" required="false">
+                    <caption>Area ID</caption>
+                    <description>Identifier for the area</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="areaPath" type="attribute" dataSource="areaData" required="false">
+                    <caption>Area Path</caption>
+                    <description>SVG path string for the area</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="areaProps" type="attribute" dataSource="areaData" required="false">
+                    <caption>Area Props</caption>
+                    <description>JSON props for the area (fill, stroke, etc.)</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <!-- TAB 5: Events -->
+        <propertyGroup caption="Events">
+            <propertyGroup caption="Selection">
+                <property key="onSelection" type="action" dataSource="data">
+                    <caption>On selection</caption>
+                    <description>Action to be performed when a group is selected</description>
+                </property>
+                <property key="onDeselection" type="action" dataSource="data">
+                    <caption>On deselection</caption>
+                    <description>Action to be performed when a group is deselected</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Multi-selection">
+                <property key="selectedGroups" type="attribute" required="false">
+                    <caption>Selected Groups</caption>
+                    <description>Attribute to store CSV of selected group ids</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="onMultiSelectionEnd" type="action">
+                    <caption>On multi selection end</caption>
+                    <description>Action to be performed when multiple groups have been selected</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Item move">
+                <property key="movedItemX" type="attribute" required="false">
+                    <caption>Moved X</caption>
+                    <description>Attribute to store new X position</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal"/>
+                    </attributeTypes>
+                </property>
+                <property key="movedItemY" type="attribute" required="false">
+                    <caption>Moved Y</caption>
+                    <description>Attribute to store new Y position</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal"/>
+                    </attributeTypes>
+                </property>
+                <property key="onItemMoved" type="action" dataSource="data" required="false">
+                    <caption>On item moved</caption>
+                    <description>Called when an item is dragged to a new position</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Path drawing">
+                <property key="pathVertices" type="attribute" required="false">
+                    <caption>Path Vertices</caption>
+                    <description>SVG path string of drawn path</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="onPathCreated" type="action" required="false">
+                    <caption>On path created</caption>
+                    <description>Called when a path is completed</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+    </properties>
+</widget>
