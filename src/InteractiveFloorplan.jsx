@@ -65,17 +65,25 @@ export default class InteractiveFloorplan extends Component {
     };
 
     onItemMoved = (mxItem, left, top) => {
-        console.info("onItemMoved called", { mxItem, left, top });
+        
         if (this.props.movedItemX) {
-            this.props.movedItemX.setValue(new Big(left));
+           
+            this.props.movedItemX.setValue(left.toString());
+         
         }
         if (this.props.movedItemY) {
-            this.props.movedItemY.setValue(new Big(top));
+            
+            this.props.movedItemY.setValue(top.toString());
+            
         }
         if (this.props.onItemMoved != undefined) {
+            
             const action = this.props.onItemMoved.get(mxItem);
+            
             if (action.canExecute && !action.isExecuting) {
+                
                 action.execute();
+                
             }
         }
     };

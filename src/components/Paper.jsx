@@ -213,6 +213,8 @@ export class Paper extends React.Component {
             }
 
             this.state.movingItem = null;
+ 
+            this.state.canvas.discardActiveObject();
         }
 
         this.state.isDragging = false;
@@ -620,9 +622,9 @@ export class Paper extends React.Component {
         }
 
         if (!_.isEqual(nextProps.groups, prevProps.groups)) {
-            canvas.clear();
-            canvas.set({ backgroundColor: nextProps.backgroundColor });
-            this.initCanvas(canvas);
+            //canvas.clear();
+            //canvas.set({ backgroundColor: nextProps.backgroundColor });
+            //this.initCanvas(canvas);
         }
     }
 

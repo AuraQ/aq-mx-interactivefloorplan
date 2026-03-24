@@ -207,17 +207,17 @@
                     <caption>Moved X</caption>
                     <description>Attribute to store new X position</description>
                     <attributeTypes>
-                        <attributeType name="Decimal"/>
+                        <attributeType name="String"/>
                     </attributeTypes>
                 </property>
                 <property key="movedItemY" type="attribute" required="false">
                     <caption>Moved Y</caption>
                     <description>Attribute to store new Y position</description>
                     <attributeTypes>
-                        <attributeType name="Decimal"/>
+                        <attributeType name="String"/>
                     </attributeTypes>
                 </property>
-                <property key="onItemMoved" type="action" dataSource="data" required="false">
+                <property key="onItemMoved" type="action" dataSource="data">
                     <caption>On item moved</caption>
                     <description>Called when an item is dragged to a new position</description>
                 </property>
@@ -230,7 +230,7 @@
                         <attributeType name="String"/>
                     </attributeTypes>
                 </property>
-                <property key="onPathCreated" type="action" required="false">
+                <property key="onPathCreated" type="action">
                     <caption>On path created</caption>
                     <description>Called when a path is completed</description>
                 </property>
