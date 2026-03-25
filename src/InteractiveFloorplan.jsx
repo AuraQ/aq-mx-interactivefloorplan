@@ -149,6 +149,9 @@ export default class InteractiveFloorplan extends Component {
                 area.id = this.props.areaId.get(mxItem).value;
                 area.path = this.props.areaPath.get(mxItem).value;
                 area.props = JSON.parse(this.props.areaProps.get(mxItem).value || "{}");
+                area.propsName = this.props.areaPropsName?.get(mxItem).value;
+                area.status = toLower(this.props.areaStatus?.get(mxItem).value || "__default");
+                
                 areas.push(area);
             }
         }

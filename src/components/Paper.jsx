@@ -540,13 +540,24 @@ export class Paper extends React.Component {
         // 2. Areas (behind devices)
         if (this.props.areas) {
             this.props.areas.forEach(area => {
+                // Look up props from elementProps based on status (same pattern as groups)
+                let statusProps = {};
+                if (area.propsName && this.props.elementProps[area.propsName]) {
+                    const propsCollection = this.props.elementProps[area.propsName];
+                    const statusPropsCollection = propsCollection[area.status] || propsCollection["__default"] || {};
+                    // Areas don't have selected/deselected states, so just use the status props directly
+                    // or look for a "default" key within the status
+                    statusProps = statusPropsCollection["deselected"] || statusPropsCollection;
+                }
+                
                 const path = new fabric.Path(area.path, {
                     fill: 'transparent',
                     stroke: '#0096ff',
                     strokeWidth: 1,
                     selectable: false,
                     evented: false,
-                    ...area.props
+                    ...area.props,      // Inline props (fallback)
+                    ...statusProps      // Status-based props (override)
                 });
                 path.areaId = area.id;
                 paper.add(path);

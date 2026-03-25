@@ -169,9 +169,24 @@
                 </property>
                 <property key="areaProps" type="attribute" dataSource="areaData" required="false">
                     <caption>Area Props</caption>
-                    <description>JSON props for the area (fill, stroke, etc.)</description>
+                    <description>JSON props for the area (fill, stroke, etc.) - used as fallback if no status-based props</description>
                     <attributeTypes>
                         <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="areaPropsName" type="attribute" dataSource="areaData" required="false">
+                    <caption>Area Props Name</caption>
+                    <description>Name of a JSON object in Element Props for status-based styling</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="areaStatus" type="attribute" dataSource="areaData" required="false">
+                    <caption>Area Status</caption>
+                    <description>Status value to select styling from the props collection (e.g. online, offline, warning)</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                        <attributeType name="Enum"/>
                     </attributeTypes>
                 </property>
             </propertyGroup>
