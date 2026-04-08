@@ -439,7 +439,8 @@ export class Paper extends React.Component {
                     originX: 'left',
                     originY: 'top',
                     left: 0,
-                    top: 0
+                    top: 0,
+                    scale: 1
                 });
                 paper.add(bgImage);
             }
