@@ -14,6 +14,8 @@ export default class InteractiveFloorplan extends Component {
         this.onMultiSelection = this.onMultiSelection.bind(this);
         this.onMultiSelectionStart = this.onMultiSelectionStart.bind(this);
         this.onMultiSelectionEnd = this.onMultiSelectionEnd.bind(this);
+        this.onAreaSelection = this.onAreaSelection.bind(this);
+        this.onAreaDeselection = this.onAreaDeselection.bind(this);
     }
 
     onSelection = mxItem => {
@@ -60,6 +62,24 @@ export default class InteractiveFloorplan extends Component {
             const onDeselectionAction = this.props.onDeselection.get(mxItem);
             if (onDeselectionAction.canExecute && !onDeselectionAction.isExecuting) {
                 onDeselectionAction.execute();
+            }
+        }
+    };
+
+    onAreaSelection = mxItem => {
+        if (this.props.onAreaSelection != undefined) {
+            const onAreaSelectionAction = this.props.onAreaSelection.get(mxItem);
+            if (onAreaSelectionAction.canExecute && !onAreaSelectionAction.isExecuting) {
+                onAreaSelectionAction.execute();
+            }
+        }
+    };
+
+    onAreaDeselection = mxItem => {
+        if (this.props.onAreaDeselection != undefined) {
+            const onAreaDeselectionAction = this.props.onAreaDeselection.get(mxItem);
+            if (onAreaDeselectionAction.canExecute && !onAreaDeselectionAction.isExecuting) {
+                onAreaDeselectionAction.execute();
             }
         }
     };
@@ -146,6 +166,7 @@ export default class InteractiveFloorplan extends Component {
             for (var j = 0; j < this.props.areaData.items.length; j++) {
                 const mxItem = this.props.areaData.items[j];
                 const area = {};
+                area.mxItem = mxItem;
                 area.id = this.props.areaId.get(mxItem).value;
                 area.path = this.props.areaPath.get(mxItem).value;
                 area.props = JSON.parse(this.props.areaProps.get(mxItem).value || "{}");
@@ -155,6 +176,8 @@ export default class InteractiveFloorplan extends Component {
                 areas.push(area);
             }
         }
+
+        console.log("InteractiveFloorplan render - groups:", groups.length, "areas:", areas.length, "refreshCounter:", this.props.refreshCounter?.value);
 
         let initialZoom = 1.0;
         if (this.props.initialZoom) {
@@ -199,6 +222,9 @@ export default class InteractiveFloorplan extends Component {
                 onPathCreated={this.onPathCreated}
                 backgroundImageUrl={backgroundImageUrl}
                 areas={areas}
+                refreshCounter={this.props.refreshCounter?.value}
+                onAreaSelection={this.onAreaSelection}
+                onAreaDeselection={this.onAreaDeselection}
             ></Paper>
         );
     }

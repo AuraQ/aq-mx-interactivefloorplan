@@ -194,7 +194,7 @@
 
         <!-- TAB 5: Events -->
         <propertyGroup caption="Events">
-            <propertyGroup caption="Selection">
+           <propertyGroup caption="Selection">
                 <property key="onSelection" type="action" dataSource="data">
                     <caption>On selection</caption>
                     <description>Action to be performed when a group is selected</description>
@@ -202,6 +202,16 @@
                 <property key="onDeselection" type="action" dataSource="data">
                     <caption>On deselection</caption>
                     <description>Action to be performed when a group is deselected</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Area Selection">
+                <property key="onAreaSelection" type="action" dataSource="areaData">
+                    <caption>On area Selection</caption>
+                    <description>Action to be performed when an area is selected</description>
+                </property>
+                <property key="onAreaDeselection" type="action" dataSource="areaData">
+                    <caption>On area Deselection</caption>
+                    <description>Action to be performed when an area is deselected</description>
                 </property>
             </propertyGroup>
             <propertyGroup caption="Multi-selection">
@@ -215,6 +225,15 @@
                 <property key="onMultiSelectionEnd" type="action">
                     <caption>On multi selection end</caption>
                     <description>Action to be performed when multiple groups have been selected</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Refresh control">
+                <property key="refreshCounter" type="attribute" required="false">
+                    <caption>Refresh Counter</caption>
+                    <description>Increment this value after saving to force the widget to rebuild the canvas</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal"/>
+                    </attributeTypes>
                 </property>
             </propertyGroup>
             <propertyGroup caption="Item move">

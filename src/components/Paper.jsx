@@ -269,10 +269,14 @@ export class Paper extends React.Component {
             }
 
             evt.selected.forEach(item => {
-
-                item.selected = true;
-                this.selectItem(item, isMulti);
-                                
+                if (item.areaId) {
+                    if (this.props.onAreaSelection) {
+                        this.props.onAreaSelection(item.mxItem);
+                    }
+                } else {
+                    item.selected = true;
+                    this.selectItem(item, isMulti);
+                }
             });
 
             if (this.props.onMultiSelectionEnd && isMulti) {
@@ -297,24 +301,56 @@ export class Paper extends React.Component {
     onSelectionCreated(evt) {
         if (this.state.isDragging || this.state.isDrawingPath) return;
         if (evt.selected.length > 0) {
-            evt.selected.forEach(this.selectItem);
+            evt.selected.forEach(item => {
+                if (item.areaId) {
+                    if (this.props.onAreaSelection) {
+                        this.props.onAreaSelection(item.mxItem);
+                    }
+                } else {
+                    this.selectItem(item);
+                }
+            });
         }
     }
 
     onSelectionUpdated(evt) {
         if (this.state.isDragging || this.state.isDrawingPath) return;
         if (evt.deselected.length > 0) {
-            evt.deselected.forEach(this.deselectItem);
+            evt.deselected.forEach(item => {
+                if (item.areaId) {
+                    if (this.props.onAreaDeselection) {
+                        this.props.onAreaDeselection(item.mxItem);
+                    }
+                } else {
+                    this.deselectItem(item);
+                }
+            });
         }
         if (evt.selected.length > 0) {
-            evt.selected.forEach(this.selectItem);
+            evt.selected.forEach(item => {
+                if (item.areaId) {
+                    if (this.props.onAreaSelection) {
+                        this.props.onAreaSelection(item.mxItem);
+                    }
+                } else {
+                    this.selectItem(item);
+                }
+            });
         }
     }
 
     onSelectionCleared(evt) {
         if (this.state.isDragging || this.state.isDrawingPath) return;
         if (evt.deselected.length > 0) {
-            evt.deselected.forEach(this.deselectItem);
+            evt.deselected.forEach(item => {
+                if (item.areaId) {
+                    if (this.props.onAreaDeselection) {
+                        this.props.onAreaDeselection(item.mxItem);
+                    }
+                } else {
+                    this.deselectItem(item);
+                }
+            });
         }
     }
 
@@ -464,6 +500,42 @@ export class Paper extends React.Component {
             fill: "none"
         };
 
+        // 2. Areas (behind devices)
+        if (this.props.areas) {
+            this.props.areas.forEach(area => {
+                // Look up props from elementProps based on status (same pattern as groups)
+                let statusProps = {};
+                if (area.propsName && this.props.elementProps[area.propsName]) {
+                    const propsCollection = this.props.elementProps[area.propsName];
+                    const statusPropsCollection = propsCollection[area.status] || propsCollection["__default"] || {};
+                    // Areas don't have selected/deselected states, so just use the status props directly
+                    // or look for a "default" key within the status
+                    statusProps = statusPropsCollection["deselected"] || statusPropsCollection;
+                }
+                
+                const path = new fabric.Path(area.path, {
+                    fill: 'transparent',
+                    stroke: '#0096ff',
+                    strokeWidth: 1,
+                    selectable: true,
+                    evented: true,
+                    hoverCursor: 'pointer',
+                    ...area.props,      // Inline props (fallback)
+                    ...statusProps      // Status-based props (override)
+                });
+                path.areaId = area.id;
+                path.mxItem = area.mxItem;
+                path.on('mousedown', (e) => {
+                    if (!this.state.isDragging && !this.state.isDrawingPath) {
+                        if (this.props.onAreaSelection) {
+                            this.props.onAreaSelection(path.mxItem);
+                        }
+                    }
+                });
+                paper.add(path);
+            });
+        }
+
         for (let i = 0; i < this.props.groups.length; i++) {
             const groupData = this.props.groups[i];
             let groupItems = [];
@@ -538,42 +610,15 @@ export class Paper extends React.Component {
             paper.add(group);
         }
 
-        // 2. Areas (behind devices)
-        if (this.props.areas) {
-            this.props.areas.forEach(area => {
-                // Look up props from elementProps based on status (same pattern as groups)
-                let statusProps = {};
-                if (area.propsName && this.props.elementProps[area.propsName]) {
-                    const propsCollection = this.props.elementProps[area.propsName];
-                    const statusPropsCollection = propsCollection[area.status] || propsCollection["__default"] || {};
-                    // Areas don't have selected/deselected states, so just use the status props directly
-                    // or look for a "default" key within the status
-                    statusProps = statusPropsCollection["deselected"] || statusPropsCollection;
-                }
-                
-                const path = new fabric.Path(area.path, {
-                    fill: 'transparent',
-                    stroke: '#0096ff',
-                    strokeWidth: 1,
-                    selectable: false,
-                    evented: false,
-                    ...area.props,      // Inline props (fallback)
-                    ...statusProps      // Status-based props (override)
-                });
-                path.areaId = area.id;
-                paper.add(path);
-            });
-        }
-
         paper.renderAll();
 
-        paper.upperCanvasEl.addEventListener('mousedown', (e) => {
-            if (e.altKey) {
-                this.state.isDragging = true;
-            }
-        }, true); // 'true' = capture phase, fires before Fabric
-
         if (!this.state.eventsInitialised) {
+            paper.upperCanvasEl.addEventListener('mousedown', (e) => {
+                if (e.altKey) {
+                    this.state.isDragging = true;
+                }
+            }, true); // 'true' = capture phase, fires before Fabric
+
             paper.on("mouse:wheel", this.onMouseWheel.bind(this));
             paper.on("mouse:down", this.onMouseDown.bind(this));
             paper.on("mouse:up", this.onMouseUp.bind(this));
@@ -619,24 +664,36 @@ export class Paper extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return !(
-            nextProps.backgroundColor == this.props.backgroundColor && _.isEqual(nextProps.groups, this.props.groups)
-                && _.isEqual(nextProps.areas, this.props.areas)
-        );
+        return nextProps.refreshCounter !== this.props.refreshCounter;
     }
 
-    componentDidUpdate(prevProps) {
+    async componentDidUpdate(prevProps) {
         const nextProps = this.props;
-
         const { canvas } = this.state;
-        if (nextProps.backgroundColor != prevProps.backgroundColor) {
-            canvas.set({ backgroundColor: nextProps.backgroundColor });
+
+        if (!canvas) {
+            return;
         }
 
-        if (!_.isEqual(nextProps.groups, prevProps.groups)) {
-            //canvas.clear();
-            //canvas.set({ backgroundColor: nextProps.backgroundColor });
-            //this.initCanvas(canvas);
+        const refreshCounterChanged = nextProps.refreshCounter !== prevProps.refreshCounter;
+
+        if (refreshCounterChanged) {
+            console.log("Refresh triggered - clearing and reinitializing canvas (first pass)");
+            
+            canvas.clear();
+            canvas.set({ backgroundColor: nextProps.backgroundColor });
+            await this.initCanvas(canvas);
+            
+            console.log("First refresh complete, triggering second refresh in 100ms");
+            
+            // Double refresh: trigger another init after a short delay
+            setTimeout(async () => {
+                console.log("Second refresh pass");
+                canvas.clear();
+                canvas.set({ backgroundColor: nextProps.backgroundColor });
+                await this.initCanvas(canvas);
+                console.log("Second refresh complete");
+            }, 100);
         }
     }
 
