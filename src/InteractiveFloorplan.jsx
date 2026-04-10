@@ -16,6 +16,7 @@ export default class InteractiveFloorplan extends Component {
         this.onMultiSelectionEnd = this.onMultiSelectionEnd.bind(this);
         this.onAreaSelection = this.onAreaSelection.bind(this);
         this.onAreaDeselection = this.onAreaDeselection.bind(this);
+        this.onAreaMoved = this.onAreaMoved.bind(this);
     }
 
     onSelection = mxItem => {
@@ -80,6 +81,18 @@ export default class InteractiveFloorplan extends Component {
             const onAreaDeselectionAction = this.props.onAreaDeselection.get(mxItem);
             if (onAreaDeselectionAction.canExecute && !onAreaDeselectionAction.isExecuting) {
                 onAreaDeselectionAction.execute();
+            }
+        }
+    };
+
+    onAreaMoved = (mxItem, newPath) => {
+        if (this.props.movedAreaPath) {
+            this.props.movedAreaPath.setValue(newPath);
+        }
+        if (this.props.onAreaMoved != undefined) {
+            const action = this.props.onAreaMoved.get(mxItem);
+            if (action.canExecute && !action.isExecuting) {
+                action.execute();
             }
         }
     };
@@ -225,6 +238,7 @@ export default class InteractiveFloorplan extends Component {
                 refreshCounter={this.props.refreshCounter?.value}
                 onAreaSelection={this.onAreaSelection}
                 onAreaDeselection={this.onAreaDeselection}
+                onAreaMoved={this.onAreaMoved}
             ></Paper>
         );
     }
