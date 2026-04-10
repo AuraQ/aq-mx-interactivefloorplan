@@ -90,7 +90,7 @@ export class Paper extends React.Component {
             this.state.isDragging = true;
             paper.selection = false;
 
-            if (evt.target && ((evt.target.type === "group" && evt.target.selectable) || (evt.target.type === "path" && evt.target.areaId))) {
+            if (evt.target && evt.target.type === "group" && evt.target.selectable) {
                 evt.target.set({
                     lockMovementX: false,
                     lockMovementY: false
@@ -208,13 +208,8 @@ export class Paper extends React.Component {
             });
             item.setCoords();
 
-            if (item.mxItem) {
-                if (item.areaId && this.props.onAreaMoved) {
-                    const pathString = this.getPathString(item);
-                    this.props.onAreaMoved(item.mxItem, pathString);
-                } else if (this.props.onItemMoved) {
-                    this.props.onItemMoved(item.mxItem, item.left, item.top);
-                }
+            if (item.mxItem && this.props.onItemMoved) {
+                this.props.onItemMoved(item.mxItem, item.left, item.top);
             }
 
             this.state.movingItem = null;
@@ -225,39 +220,6 @@ export class Paper extends React.Component {
         this.state.isDragging = false;
         this.updateViewBoxPosition(evt);
         this.state.mdp = null;
-    }
-
-    getPathString(pathObject) {
-        const pathData = pathObject.get('path');
-        if (!pathData) return null;
-
-        const offsetX = (pathObject.left || 0) - (pathObject.pathOffset?.x || 0);
-        const offsetY = (pathObject.top || 0) - (pathObject.pathOffset?.y || 0);
-
-        const pathString = pathData.map(cmd => {
-            const command = cmd[0];
-            if (command === 'A' || command === 'a') {
-                // Keep arc flags unchanged, only transform end coordinates.
-                const rx = cmd[1];
-                const ry = cmd[2];
-                const xAxisRotation = cmd[3];
-                const largeArcFlag = cmd[4];
-                const sweepFlag = cmd[5];
-                const x = cmd[6];
-                const y = cmd[7];
-                return [command, rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x + offsetX, y + offsetY].join(' ');
-            }
-
-            const coords = cmd.slice(1).map((value, index) => {
-                if (typeof value !== 'number') {
-                    return value;
-                }
-                return index % 2 === 0 ? value + offsetX : value + offsetY;
-            });
-            return [command, ...coords].join(' ');
-        }).join(' ');
-
-        return pathString;
     }
 
     onTouchGesture(e) {
@@ -552,28 +514,19 @@ export class Paper extends React.Component {
                 }
                 
                 const path = new fabric.Path(area.path, {
-                    originX: 'left',
-                    originY: 'top',
                     fill: 'transparent',
                     stroke: '#0096ff',
                     strokeWidth: 1,
                     selectable: true,
                     evented: true,
                     hoverCursor: 'pointer',
-                    hasControls: false,
-                    hasBorders: false,
-                    lockScalingX: true,
-                    lockScalingY: true,
-                    lockRotation: true,
-                    lockMovementX: true,
-                    lockMovementY: true,
                     ...area.props,      // Inline props (fallback)
                     ...statusProps      // Status-based props (override)
                 });
                 path.areaId = area.id;
                 path.mxItem = area.mxItem;
                 path.on('mousedown', (e) => {
-                    if (!this.state.isDragging && !this.state.isDrawingPath && !e.e.altKey && !e.e.ctrlKey) {
+                    if (!this.state.isDragging && !this.state.isDrawingPath) {
                         if (this.props.onAreaSelection) {
                             this.props.onAreaSelection(path.mxItem);
                         }

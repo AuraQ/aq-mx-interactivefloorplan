@@ -214,19 +214,6 @@
                     <description>Action to be performed when an area is deselected</description>
                 </property>
             </propertyGroup>
-            <propertyGroup caption="Area move">
-                <property key="movedAreaPath" type="attribute" required="false">
-                    <caption>Moved Area Path</caption>
-                    <description>Attribute to store the updated area path after moving</description>
-                    <attributeTypes>
-                        <attributeType name="String"/>
-                    </attributeTypes>
-                </property>
-                <property key="onAreaMoved" type="action" dataSource="areaData">
-                    <caption>On area moved</caption>
-                    <description>Called when an area is dragged to a new position</description>
-                </property>
-            </propertyGroup>
             <propertyGroup caption="Multi-selection">
                 <property key="selectedGroups" type="attribute" required="false">
                     <caption>Selected Groups</caption>
