@@ -180,6 +180,10 @@ export default class InteractiveFloorplan extends Component {
         console.log("InteractiveFloorplan render - groups:", groups.length, "areas:", areas.length, "refreshCounter:", this.props.refreshCounter?.value);
 
         let initialZoom = 1.0;
+        const autoInitialZoom = this.props.autoInitialZoom === true || this.props.autoInitialZoom?.value === true;
+        const floorplanWidth = this.props.floorplanWidth ? parseFloat(this.props.floorplanWidth.value) : null;
+        const floorplanHeight = this.props.floorplanHeight ? parseFloat(this.props.floorplanHeight.value) : null;
+
         if (this.props.initialZoom) {
             initialZoom = parseFloat(this.props.initialZoom.value);
         }
@@ -225,6 +229,10 @@ export default class InteractiveFloorplan extends Component {
                 refreshCounter={this.props.refreshCounter?.value}
                 onAreaSelection={this.onAreaSelection}
                 onAreaDeselection={this.onAreaDeselection}
+                autoZoom={autoInitialZoom}
+                floorplanWidth={floorplanWidth}
+                floorplanHeight={floorplanHeight}
+                readOnly={this.props.readOnly}
             ></Paper>
         );
     }

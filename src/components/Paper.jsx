@@ -60,6 +60,10 @@ export class Paper extends React.Component {
         var paper = this.state.canvas;
 
         if (evt.e.ctrlKey === true) {
+            if (this.props.readOnly) {
+                return;
+            }
+
             paper.selection = false;
             this.state.isDrawingPath = true;
 
@@ -86,7 +90,7 @@ export class Paper extends React.Component {
             this.renderDrawingPath();
             return;
 
-        } else if (evt.e.altKey === true) {
+        } else if (evt.e.altKey === true && !this.props.readOnly) {
             this.state.isDragging = true;
             paper.selection = false;
 
@@ -361,6 +365,10 @@ export class Paper extends React.Component {
         this.setState({ wrapperWidth: w, wrapperHeight: h });
         paper.setWidth(w);
         paper.setHeight(h);
+        if (this.props.autoZoom) {
+            const zoom = this.calculateAutoZoom(w, h);
+            paper.setZoom(zoom);
+        }
         paper.renderAll();
     }
 
@@ -445,6 +453,15 @@ export class Paper extends React.Component {
     resetPosition() {
         var paper = this.state.canvas;
         paper.absolutePan(new fabric.Point(0, 0));
+    }
+
+    calculateAutoZoom(containerWidth, containerHeight) {
+        const floorplanWidth = parseFloat(this.props.floorplanWidth);
+        const floorplanHeight = parseFloat(this.props.floorplanHeight);
+        if (!floorplanWidth || !floorplanHeight || !containerWidth || !containerHeight) {
+            return this.props.initialZoom || 1.0;
+        }
+        return Math.min(containerWidth / floorplanWidth, containerHeight / floorplanHeight);
     }
 
     imageFromUrl(url, options, successCallback, errorCallback) {
@@ -653,7 +670,8 @@ export class Paper extends React.Component {
         });
 
         paper.absolutePan(new fabric.Point(this.props.initialLeft, this.props.initialTop));
-        paper.setZoom(this.props.initialZoom);
+        const zoom = this.props.autoZoom ? this.calculateAutoZoom(el.offsetWidth, el.offsetHeight) : this.props.initialZoom;
+        paper.setZoom(zoom);
         this.setState({
             wrapperWidth: el.offsetWidth,
             wrapperHeight: el.offsetHeight,

@@ -35,6 +35,31 @@
                         <attributeType name="Decimal" />
                     </attributeTypes>
                 </property>
+                <property key="autoInitialZoom" type="boolean" defaultValue="false">
+                    <caption>Auto initial zoom</caption>
+                    <description>If enabled, the canvas will auto-scale to fit the provided floorplan width and height.</description>
+                </property>
+                <property key="floorplanWidth" type="attribute" required="false">
+                    <caption>Floorplan Width</caption>
+                    <description>Width of the floorplan to fit into the canvas when auto zoom is enabled</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal" />
+                    </attributeTypes>
+                </property>
+                <property key="floorplanHeight" type="attribute" required="false">
+                    <caption>Floorplan Height</caption>
+                    <description>Height of the floorplan to fit into the canvas when auto zoom is enabled</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal" />
+                    </attributeTypes>
+                </property>
+                <property key="readOnly" type="attribute" required="false">
+                    <caption>Read only</caption>
+                    <description>When enabled, only selection is allowed; items and areas cannot be moved.</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
                 <property key="initialLeft" type="attribute" required="false">
                     <caption>Initial Left</caption>
                     <description>Value indicating the initial left position of the canvas</description>
