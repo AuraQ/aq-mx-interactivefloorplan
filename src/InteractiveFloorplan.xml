@@ -55,7 +55,7 @@
                 </property>
                 <property key="readOnly" type="attribute" required="false">
                     <caption>Read only</caption>
-                    <description>When enabled, only selection is allowed; items and areas cannot be moved.</description>
+                    <description>Boolean attribute on the entity that disables movement while still allowing selection.</description>
                     <attributeTypes>
                         <attributeType name="Boolean" />
                     </attributeTypes>

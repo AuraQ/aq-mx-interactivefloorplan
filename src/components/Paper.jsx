@@ -90,11 +90,16 @@ export class Paper extends React.Component {
             this.renderDrawingPath();
             return;
 
-        } else if (evt.e.altKey === true && !this.props.readOnly) {
+        } else if (evt.e.altKey === true) {
             this.state.isDragging = true;
             paper.selection = false;
 
-            if (evt.target && evt.target.type === "group" && evt.target.selectable) {
+            if (
+                !this.props.readOnly &&
+                evt.target &&
+                evt.target.type === "group" &&
+                evt.target.selectable
+            ) {
                 evt.target.set({
                     lockMovementX: false,
                     lockMovementY: false
@@ -534,7 +539,7 @@ export class Paper extends React.Component {
                     fill: 'transparent',
                     stroke: '#0096ff',
                     strokeWidth: 1,
-                    selectable: true,
+                    selectable: false,
                     evented: true,
                     hoverCursor: 'pointer',
                     ...area.props,      // Inline props (fallback)

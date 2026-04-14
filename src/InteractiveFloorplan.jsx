@@ -208,6 +208,8 @@ export default class InteractiveFloorplan extends Component {
         }
 
 
+        const readOnly = this.props.readOnly?.value === true || this.props.readOnly?.value === "true";
+
         return (
             <Paper
                 initialZoom={initialZoom}
@@ -232,7 +234,7 @@ export default class InteractiveFloorplan extends Component {
                 autoZoom={autoInitialZoom}
                 floorplanWidth={floorplanWidth}
                 floorplanHeight={floorplanHeight}
-                readOnly={this.props.readOnly}
+                readOnly={readOnly}
             ></Paper>
         );
     }
