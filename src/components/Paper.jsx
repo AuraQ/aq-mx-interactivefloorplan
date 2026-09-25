@@ -594,6 +594,14 @@ export class Paper extends React.Component {
                             height: elementData.height
                         });
                         break;
+                    case "triangle":
+                        element = new fabric.Triangle({
+                            left: elementData.left,
+                            top: elementData.top,
+                            width: elementData.width,
+                            height: elementData.height
+                        });
+                        break;
                     case "line":
                         element = new fabric.Line(elementData.coords);
                         break;

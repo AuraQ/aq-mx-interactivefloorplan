@@ -127,7 +127,7 @@
                 </property>
                 <property key="groupElementsJson" type="attribute" dataSource="data">
                     <caption>Group Elements</caption>
-                    <description>A JSON array holding configuration for all group elements, for supported elements (Path, Line, Rect, Image)</description>
+                    <description>A JSON array holding configuration for all group elements, for supported elements (Path, Line, Rect, Triangle, Image)</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
