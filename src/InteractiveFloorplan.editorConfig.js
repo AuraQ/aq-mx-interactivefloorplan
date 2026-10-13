@@ -1,3 +1,5 @@
+import { hidePropertiesIn } from "@mendix/pluggable-widgets-tools";
+
 export function getProperties(values, defaultProperties) {
     // Do the values manipulation here to control the visibility of properties in Studio and Studio Pro conditionally.
     /* Example
@@ -5,6 +7,11 @@ export function getProperties(values, defaultProperties) {
         delete defaultProperties.properties.myOtherProperty;
     }
     */
+
+    if (!values.enableAreaTooltips) {
+        hidePropertiesIn(defaultProperties, values, ["areaTooltipContent"]);
+    }
+
     return defaultProperties;
 }
 

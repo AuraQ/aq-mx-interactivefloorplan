@@ -3,7 +3,7 @@ import { Paper } from "./components/Paper";
 
 export class preview extends Component {
     render() {
-        return <Paper/>;
+        return <Paper />;
     }
 }
 

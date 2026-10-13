@@ -1,9 +1,9 @@
-import { toLower } from "lodash";
 import React, { Component, createElement } from "react";
 
 import { Paper } from "./components/Paper";
 import "./ui/InteractiveFloorplan.css";
-import Big from "big.js";
+
+const DEBUG_MODE = false;
 
 export default class InteractiveFloorplan extends Component {
     constructor(props) {
@@ -16,10 +16,11 @@ export default class InteractiveFloorplan extends Component {
         this.onMultiSelectionEnd = this.onMultiSelectionEnd.bind(this);
         this.onAreaSelection = this.onAreaSelection.bind(this);
         this.onAreaDeselection = this.onAreaDeselection.bind(this);
+        this.tooltipContent = this.tooltipContent.bind(this);
     }
 
     onSelection = mxItem => {
-        if (this.props.onSelection != undefined) {
+        if (this.props.onSelection !== undefined) {
             const onSelectionAction = this.props.onSelection.get(mxItem);
             if (onSelectionAction.canExecute && !onSelectionAction.isExecuting) {
                 onSelectionAction.execute();
@@ -28,7 +29,7 @@ export default class InteractiveFloorplan extends Component {
     };
 
     onMultiSelectionStart = () => {
-        if (this.props.onMultiSelectionStart != undefined) {
+        if (this.props.onMultiSelectionStart !== undefined) {
             const onMultiSelectionStartAction = this.props.onMultiSelectionStart;
             if (onMultiSelectionStartAction.canExecute && !onMultiSelectionStartAction.isExecuting) {
                 onMultiSelectionStartAction.execute();
@@ -37,7 +38,7 @@ export default class InteractiveFloorplan extends Component {
     };
 
     onMultiSelection = mxItem => {
-        if (this.props.onMultiSelection != undefined) {
+        if (this.props.onMultiSelection !== undefined) {
             const onMultiSelectionAction = this.props.onMultiSelection.get(mxItem);
             if (onMultiSelectionAction.canExecute && !onMultiSelectionAction.isExecuting) {
                 onMultiSelectionAction.execute();
@@ -45,11 +46,11 @@ export default class InteractiveFloorplan extends Component {
         }
     };
 
-    onMultiSelectionEnd = (selectedGroups) => {
+    onMultiSelectionEnd = selectedGroups => {
         if (this.props.selectedGroups) {
             this.props.selectedGroups.setValue(selectedGroups);
         }
-        if (this.props.onMultiSelectionEnd != undefined) {
+        if (this.props.onMultiSelectionEnd !== undefined) {
             const onMultiSelectionEndAction = this.props.onMultiSelectionEnd;
             if (onMultiSelectionEndAction.canExecute && !onMultiSelectionEndAction.isExecuting) {
                 onMultiSelectionEndAction.execute();
@@ -58,7 +59,7 @@ export default class InteractiveFloorplan extends Component {
     };
 
     onDeselection = mxItem => {
-        if (this.props.onDeselection != undefined) {
+        if (this.props.onDeselection !== undefined) {
             const onDeselectionAction = this.props.onDeselection.get(mxItem);
             if (onDeselectionAction.canExecute && !onDeselectionAction.isExecuting) {
                 onDeselectionAction.execute();
@@ -67,7 +68,7 @@ export default class InteractiveFloorplan extends Component {
     };
 
     onAreaSelection = mxItem => {
-        if (this.props.onAreaSelection != undefined) {
+        if (this.props.onAreaSelection !== undefined) {
             const onAreaSelectionAction = this.props.onAreaSelection.get(mxItem);
             if (onAreaSelectionAction.canExecute && !onAreaSelectionAction.isExecuting) {
                 onAreaSelectionAction.execute();
@@ -76,7 +77,7 @@ export default class InteractiveFloorplan extends Component {
     };
 
     onAreaDeselection = mxItem => {
-        if (this.props.onAreaDeselection != undefined) {
+        if (this.props.onAreaDeselection !== undefined) {
             const onAreaDeselectionAction = this.props.onAreaDeselection.get(mxItem);
             if (onAreaDeselectionAction.canExecute && !onAreaDeselectionAction.isExecuting) {
                 onAreaDeselectionAction.execute();
@@ -85,36 +86,34 @@ export default class InteractiveFloorplan extends Component {
     };
 
     onItemMoved = (mxItem, left, top) => {
-        
         if (this.props.movedItemX) {
-           
             this.props.movedItemX.setValue(left.toString());
-         
         }
         if (this.props.movedItemY) {
-            
             this.props.movedItemY.setValue(top.toString());
-            
         }
-        if (this.props.onItemMoved != undefined) {
-            
+        if (this.props.onItemMoved !== undefined) {
             const action = this.props.onItemMoved.get(mxItem);
-            
+
             if (action.canExecute && !action.isExecuting) {
-                
                 action.execute();
-                
             }
         }
     };
 
-    onPathCreated = (verticesJson) => {
+    onPathCreated = verticesJson => {
         if (this.props.pathVertices) {
             this.props.pathVertices.setValue(verticesJson);
         }
         if (this.props.onPathCreated?.canExecute && !this.props.onPathCreated.isExecuting) {
             this.props.onPathCreated.execute();
         }
+    };
+
+    tooltipContent = mxItem => {
+        if (!this.props.enableAreaTooltips) return <></>;
+
+        return this.props.areaTooltipContent.get(mxItem);
     };
 
     render() {
@@ -131,8 +130,8 @@ export default class InteractiveFloorplan extends Component {
             const groupStatus = this.props.instanceGroupStatus.get(v).value;
             const groupIsSelectable = this.props.instanceGroupIsSelectable.get(v).value;
             const groupData = {};
-            groupData["status"] = groupStatus;
-            groupData["isSelectable"] = groupIsSelectable;
+            groupData.status = groupStatus;
+            groupData.isSelectable = groupIsSelectable;
 
             return { ...a, [groupId]: groupData };
         }, {});
@@ -147,7 +146,7 @@ export default class InteractiveFloorplan extends Component {
             group.mxItem = mxItem;
             group.id = this.props.groupId.get(mxItem).value;
             if (instanceItems[group.id]) {
-                group.status = toLower(instanceItems[group.id].status || "__default");
+                group.status = (instanceItems[group.id].status || "__default").toLowerCase();
                 group.isSelectable = instanceItems[group.id].isSelectable;
             } else {
                 group.status = "__default";
@@ -155,7 +154,7 @@ export default class InteractiveFloorplan extends Component {
             }
             group.props = groupProps;
             group.elements = JSON.parse(groupElementsValue);
-            group.elementPropsType = toLower(this.props.groupElementPropsType.get(mxItem).value);
+            group.elementPropsType = this.props.groupElementPropsType.get(mxItem).value.toLowerCase();
 
             groups.push(group);
         }
@@ -171,13 +170,22 @@ export default class InteractiveFloorplan extends Component {
                 area.path = this.props.areaPath.get(mxItem).value;
                 area.props = JSON.parse(this.props.areaProps.get(mxItem).value || "{}");
                 area.propsName = this.props.areaPropsName?.get(mxItem).value;
-                area.status = toLower(this.props.areaStatus?.get(mxItem).value || "__default");
-                
+                area.status = (this.props.areaStatus?.get(mxItem).value || "__default").toLowerCase();
+
                 areas.push(area);
             }
         }
 
-        console.log("InteractiveFloorplan render - groups:", groups.length, "areas:", areas.length, "refreshCounter:", this.props.refreshCounter?.value);
+        if (DEBUG_MODE) {
+            console.log(
+                "InteractiveFloorplan render - groups:",
+                groups.length,
+                "areas:",
+                areas.length,
+                "refreshCounter:",
+                this.props.refreshCounter?.value
+            );
+        }
 
         let initialZoom = 1.0;
         const autoInitialZoom = this.props.autoInitialZoom === true || this.props.autoInitialZoom?.value === true;
@@ -200,41 +208,43 @@ export default class InteractiveFloorplan extends Component {
 
         let backgroundImageUrl = null;
         if (this.props.backgroundImageBase64?.value) {
-            const base64 = this.props.backgroundImageBase64.value;
+            backgroundImageUrl = this.props.backgroundImageBase64.value;
+            // const base64 = this.props.backgroundImageBase64.value;
             // Add data URI prefix if not already present
-            backgroundImageUrl = base64.startsWith('data:') 
-                ? base64 
-                : `data:image/png;base64,${base64}`;
+            // backgroundImageUrl = base64.startsWith('data:')
+            //     ? base64
+            //     : `data:image/png;base64,${base64}`;
         }
-
 
         const readOnly = this.props.readOnly?.value === true || this.props.readOnly?.value === "true";
 
         return (
             <Paper
-                initialZoom={initialZoom}
-                multiselect={this.props.multiselect}
                 initialLeft={initialLeft}
                 initialTop={initialTop}
+                floorplanWidth={floorplanWidth}
+                floorplanHeight={floorplanHeight}
+                autoZoom={autoInitialZoom}
+                initialZoom={initialZoom}
+                multiselect={this.props.multiselect}
                 groups={groups}
+                areas={areas}
                 elementProps={elementProps}
                 backgroundColor={this.props.backgroundColor}
+                backgroundImageUrl={backgroundImageUrl}
+                refreshCounter={this.props.refreshCounter?.value?.toNumber()}
+                readOnly={readOnly}
                 onSelection={this.onSelection}
                 onDeselection={this.onDeselection}
                 onMultiSelection={this.onMultiSelection}
                 onMultiSelectionStart={this.onMultiSelectionStart}
                 onMultiSelectionEnd={this.onMultiSelectionEnd}
-                onItemMoved={this.onItemMoved}
-                onPathCreated={this.onPathCreated}
-                backgroundImageUrl={backgroundImageUrl}
-                areas={areas}
-                refreshCounter={this.props.refreshCounter?.value}
                 onAreaSelection={this.onAreaSelection}
                 onAreaDeselection={this.onAreaDeselection}
-                autoZoom={autoInitialZoom}
-                floorplanWidth={floorplanWidth}
-                floorplanHeight={floorplanHeight}
-                readOnly={readOnly}
+                onItemMoved={this.onItemMoved}
+                onPathCreated={this.onPathCreated}
+                enableTooltips={this.props.enableAreaTooltips}
+                tooltipContent={this.tooltipContent}
             ></Paper>
         );
     }

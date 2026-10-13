@@ -214,6 +214,14 @@
                         <attributeType name="Enum"/>
                     </attributeTypes>
                 </property>
+                <property key="enableAreaTooltips" type="boolean" defaultValue="true">
+                    <caption>Enable area hover tooltips</caption>
+                    <description>Show a tooltip when hovering an area on the canvas.</description>
+                </property>
+                <property key="areaTooltipContent" type="widgets" required="false" dataSource="areaData">
+                    <caption>Area tooltip content</caption>
+                    <description></description>
+                </property>
             </propertyGroup>
         </propertyGroup>
 

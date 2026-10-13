@@ -1,7 +1,7 @@
 {
   "name": "interactivefloorplan",
   "widgetName": "InteractiveFloorplan",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Render interactive SVG elements on a canvas",
   "copyright": "© AuraQ Limited 2022. All rights reserved.",
   "author": "Iain Lindsay",
@@ -22,17 +22,20 @@
     "lint": "pluggable-widgets-tools lint",
     "lint:fix": "pluggable-widgets-tools lint:fix",
     "prerelease": "npm run lint",
-    "release": "pluggable-widgets-tools release:web",
-    "postinstall": "cd node_modules/fabric && npm run build_with_gestures"
+    "release": "pluggable-widgets-tools release:web"
   },
   "devDependencies": {
-    "@mendix/pluggable-widgets-tools": "^11.3.0"
+    "@mendix/pluggable-widgets-tools": "^11.15.0"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "fabric": "^4.2.0",
-    "lodash": "^4.17.20",
-    "node-modules": "^1.0.1",
-    "uuid": "^8.3.2"
+    "fabric": "^7.4.0",
+    "uuid": "^14.0.3"
+  },
+  "allowScripts": {
+    "canvas@3.2.3": true,
+    "@parcel/watcher@2.6.0": true,
+    "@swc/core@1.16.18": true,
+    "core-js@3.50.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }

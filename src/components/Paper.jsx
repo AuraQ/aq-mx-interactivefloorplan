@@ -1,8 +1,20 @@
 import React, { Component, createElement } from "react";
-import ReactDOM from "react-dom";
-import { fabric } from "fabric";
-import _, { times } from "lodash";
+
+import * as fabric from "fabric";
 import { v4 as uuidv4 } from "uuid";
+import { Tooltip } from "./Tooltip";
+
+const DEBUG_MODE = false;
+
+const debounce = (callback, wait) => {
+    let timeoutId = null;
+    return (...args) => {
+        window.clearTimeout(timeoutId);
+        timeoutId = window.setTimeout(() => {
+            callback(...args);
+        }, wait);
+    };
+};
 
 export class Paper extends React.Component {
     constructor(props) {
@@ -12,8 +24,6 @@ export class Paper extends React.Component {
                 canvasWrapperId: uuidv4(),
                 canvasId: uuidv4()
             },
-            wrapperWidth: 600,
-            wrapperHeight: 400,
             canvas: null,
             wrapper: null,
             zoomOutFactor: 1.05,
@@ -22,27 +32,33 @@ export class Paper extends React.Component {
             pausePanning: false,
             zoomStartScale: null,
             eventsInitialised: false,
-            selectedItems: []
+            selectedItems: [],
+            tooltip: {
+                visible: false,
+                left: 0,
+                top: 0,
+                content: undefined
+            }
         };
         this.selectItem = this.selectItem.bind(this);
         this.deselectItem = this.deselectItem.bind(this);
         this.updateViewBoxPosition = this.updateViewBoxPosition.bind(this);
         this.resetZoom = this.resetZoom.bind(this);
         this.resetPosition = this.resetPosition.bind(this);
-
+        this.paperRef = React.createRef();
+        this.fullRender = true;
     }
 
     onMouseWheel(opt) {
-
         // Zoom to the current mouse position
-        var paper = this.state.canvas;
+        const { canvas } = this.state;
         var delta = opt.e.deltaY;
         var zf = opt.e.deltaY < 0 ? this.state.zoomOutFactor : this.state.zoomInFactor;
-        var zoom = paper.getZoom() * zf;
+        var zoom = canvas.getZoom() * zf;
         if (zoom > 20) zoom = 20;
         if (zoom < 0.01) zoom = 0.01;
-        paper.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-        
+        canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+
         //var paper = this.state.canvas;
         //var zf = opt.e.deltaY < 0 ? this.state.zoomOutFactor : this.state.zoomInFactor;
         //var zoom = paper.getZoom() * zf;
@@ -52,145 +68,134 @@ export class Paper extends React.Component {
         opt.e.stopPropagation();
     }
 
-    onMouseDown(evt) {       
+    onMouseDown(evt) {
         if (evt.e.type.startsWith("touch")) {
             return;
-        }   
+        }
 
-        var paper = this.state.canvas;
+        const { canvas } = this.state;
 
         if (evt.e.ctrlKey === true) {
             if (this.props.readOnly) {
                 return;
             }
 
-            paper.selection = false;
-            this.state.isDrawingPath = true;
+            canvas.selection = false;
+            this.setState({ isDrawingPath: true });
 
-            const pointer = paper.getPointer(evt.e);
+            // const pointer = fabric.util.getPointer(evt);
+            const pointer = evt.scenePoint;
             const point = { x: pointer.x, y: pointer.y };
 
-            if (!this.state.drawingPath) {
-                this.state.drawingPath = [];
-            }
-
             // Check if clicking near the first point to close
-            if (this.state.drawingPath.length >= 3) {
+            if (this.state.drawingPath && this.state.drawingPath.length >= 3) {
                 const first = this.state.drawingPath[0];
-                const dist = Math.sqrt(
-                    Math.pow(point.x - first.x, 2) + Math.pow(point.y - first.y, 2)
-                );
+                const dist = Math.sqrt(Math.pow(point.x - first.x, 2) + Math.pow(point.y - first.y, 2));
                 if (dist < 15) {
                     this.closePath();
                     return;
                 }
             }
 
-            this.state.drawingPath.push(point);
-            this.renderDrawingPath();
-            return;
+            const drawingPath = this.state.drawingPath || [];
+            drawingPath.push(point);
+            this.setState({ drawingPath });
 
+            this.renderDrawingPath(drawingPath);
         } else if (evt.e.altKey === true) {
-            this.state.isDragging = true;
-            paper.selection = false;
+            this.setState({ isDragging: true });
+            canvas.selection = false;
 
-            if (
-                !this.props.readOnly &&
-                evt.target &&
-                evt.target.type === "group" &&
-                evt.target.selectable
-            ) {
+            if (!this.props.readOnly && evt.target && evt.target.type === "group" && evt.target.selectable) {
                 evt.target.set({
                     lockMovementX: false,
                     lockMovementY: false
                 });
-                this.state.movingItem = evt.target;
-                paper.setActiveObject(evt.target);
+                this.setState({ movingItem: evt.target });
+                canvas.setActiveObject(evt.target);
             } else {
-                this.state.mdp = { x: evt.e.screenX, y: evt.e.screenY };
+                this.setState({ mdp: { x: evt.e.screenX, y: evt.e.screenY } });
             }
         } else {
-            this.state.isDragging = false;
-            this.state.isDrawingPath = false;
-            paper.selection = true;
+            this.setState({ isDragging: false, isDrawingPath: false });
+            canvas.selection = true;
         }
     }
 
-    renderDrawingPath() {
-        var paper = this.state.canvas;
-        const points = this.state.drawingPath;
+    renderDrawingPath(drawingPath) {
+        const { canvas } = this.state;
 
         // Remove previous temp path
         if (this.state.tempPathObject) {
-            paper.remove(this.state.tempPathObject);
+            canvas.remove(this.state.tempPathObject);
         }
         // Remove previous temp vertices
         if (this.state.tempVertices) {
-            this.state.tempVertices.forEach(v => paper.remove(v));
+            this.state.tempVertices.forEach(v => canvas.remove(v));
         }
 
-        this.state.tempVertices = [];
+        this.setState({ tempVertices: [] });
 
         // Draw polyline
-        if (points.length >= 2) {
-            const polyline = new fabric.Polyline(points, {
-                fill: 'rgba(0, 150, 255, 0.15)',
-                stroke: '#0096ff',
+        if (drawingPath?.length >= 2) {
+            const polyline = new fabric.Polyline(drawingPath, {
+                fill: "rgba(0, 150, 255, 0.15)",
+                stroke: "#0096ff",
                 strokeWidth: 2,
                 strokeDashArray: [5, 5],
                 selectable: false,
                 evented: false
             });
-            this.state.tempPathObject = polyline;
-            paper.add(polyline);
+            this.setState({ tempPathObject: polyline });
+            canvas.add(polyline);
         }
 
+        const tempVertices = this.state.tempVertices || [];
         // Draw vertex circles
-        points.forEach((pt, i) => {
+        drawingPath?.forEach((pt, i) => {
             const circle = new fabric.Circle({
                 left: pt.x - 5,
                 top: pt.y - 5,
                 radius: 5,
-                fill: i === 0 ? '#ff0000' : '#0096ff',
-                stroke: '#ffffff',
+                fill: i === 0 ? "#ff0000" : "#0096ff",
+                stroke: "#ffffff",
                 strokeWidth: 1,
                 selectable: false,
                 evented: false
             });
-            this.state.tempVertices.push(circle);
-            paper.add(circle);
+            tempVertices.push(circle);
+            canvas.add(circle);
         });
 
-        paper.requestRenderAll();
+        this.setState({ tempVertices });
+
+        canvas.requestRenderAll();
     }
 
     closePath() {
-        var paper = this.state.canvas;
-        const points = this.state.drawingPath;
+        const { canvas, drawingPath } = this.state;
 
         // Remove temp objects
         if (this.state.tempPathObject) {
-            paper.remove(this.state.tempPathObject);
+            canvas.remove(this.state.tempPathObject);
         }
         if (this.state.tempVertices) {
-            this.state.tempVertices.forEach(v => paper.remove(v));
+            this.state.tempVertices.forEach(v => canvas.remove(v));
         }
 
         // Build SVG path string
-        const pathString = points.map((pt, i) => {
-            return `${i === 0 ? 'M' : 'L'} ${pt.x} ${pt.y}`;
-        }).join(' ') + ' Z';
+        const pathString = drawingPath?.map((pt, i) => `${i === 0 ? "M" : "L"} ${pt.x} ${pt.y}`).join(" ") + " Z";
 
         // Create final closed path
         const path = new fabric.Path(pathString, {
-            fill: 'rgba(0, 150, 255, 0.2)',
-            stroke: '#0096ff',
+            fill: "rgba(0, 150, 255, 0.2)",
+            stroke: "#0096ff",
             strokeWidth: 2,
             selectable: false,
             evented: false
         });
-        paper.add(path);
-        paper.requestRenderAll();
+        canvas.add(path);
+        canvas.requestRenderAll();
 
         // Pass path string back to Mendix
         if (this.props.onPathCreated) {
@@ -198,10 +203,12 @@ export class Paper extends React.Component {
         }
 
         // Reset state
-        this.state.drawingPath = null;
-        this.state.tempPathObject = null;
-        this.state.tempVertices = null;
-        this.state.isDrawingPath = false;
+        this.setState({
+            drawingPath: null,
+            tempPathObject: null,
+            tempVertices: null,
+            isDrawingPath: false
+        });
     }
 
     onMouseUp(evt) {
@@ -209,6 +216,7 @@ export class Paper extends React.Component {
             return;
         }
 
+        const { canvas } = this.state;
         if (this.state.movingItem && this.state.isDragging) {
             const item = this.state.movingItem;
             item.set({
@@ -221,43 +229,42 @@ export class Paper extends React.Component {
                 this.props.onItemMoved(item.mxItem, item.left, item.top);
             }
 
-            this.state.movingItem = null;
- 
-            this.state.canvas.discardActiveObject();
+            this.setState({ movingItem: null });
+            canvas.discardActiveObject();
         }
 
-        this.state.isDragging = false;
+        this.setState({ isDragging: false });
         this.updateViewBoxPosition(evt);
-        this.state.mdp = null;
+        this.setState({ mdp: null });
     }
 
     onTouchGesture(e) {
-        var paper = this.state.canvas;
-        if (e.e.touches && e.e.touches.length == 2) {
-            this.state.pausePanning = true;
+        const { canvas } = this.state;
+        if (e.e.touches && e.e.touches.length === 2) {
+            this.setState({ pausePanning: true });
             var point = new fabric.Point(e.self.x, e.self.y);
-            if (e.self.state == "start") {
-                this.state.zoomStartScale = paper.getZoom();
+            if (e.self.state === "start") {
+                this.setState({ zoomStartScale: canvas.getZoom() });
             }
             var delta = this.state.zoomStartScale * e.self.scale;
-            paper.zoomToPoint(point, delta);
-            this.state.pausePanning = false;
+            canvas.zoomToPoint(point, delta);
+            this.setState({ pausePanning: false });
         }
     }
 
     onTouchDrag(e) {
-        var paper = this.state.canvas;
-        if (this.state.pausePanning == false && e.e.touches && e.e.touches.length == 1) {
-            if (e.self.state == "down") {
-                this.state.mdp = { x: e.self.x, y: e.self.y };
-            } else if (e.self.state == "up") {
-                this.state.mdp = null;
+        const { canvas } = this.state;
+        if (this.state.pausePanning === false && e.e.touches && e.e.touches.length === 1) {
+            if (e.self.state === "down") {
+                this.setState({ mdp: { x: e.self.x, y: e.self.y } });
+            } else if (e.self.state === "up") {
+                this.setState({ mdp: null });
             } else {
                 var delta = new fabric.Point(e.self.x - this.state.mdp.x, e.self.y - this.state.mdp.y);
                 if (Math.abs(delta.x) <= 50 && Math.abs(delta.y) <= 50) {
-                    paper.relativePan(delta);
+                    canvas.relativePan(delta);
                 }
-                this.state.mdp = { x: e.self.x, y: e.self.y };
+                this.setState({ mdp: { x: e.self.x, y: e.self.y } });
             }
         }
     }
@@ -267,12 +274,10 @@ export class Paper extends React.Component {
         // (to allow a click to deselect)
         if (this.state.isDragging || this.state.isDrawingPath) return;
         if (evt && evt.selected && evt.selected.length > 0) {
-
-            
             const isMulti = evt.selected.length > 1;
 
-           this.deSelectAllItems(isMulti);
-           
+            this.deSelectAllItems(isMulti);
+
             if (this.props.onMultiSelectionStart && isMulti) {
                 this.props.onMultiSelectionStart();
             }
@@ -289,7 +294,6 @@ export class Paper extends React.Component {
             });
 
             if (this.props.onMultiSelectionEnd && isMulti) {
-                
                 let selectedGroups = "";
                 let sep = "";
                 this.state.selectedItems.forEach(item => {
@@ -298,12 +302,9 @@ export class Paper extends React.Component {
                 });
 
                 this.props.onMultiSelectionEnd(selectedGroups);
-                
-                
             }
 
             this.state.canvas.discardActiveObject();
-            
         }
     }
 
@@ -363,30 +364,32 @@ export class Paper extends React.Component {
         }
     }
 
-    onWindowResize(evt) {
-        var paper = this.state.canvas;
-        var w = this.state.wrapper.offsetWidth;
-        var h = this.state.wrapper.offsetHeight;
-        this.setState({ wrapperWidth: w, wrapperHeight: h });
-        paper.setWidth(w);
-        paper.setHeight(h);
-        if (this.props.autoZoom) {
-            const zoom = this.calculateAutoZoom(w, h);
-            paper.setZoom(zoom);
+    resizeCanvas(resetZoom) {
+        const { canvas, wrapper } = this.state;
+        if (canvas === null || canvas === undefined) return;
+
+        canvas.setDimensions({
+            width: wrapper.offsetWidth,
+            height: wrapper.offsetHeight
+        });
+        if (resetZoom && this.props.autoZoom) {
+            const zoom = this.calculateAutoZoom(canvas.width, canvas.height);
+            canvas.setZoom(zoom);
         }
-        paper.renderAll();
+        canvas.requestRenderAll();
     }
 
     selectItem(item, isMulti = false) {
-        var paper = this.state.canvas;
-        if (item != null && item.type == "group") {
+        const { canvas } = this.state;
+
+        if (item != null && item.type === "group") {
             for (var key of Object.keys(item.elementProps)) {
                 const elementProps = item.elementProps[key];
                 const element = item.item(elementProps.index);
                 element.set(elementProps.selected);
             }
 
-            paper.requestRenderAll();
+            canvas.requestRenderAll();
 
             // call back
             if (item.mxItem && this.props.onSelection && !isMulti) {
@@ -398,30 +401,29 @@ export class Paper extends React.Component {
             }
 
             const index = this.state.selectedItems.indexOf(item);
-            if (index == -1) this.state.selectedItems.push(item);
+            if (index === -1) this.state.selectedItems.push(item);
         }
     }
 
     deSelectAllItems(isMulti = false) {
-
         const selectedItems = this.state.selectedItems.slice();
 
         selectedItems.forEach(item => {
             this.deselectItem(item, isMulti);
         });
-
     }
 
     deselectItem(item, isMulti = false) {
-        var paper = this.state.canvas;
-        if (item != null && item.type == "group") {
+        const { canvas } = this.state;
+
+        if (item != null && item.type === "group") {
             for (var key of Object.keys(item.elementProps)) {
                 const elementProps = item.elementProps[key];
                 const element = item.item(elementProps.index);
                 element.set(elementProps.deselected);
             }
 
-            paper.requestRenderAll();
+            canvas.requestRenderAll();
 
             // call back
             if (item.mxItem && this.props.onDeselection && !isMulti) {
@@ -435,29 +437,67 @@ export class Paper extends React.Component {
     }
 
     updateViewBoxPosition(evt) {
-        var paper = this.state.canvas;
+        const { canvas } = this.state;
+
         if (evt.e.type.startsWith("touch")) {
             return;
         }
+
         if (this.state.mdp != null) {
             var deltaX = evt.e.screenX - this.state.mdp.x;
             var deltaY = evt.e.screenY - this.state.mdp.y;
-            this.state.mdp.x = evt.e.screenX;
-            this.state.mdp.y = evt.e.screenY;
+            this.setState({ mdp: { x: evt.e.screenX, y: evt.e.screenY } });
             var delta = new fabric.Point(deltaX, deltaY);
-            paper.relativePan(delta);
+            canvas.relativePan(delta);
         }
     }
+
+    showTooltip(position, area) {
+        if (!this.props.enableTooltips) return;
+
+        this.setState({
+            tooltip: {
+                visible: true,
+                left: position.x + 10,
+                top: position.y + 10,
+                content: this.props.tooltipContent(area.mxItem)
+            }
+        });
+    }
+
+    moveTooltip(position) {
+        if (!this.state.tooltip.visible || !this.props.enableTooltips) return;
+
+        this.setState({
+            tooltip: {
+                ...this.state.tooltip,
+                left: position.x + 10,
+                top: position.y + 10
+            }
+        });
+    }
+
+    hideTooltip() {
+        if (!this.state.tooltip.visible) return;
+
+        this.setState({
+            tooltip: {
+                ...this.state.tooltip,
+                visible: false
+            }
+        });
+    }
+
     // reset zoom to 1.0
     resetZoom() {
-        var paper = this.state.canvas;
-        paper.setZoom(1.0);
+        const { canvas } = this.state;
+        canvas.setZoom(1.0);
     }
 
     // reset viewport position to 0,0
     resetPosition() {
-        var paper = this.state.canvas;
-        paper.absolutePan(new fabric.Point(0, 0));
+        const { canvas } = this.state;
+        canvas.absolutePan(new fabric.Point(0, 0));
     }
 
     calculateAutoZoom(containerWidth, containerHeight) {
@@ -469,41 +509,22 @@ export class Paper extends React.Component {
         return Math.min(containerWidth / floorplanWidth, containerHeight / floorplanHeight);
     }
 
-    imageFromUrl(url, options, successCallback, errorCallback) {
-        fabric.Image.fromURL(url, function(oImg) {
-            successCallback(oImg);
-        }, options);
-    }
-
-    imagefromUrlWrapper(url, options = {}) {
-        return new Promise((resolve, reject) => {
-            this.imageFromUrl(url, options, (successResponse) => {
-                resolve(successResponse);
-            }, (errorResponse) => {
-                reject(errorResponse);
-            })
-        })
-    }
-
     async initCanvas(paper) {
         //paper.selection = false;
 
         // 1. Background image
         if (this.props.backgroundImageUrl) {
-                const bgImage = await this.imagefromUrlWrapper(this.props.backgroundImageUrl);
-                bgImage.set({
-                    selectable: false,
-                    evented: false,
-                    originX: 'left',
-                    originY: 'top',
-                    left: 0,
-                    top: 0,
-                    scale: 1
-                });
-                paper.add(bgImage);
-            }
-
-        
+            const bgImage = await fabric.FabricImage.fromURL(this.props.backgroundImageUrl);
+            bgImage.selectable = false;
+            bgImage.evented = false;
+            // bgImage.left = 0;
+            // bgImage.top = 0;
+            // bgImage.originX = 'left',
+            // bgImage.originY = 'top',
+            bgImage.setPositionByOrigin(new fabric.Point(0, 0), "left", "top");
+            bgImage.scale(1);
+            paper.add(bgImage);
+        }
 
         var baseGroupOptions = {
             hasControls: false,
@@ -529,39 +550,50 @@ export class Paper extends React.Component {
                 let statusProps = {};
                 if (area.propsName && this.props.elementProps[area.propsName]) {
                     const propsCollection = this.props.elementProps[area.propsName];
-                    const statusPropsCollection = propsCollection[area.status] || propsCollection["__default"] || {};
+                    const statusPropsCollection = propsCollection[area.status] || propsCollection.__default || {};
                     // Areas don't have selected/deselected states, so just use the status props directly
                     // or look for a "default" key within the status
-                    statusProps = statusPropsCollection["deselected"] || statusPropsCollection;
+                    statusProps = statusPropsCollection.deselected || statusPropsCollection;
                 }
-                
+
                 const path = new fabric.Path(area.path, {
-                    fill: 'transparent',
-                    stroke: '#0096ff',
+                    fill: "transparent",
+                    stroke: "#0096ff",
                     strokeWidth: 1,
                     selectable: false,
                     evented: true,
-                    hoverCursor: 'pointer',
-                    ...area.props,      // Inline props (fallback)
-                    ...statusProps      // Status-based props (override)
+                    hoverCursor: "pointer",
+                    ...area.props, // Inline props (fallback)
+                    ...statusProps // Status-based props (override)
                 });
                 path.areaId = area.id;
                 path.mxItem = area.mxItem;
-                path.on('mousedown', (e) => {
+                path.on("mousedown", e => {
                     if (!this.state.isDragging && !this.state.isDrawingPath) {
                         if (this.props.onAreaSelection) {
                             this.props.onAreaSelection(path.mxItem);
                         }
                     }
                 });
+                if (this.props.enableTooltips) {
+                    path.on("mouseover", e => {
+                        this.showTooltip({ x: e.e.offsetX, y: e.e.offsetY }, area);
+                    });
+                    path.on("mouseout", () => {
+                        this.hideTooltip();
+                    });
+                    path.on("mousemove", e => {
+                        this.moveTooltip({ x: e.e.offsetX, y: e.e.offsetY });
+                    });
+                }
                 paper.add(path);
             });
         }
 
         for (let i = 0; i < this.props.groups.length; i++) {
             const groupData = this.props.groups[i];
-            let groupItems = [];
-            let groupElementProps = {};
+            const groupItems = [];
+            const groupElementProps = {};
             for (let j = 0; j < groupData.elements.length; j++) {
                 const elementData = groupData.elements[j];
                 let element;
@@ -573,13 +605,13 @@ export class Paper extends React.Component {
                 if (groupData.elementPropsType === "inline") {
                     selectedProps = elementData.props;
                 } else {
-                    selectedProps = statusPropsCollection["selected"] || "{}";
+                    selectedProps = statusPropsCollection.selected || "{}";
                 }
 
                 if (groupData.elementPropsType === "inline") {
                     deselectedProps = elementData.props;
                 } else {
-                    deselectedProps = statusPropsCollection["deselected"] || "{}";
+                    deselectedProps = statusPropsCollection.deselected || "{}";
                 }
 
                 switch (elementData.type) {
@@ -606,12 +638,13 @@ export class Paper extends React.Component {
                         element = new fabric.Line(elementData.coords);
                         break;
                     case "image":
-
                         element = await this.imagefromUrlWrapper(elementData.href, {
                             left: parseFloat(elementData.x) || 0,
                             top: parseFloat(elementData.y) || 0
                         });
-                        console.debug("Element after set:", element);
+                        if (DEBUG_MODE) console.debug("Element after set:", element);
+                        break;
+                    default:
                         break;
                 }
                 const elementKey = `${elementData.type}_${j}`;
@@ -625,7 +658,7 @@ export class Paper extends React.Component {
             }
 
             var group = new fabric.Group(groupItems, { originX: "left", originY: "top" });
-            console.log("Group bounds:", group.getBoundingRect());
+            if (DEBUG_MODE) console.log("Group bounds:", group.getBoundingRect());
             const cursor = groupData.isSelectable ? "pointer" : "default";
             group.setOptions({
                 ...baseGroupOptions,
@@ -640,14 +673,18 @@ export class Paper extends React.Component {
             paper.add(group);
         }
 
-        paper.renderAll();
+        paper.requestRenderAll();
 
         if (!this.state.eventsInitialised) {
-            paper.upperCanvasEl.addEventListener('mousedown', (e) => {
-                if (e.altKey) {
-                    this.state.isDragging = true;
-                }
-            }, true); // 'true' = capture phase, fires before Fabric
+            paper.upperCanvasEl.addEventListener(
+                "mousedown",
+                e => {
+                    if (e.altKey) {
+                        this.setState({ isDragging: true });
+                    }
+                },
+                true
+            ); // 'true' = capture phase, fires before Fabric
 
             paper.on("mouse:wheel", this.onMouseWheel.bind(this));
             paper.on("mouse:down", this.onMouseDown.bind(this));
@@ -667,71 +704,72 @@ export class Paper extends React.Component {
                 paper.on("selection:cleared", this.onMultiselectionEvent.bind(this));
             }
             window.addEventListener("resize", () => {
-                setTimeout(() => this.onWindowResize(), 100);
+                debounce(this.resizeCanvas.bind(this), 100)();
             });
-            
+
             this.setState({ eventsInitialised: true });
         }
     }
 
     componentDidMount() {
-        var el = ReactDOM.findDOMNode(this);
-        var paper = new fabric.Canvas(this.state.ids.canvasId, {
+        const el = this.paperRef.current;
+        const paper = new fabric.Canvas(this.state.ids.canvasId, {
             height: el.offsetHeight,
             width: el.offsetWidth,
             backgroundColor: this.props.backgroundColor
         });
-
         paper.absolutePan(new fabric.Point(this.props.initialLeft, this.props.initialTop));
-        const zoom = this.props.autoZoom ? this.calculateAutoZoom(el.offsetWidth, el.offsetHeight) : this.props.initialZoom;
+
+        const zoom = this.props.autoZoom
+            ? this.calculateAutoZoom(el.offsetWidth, el.offsetHeight)
+            : this.props.initialZoom;
         paper.setZoom(zoom);
+
         this.setState({
-            wrapperWidth: el.offsetWidth,
-            wrapperHeight: el.offsetHeight,
             wrapper: el,
             canvas: paper
         });
+
         this.initCanvas(paper);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.refreshCounter !== this.props.refreshCounter;
+        this.resizeCanvas(false);
+        this.fullRender = !(
+            nextProps.groups === this.props.groups &&
+            nextProps.elementProps === this.props.elementProps &&
+            nextProps.areas === this.props.areas &&
+            nextProps.backgroundImageUrl === this.props.backgroundImageUrl &&
+            nextProps.refreshCounter === this.props.refreshCounter
+        );
+
+        return this.fullRender || !(nextState.tooltip === this.state.tooltip);
     }
 
     async componentDidUpdate(prevProps) {
-        const nextProps = this.props;
         const { canvas } = this.state;
 
         if (!canvas) {
             return;
         }
 
-        const refreshCounterChanged = nextProps.refreshCounter !== prevProps.refreshCounter;
-
-        if (refreshCounterChanged) {
-            console.log("Refresh triggered - clearing and reinitializing canvas (first pass)");
-            
+        if (this.fullRender) {
+            if (DEBUG_MODE) console.log("Refresh triggered - clearing and reinitializing canvas (first pass)");
             canvas.clear();
-            canvas.set({ backgroundColor: nextProps.backgroundColor });
+            canvas.set({ backgroundColor: this.props.backgroundColor });
             await this.initCanvas(canvas);
-            
-            console.log("First refresh complete, triggering second refresh in 100ms");
-            
-            // Double refresh: trigger another init after a short delay
-            setTimeout(async () => {
-                console.log("Second refresh pass");
-                canvas.clear();
-                canvas.set({ backgroundColor: nextProps.backgroundColor });
-                await this.initCanvas(canvas);
-                console.log("Second refresh complete");
-            }, 100);
         }
     }
 
     render() {
         return (
-            <div id={this.state.ids.canvasWrapperId} className="canvasWrapper">
+            <div ref={this.paperRef} id={this.state.ids.canvasWrapperId} className="canvasWrapper">
                 <canvas id={this.state.ids.canvasId} className="canvasPaper"></canvas>
+                {this.state.tooltip.visible && (
+                    <Tooltip top={this.state.tooltip.top} left={this.state.tooltip.left}>
+                        {this.state.tooltip.content}
+                    </Tooltip>
+                )}
             </div>
         );
     }
