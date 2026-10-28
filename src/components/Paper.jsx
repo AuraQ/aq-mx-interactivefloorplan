@@ -37,7 +37,8 @@ export class Paper extends React.Component {
                 visible: false,
                 left: 0,
                 top: 0,
-                content: undefined
+                content: undefined,
+                id: undefined
             }
         };
         this.selectItem = this.selectItem.bind(this);
@@ -460,19 +461,11 @@ export class Paper extends React.Component {
                 visible: true,
                 left: position.x + 10,
                 top: position.y + 10,
-                content: this.props.tooltipContent(area.mxItem)
-            }
-        });
-    }
-
-    moveTooltip(position) {
-        if (!this.state.tooltip.visible || !this.props.enableTooltips) return;
-
-        this.setState({
-            tooltip: {
-                ...this.state.tooltip,
-                left: position.x + 10,
-                top: position.y + 10
+                content:
+                    area.mxItem.id === this.state.tooltip.id
+                        ? this.state.tooltip.content
+                        : this.props.tooltipContent(area.mxItem),
+                id: area.mxItem.id
             }
         });
     }
@@ -563,6 +556,7 @@ export class Paper extends React.Component {
                     selectable: false,
                     evented: true,
                     hoverCursor: "pointer",
+                    perPixelTargetFind: true,
                     ...area.props, // Inline props (fallback)
                     ...statusProps // Status-based props (override)
                 });
@@ -583,7 +577,7 @@ export class Paper extends React.Component {
                         this.hideTooltip();
                     });
                     path.on("mousemove", e => {
-                        this.moveTooltip({ x: e.e.offsetX, y: e.e.offsetY });
+                        this.showTooltip({ x: e.e.offsetX, y: e.e.offsetY }, area);
                     });
                 }
                 paper.add(path);
