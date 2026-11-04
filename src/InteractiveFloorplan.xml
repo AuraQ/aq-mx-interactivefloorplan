@@ -17,16 +17,13 @@
         <!-- TAB 1: General -->
         <propertyGroup caption="General">
             <propertyGroup caption="Canvas">
-                <property key="backgroundColor" type="string">
-                    <caption>Background Color</caption>
+                <property key="backgroundColour" type="string">
+                    <caption>Background Colour</caption>
                     <description>The colour of the canvas</description>
                 </property>
-                <property key="backgroundImageBase64" type="attribute" required="false">
+                <property key="backgroundImage" type="image" required="true" >
                     <caption>Background Image</caption>
-                    <description>Base64 encoded image data</description>
-                    <attributeTypes>
-                        <attributeType name="String"/>
-                    </attributeTypes>
+                    <description></description>
                 </property>
                 <property key="initialZoom" type="attribute" required="false">
                     <caption>Initial Zoom</caption>
@@ -38,7 +35,7 @@
                     </attributeTypes>
                 </property>
                 <property key="autoInitialZoom" type="boolean" defaultValue="false">
-                    <caption>Auto initial zoom</caption>
+                    <caption>Auto Initial Zoom</caption>
                     <description>If enabled, the canvas will auto-scale to fit the provided floorplan width and height.</description>
                 </property>
                 <property key="floorplanWidth" type="attribute" required="false">
@@ -60,7 +57,7 @@
                     </attributeTypes>
                 </property>
                 <property key="readOnly" type="attribute" required="false">
-                    <caption>Read only</caption>
+                    <caption>Read Only</caption>
                     <description>Boolean attribute on the entity that disables movement while still allowing selection.</description>
                     <attributeTypes>
                         <attributeType name="Boolean" />
@@ -85,7 +82,7 @@
                     </attributeTypes>
                 </property>
                 <property key="multiselect" type="boolean" defaultValue="false">
-                    <caption>Multi-select</caption>
+                    <caption>Multi-Select</caption>
                     <description />
                 </property>
                 <property key="elementPropsJson" type="attribute">
@@ -95,23 +92,35 @@
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
+                <property key="loadingContent" type="widgets" required="false">
+                    <caption>Loading Content</caption>
+                    <description></description>
+                </property>
             </propertyGroup>
         </propertyGroup>
 
-        <!-- TAB 2: Groups (devices) -->
+        <!-- TAB 2: Groups -->
         <propertyGroup caption="Groups">
             <propertyGroup caption="Data source">
                 <property key="data" type="datasource" isList="true" required="true">
-                    <caption>Data source</caption>
+                    <caption>Data Source</caption>
                     <description />
                 </property>
             </propertyGroup>
             <propertyGroup caption="Group attributes">
                 <property key="groupId" type="attribute" dataSource="data">
-                    <caption>Group ID</caption>
+                    <caption>Group Id</caption>
                     <description>An identifier for the group</description>
                     <attributeTypes>
                         <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="groupStatus" type="attribute" dataSource="data">
+                    <caption>Group Status</caption>
+                    <description>A value to indicate the status of the group</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Enum" />
                     </attributeTypes>
                 </property>
                 <property key="groupIsSelectable" type="attribute" dataSource="data">
@@ -143,118 +152,33 @@
                     </attributeTypes>
                 </property>
             </propertyGroup>
-        </propertyGroup>
-
-        <!-- TAB 3: Instance overrides -->
-        <propertyGroup caption="Instance">
-            <propertyGroup caption="Data source">
-                <property key="instanceData" type="datasource" isList="true" required="true">
-                    <caption>Data source (instance)</caption>
-                    <description />
+            <propertyGroup caption="Tooltips">
+                <property key="enableTooltips" type="boolean" defaultValue="true">
+                    <caption>Enable Tooltips</caption>
+                    <description>Show a tooltip when hovering groups on the canvas.</description>
                 </property>
-            </propertyGroup>
-            <propertyGroup caption="Instance attributes">
-                <property key="instanceGroupId" type="attribute" dataSource="instanceData">
-                    <caption>Group ID (instance)</caption>
-                    <description>An identifier for the group for an instance of that group</description>
-                    <attributeTypes>
-                        <attributeType name="String" />
-                    </attributeTypes>
+                <property key="groupTooltipOn" type="expression" defaultValue="true" dataSource="data">
+                    <caption>Show Tooltip?</caption>
+                    <description></description>
+                    <returnType type="Boolean" />
                 </property>
-                <property key="instanceGroupStatus" type="attribute" dataSource="instanceData">
-                    <caption>Group Status (instance)</caption>
-                    <description>A value to indicate the status of the group</description>
-                    <attributeTypes>
-                        <attributeType name="String" />
-                        <attributeType name="Enum" />
-                    </attributeTypes>
-                </property>
-                <property key="instanceGroupIsSelectable" type="attribute" dataSource="instanceData">
-                    <caption>Is Selectable (instance)</caption>
-                    <description>Whether a group can be selected</description>
-                    <attributeTypes>
-                        <attributeType name="Boolean" />
-                    </attributeTypes>
-                </property>
-            </propertyGroup>
-        </propertyGroup>
-
-        <!-- TAB 4: Areas -->
-        <propertyGroup caption="Areas">
-            <propertyGroup caption="Data source">
-                <property key="areaData" type="datasource" isList="true" required="false">
-                    <caption>Area Data</caption>
-                    <description>List of area definitions</description>
-                </property>
-            </propertyGroup>
-            <propertyGroup caption="Area attributes">
-                <property key="areaId" type="attribute" dataSource="areaData" required="false">
-                    <caption>Area ID</caption>
-                    <description>Identifier for the area</description>
-                    <attributeTypes>
-                        <attributeType name="String"/>
-                    </attributeTypes>
-                </property>
-                <property key="areaPath" type="attribute" dataSource="areaData" required="false">
-                    <caption>Area Path</caption>
-                    <description>SVG path string for the area</description>
-                    <attributeTypes>
-                        <attributeType name="String"/>
-                    </attributeTypes>
-                </property>
-                <property key="areaProps" type="attribute" dataSource="areaData" required="false">
-                    <caption>Area Props</caption>
-                    <description>JSON props for the area (fill, stroke, etc.) - used as fallback if no status-based props</description>
-                    <attributeTypes>
-                        <attributeType name="String"/>
-                    </attributeTypes>
-                </property>
-                <property key="areaPropsName" type="attribute" dataSource="areaData" required="false">
-                    <caption>Area Props Name</caption>
-                    <description>Name of a JSON object in Element Props for status-based styling</description>
-                    <attributeTypes>
-                        <attributeType name="String"/>
-                    </attributeTypes>
-                </property>
-                <property key="areaStatus" type="attribute" dataSource="areaData" required="false">
-                    <caption>Area Status</caption>
-                    <description>Status value to select styling from the props collection (e.g. online, offline, warning)</description>
-                    <attributeTypes>
-                        <attributeType name="String"/>
-                        <attributeType name="Enum"/>
-                    </attributeTypes>
-                </property>
-                <property key="enableAreaTooltips" type="boolean" defaultValue="true">
-                    <caption>Enable area hover tooltips</caption>
-                    <description>Show a tooltip when hovering an area on the canvas.</description>
-                </property>
-                <property key="areaTooltipContent" type="widgets" required="false" dataSource="areaData">
-                    <caption>Area tooltip content</caption>
+                <property key="tooltipContent" type="widgets" required="false" dataSource="data">
+                    <caption>Group Tooltip Content</caption>
                     <description></description>
                 </property>
             </propertyGroup>
         </propertyGroup>
 
-        <!-- TAB 5: Events -->
+        <!-- TAB 3: Events -->
         <propertyGroup caption="Events">
            <propertyGroup caption="Selection">
                 <property key="onSelection" type="action" dataSource="data">
-                    <caption>On selection</caption>
+                    <caption>On Selection</caption>
                     <description>Action to be performed when a group is selected</description>
                 </property>
                 <property key="onDeselection" type="action" dataSource="data">
-                    <caption>On deselection</caption>
+                    <caption>On Deselection</caption>
                     <description>Action to be performed when a group is deselected</description>
-                </property>
-            </propertyGroup>
-            <propertyGroup caption="Area Selection">
-                <property key="onAreaSelection" type="action" dataSource="areaData">
-                    <caption>On area Selection</caption>
-                    <description>Action to be performed when an area is selected</description>
-                </property>
-                <property key="onAreaDeselection" type="action" dataSource="areaData">
-                    <caption>On area Deselection</caption>
-                    <description>Action to be performed when an area is deselected</description>
                 </property>
             </propertyGroup>
             <propertyGroup caption="Multi-selection">
@@ -266,19 +190,8 @@
                     </attributeTypes>
                 </property>
                 <property key="onMultiSelectionEnd" type="action">
-                    <caption>On multi selection end</caption>
+                    <caption>On Multi Selection End</caption>
                     <description>Action to be performed when multiple groups have been selected</description>
-                </property>
-            </propertyGroup>
-            <propertyGroup caption="Refresh control">
-                <property key="refreshCounter" type="attribute" required="false">
-                    <caption>Refresh Counter</caption>
-                    <description>Increment this value after saving to force the widget to rebuild the canvas</description>
-                    <attributeTypes>
-                        <attributeType name="Decimal"/>
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                    </attributeTypes>
                 </property>
             </propertyGroup>
             <propertyGroup caption="Item move">
@@ -297,7 +210,7 @@
                     </attributeTypes>
                 </property>
                 <property key="onItemMoved" type="action" dataSource="data">
-                    <caption>On item moved</caption>
+                    <caption>On Item Moved</caption>
                     <description>Called when an item is dragged to a new position</description>
                 </property>
             </propertyGroup>
@@ -310,7 +223,7 @@
                     </attributeTypes>
                 </property>
                 <property key="onPathCreated" type="action">
-                    <caption>On path created</caption>
+                    <caption>On Path Created</caption>
                     <description>Called when a path is completed</description>
                 </property>
             </propertyGroup>

@@ -32,6 +32,8 @@ export class Paper extends React.Component {
             pausePanning: false,
             zoomStartScale: null,
             eventsInitialised: false,
+            isDragging: false,
+            isDrawingPath: false,
             selectedItems: [],
             tooltip: {
                 visible: false,
@@ -284,14 +286,8 @@ export class Paper extends React.Component {
             }
 
             evt.selected.forEach(item => {
-                if (item.areaId) {
-                    if (this.props.onAreaSelection) {
-                        this.props.onAreaSelection(item.mxItem);
-                    }
-                } else {
-                    item.selected = true;
-                    this.selectItem(item, isMulti);
-                }
+                item.selected = true;
+                this.selectItem(item, isMulti);
             });
 
             if (this.props.onMultiSelectionEnd && isMulti) {
@@ -313,13 +309,7 @@ export class Paper extends React.Component {
         if (this.state.isDragging || this.state.isDrawingPath) return;
         if (evt.selected.length > 0) {
             evt.selected.forEach(item => {
-                if (item.areaId) {
-                    if (this.props.onAreaSelection) {
-                        this.props.onAreaSelection(item.mxItem);
-                    }
-                } else {
-                    this.selectItem(item);
-                }
+                this.selectItem(item);
             });
         }
     }
@@ -328,24 +318,12 @@ export class Paper extends React.Component {
         if (this.state.isDragging || this.state.isDrawingPath) return;
         if (evt.deselected.length > 0) {
             evt.deselected.forEach(item => {
-                if (item.areaId) {
-                    if (this.props.onAreaDeselection) {
-                        this.props.onAreaDeselection(item.mxItem);
-                    }
-                } else {
-                    this.deselectItem(item);
-                }
+                this.deselectItem(item);
             });
         }
         if (evt.selected.length > 0) {
             evt.selected.forEach(item => {
-                if (item.areaId) {
-                    if (this.props.onAreaSelection) {
-                        this.props.onAreaSelection(item.mxItem);
-                    }
-                } else {
-                    this.selectItem(item);
-                }
+                this.selectItem(item);
             });
         }
     }
@@ -354,13 +332,7 @@ export class Paper extends React.Component {
         if (this.state.isDragging || this.state.isDrawingPath) return;
         if (evt.deselected.length > 0) {
             evt.deselected.forEach(item => {
-                if (item.areaId) {
-                    if (this.props.onAreaDeselection) {
-                        this.props.onAreaDeselection(item.mxItem);
-                    }
-                } else {
-                    this.deselectItem(item);
-                }
+                this.deselectItem(item);
             });
         }
     }
@@ -453,7 +425,7 @@ export class Paper extends React.Component {
         }
     }
 
-    showTooltip(position, area) {
+    showTooltip(position, group) {
         if (!this.props.enableTooltips) return;
 
         this.setState({
@@ -462,10 +434,10 @@ export class Paper extends React.Component {
                 left: position.x + 10,
                 top: position.y + 10,
                 content:
-                    area.mxItem.id === this.state.tooltip.id
+                    group.mxItem.id === this.state.tooltip.id
                         ? this.state.tooltip.content
-                        : this.props.tooltipContent(area.mxItem),
-                id: area.mxItem.id
+                        : this.props.tooltipContent(group.mxItem),
+                id: group.mxItem.id
             }
         });
     }
@@ -510,10 +482,6 @@ export class Paper extends React.Component {
             const bgImage = await fabric.FabricImage.fromURL(this.props.backgroundImageUrl);
             bgImage.selectable = false;
             bgImage.evented = false;
-            // bgImage.left = 0;
-            // bgImage.top = 0;
-            // bgImage.originX = 'left',
-            // bgImage.originY = 'top',
             bgImage.setPositionByOrigin(new fabric.Point(0, 0), "left", "top");
             bgImage.scale(1);
             paper.add(bgImage);
@@ -536,60 +504,16 @@ export class Paper extends React.Component {
             fill: "none"
         };
 
-        // 2. Areas (behind devices)
-        if (this.props.areas) {
-            this.props.areas.forEach(area => {
-                // Look up props from elementProps based on status (same pattern as groups)
-                let statusProps = {};
-                if (area.propsName && this.props.elementProps[area.propsName]) {
-                    const propsCollection = this.props.elementProps[area.propsName];
-                    const statusPropsCollection = propsCollection[area.status] || propsCollection.__default || {};
-                    // Areas don't have selected/deselected states, so just use the status props directly
-                    // or look for a "default" key within the status
-                    statusProps = statusPropsCollection.deselected || statusPropsCollection;
-                }
-
-                const path = new fabric.Path(area.path, {
-                    fill: "transparent",
-                    stroke: "#0096ff",
-                    strokeWidth: 1,
-                    selectable: false,
-                    evented: true,
-                    hoverCursor: "pointer",
-                    perPixelTargetFind: true,
-                    ...area.props, // Inline props (fallback)
-                    ...statusProps // Status-based props (override)
-                });
-                path.areaId = area.id;
-                path.mxItem = area.mxItem;
-                path.on("mousedown", e => {
-                    if (!this.state.isDragging && !this.state.isDrawingPath) {
-                        if (this.props.onAreaSelection) {
-                            this.props.onAreaSelection(path.mxItem);
-                        }
-                    }
-                });
-                if (this.props.enableTooltips) {
-                    path.on("mouseover", e => {
-                        this.showTooltip({ x: e.e.offsetX, y: e.e.offsetY }, area);
-                    });
-                    path.on("mouseout", () => {
-                        this.hideTooltip();
-                    });
-                    path.on("mousemove", e => {
-                        this.showTooltip({ x: e.e.offsetX, y: e.e.offsetY }, area);
-                    });
-                }
-                paper.add(path);
-            });
-        }
-
         for (let i = 0; i < this.props.groups.length; i++) {
             const groupData = this.props.groups[i];
             const groupItems = [];
             const groupElementProps = {};
             for (let j = 0; j < groupData.elements.length; j++) {
                 const elementData = groupData.elements[j];
+                const elementProps = { ...elementData };
+                delete elementProps.type;
+                delete elementProps.href;
+                delete elementProps.path;
                 let element;
                 let selectedProps;
                 let deselectedProps;
@@ -610,33 +534,21 @@ export class Paper extends React.Component {
 
                 switch (elementData.type) {
                     case "path":
-                        element = new fabric.Path(elementData.path, { originX: "center", originY: "center" });
+                        element = new fabric.Path(elementData.path, elementProps);
                         break;
                     case "rect":
-                        element = new fabric.Rect({
-                            left: elementData.left,
-                            top: elementData.top,
-                            width: elementData.width,
-                            height: elementData.height
-                        });
+                        element = new fabric.Rect(elementProps);
                         break;
                     case "triangle":
-                        element = new fabric.Triangle({
-                            left: elementData.left,
-                            top: elementData.top,
-                            width: elementData.width,
-                            height: elementData.height
-                        });
+                        element = new fabric.Triangle(elementProps);
                         break;
                     case "line":
-                        element = new fabric.Line(elementData.coords);
+                        element = new fabric.Line(elementData.coords, elementProps);
                         break;
                     case "image":
-                        element = await this.imagefromUrlWrapper(elementData.href, {
-                            left: parseFloat(elementData.x) || 0,
-                            top: parseFloat(elementData.y) || 0
-                        });
-                        if (DEBUG_MODE) console.debug("Element after set:", element);
+                        element = await fabric.FabricImage.fromURL(elementData.href, undefined, elementProps);
+                        element.setPositionByOrigin(new fabric.Point(0, 0), "left", "top");
+                        element.scale(1);
                         break;
                     default:
                         break;
@@ -651,18 +563,31 @@ export class Paper extends React.Component {
                 groupItems.push(element);
             }
 
-            var group = new fabric.Group(groupItems, { originX: "left", originY: "top" });
+            const group = new fabric.Group(groupItems, { originX: "left", originY: "top" });
             if (DEBUG_MODE) console.log("Group bounds:", group.getBoundingRect());
             const cursor = groupData.isSelectable ? "pointer" : "default";
             group.setOptions({
                 ...baseGroupOptions,
                 ...groupData.props,
                 selectable: groupData.isSelectable,
+                perPixelTargetFind: true,
                 hoverCursor: cursor
             });
             group.mxId = groupData.id;
             group.mxItem = groupData.mxItem;
             group.elementProps = groupElementProps;
+
+            if (this.props.enableTooltips && groupData.tooltipOn) {
+                group.on("mouseover", e => {
+                    this.showTooltip({ x: e.e.offsetX, y: e.e.offsetY }, group);
+                });
+                group.on("mouseout", () => {
+                    this.hideTooltip();
+                });
+                group.on("mousemove", e => {
+                    this.showTooltip({ x: e.e.offsetX, y: e.e.offsetY }, group);
+                });
+            }
 
             paper.add(group);
         }
@@ -710,7 +635,7 @@ export class Paper extends React.Component {
         const paper = new fabric.Canvas(this.state.ids.canvasId, {
             height: el.offsetHeight,
             width: el.offsetWidth,
-            backgroundColor: this.props.backgroundColor
+            backgroundColor: this.props.backgroundColour
         });
         paper.absolutePan(new fabric.Point(this.props.initialLeft, this.props.initialTop));
 
@@ -730,11 +655,9 @@ export class Paper extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
         this.resizeCanvas(false);
         this.fullRender = !(
-            nextProps.groups === this.props.groups &&
-            nextProps.elementProps === this.props.elementProps &&
-            nextProps.areas === this.props.areas &&
-            nextProps.backgroundImageUrl === this.props.backgroundImageUrl &&
-            nextProps.refreshCounter === this.props.refreshCounter
+            JSON.stringify(nextProps.groups) === JSON.stringify(this.props.groups) &&
+            JSON.stringify(nextProps.elementProps) === JSON.stringify(this.props.elementProps) &&
+            nextProps.backgroundImageUrl === this.props.backgroundImageUrl
         );
 
         return this.fullRender || !(nextState.tooltip === this.state.tooltip);
@@ -750,14 +673,19 @@ export class Paper extends React.Component {
         if (this.fullRender) {
             if (DEBUG_MODE) console.log("Refresh triggered - clearing and reinitializing canvas (first pass)");
             canvas.clear();
-            canvas.set({ backgroundColor: this.props.backgroundColor });
+            canvas.set({ backgroundColor: this.props.backgroundColour });
             await this.initCanvas(canvas);
         }
     }
 
     render() {
         return (
-            <div ref={this.paperRef} id={this.state.ids.canvasWrapperId} className="canvasWrapper">
+            <div
+                ref={this.paperRef}
+                id={this.state.ids.canvasWrapperId}
+                className={`canvasWrapper ${this.props.className || ""}`.trim()}
+                style={this.props.style}
+            >
                 <canvas id={this.state.ids.canvasId} className="canvasPaper"></canvas>
                 {this.state.tooltip.visible && (
                     <Tooltip top={this.state.tooltip.top} left={this.state.tooltip.left}>

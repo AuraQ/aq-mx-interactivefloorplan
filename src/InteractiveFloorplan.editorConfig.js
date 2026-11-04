@@ -8,8 +8,8 @@ export function getProperties(values, defaultProperties) {
     }
     */
 
-    if (!values.enableAreaTooltips) {
-        hidePropertiesIn(defaultProperties, values, ["areaTooltipContent"]);
+    if (!values.enableTooltips) {
+        hidePropertiesIn(defaultProperties, values, ["tooltipContent", "groupTooltipOn"]);
     }
 
     return defaultProperties;
