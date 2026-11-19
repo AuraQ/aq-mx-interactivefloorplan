@@ -466,12 +466,12 @@ export class Paper extends React.Component {
     }
 
     calculateAutoZoom(containerWidth, containerHeight) {
-        const floorplanWidth = parseFloat(this.props.floorplanWidth);
-        const floorplanHeight = parseFloat(this.props.floorplanHeight);
-        if (!floorplanWidth || !floorplanHeight || !containerWidth || !containerHeight) {
+        const backgroundImageWidth = parseFloat(this.props.backgroundImageWidth);
+        const backgroundImageHeight = parseFloat(this.props.backgroundImageHeight);
+        if (!backgroundImageWidth || !backgroundImageHeight || !containerWidth || !containerHeight) {
             return this.props.initialZoom || 1.0;
         }
-        return Math.min(containerWidth / floorplanWidth, containerHeight / floorplanHeight);
+        return Math.min(containerWidth / backgroundImageWidth, containerHeight / backgroundImageHeight);
     }
 
     async initCanvas(paper) {
@@ -547,7 +547,7 @@ export class Paper extends React.Component {
                         break;
                     case "image":
                         element = await fabric.FabricImage.fromURL(elementData.href, undefined, elementProps);
-                        element.setPositionByOrigin(new fabric.Point(0, 0), "left", "top");
+                        // element.setPositionByOrigin(new fabric.Point(0, 0), "left", "top");
                         element.scale(1);
                         break;
                     default:

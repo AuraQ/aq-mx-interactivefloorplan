@@ -4,8 +4,12 @@
 
 package aqinteractivesvg.proxies;
 
-public class SvgConverter extends system.proxies.FileDocument
+public class SvgConverter implements com.mendix.systemwideinterfaces.core.IEntityProxy
 {
+	private final com.mendix.systemwideinterfaces.core.IMendixObject svgConverterMendixObject;
+
+	private final com.mendix.systemwideinterfaces.core.IContext context;
+
 	/**
 	 * Internal name of this entity
 	 */
@@ -16,14 +20,8 @@ public class SvgConverter extends system.proxies.FileDocument
 	 */
 	public enum MemberNames
 	{
-		ImageName("ImageName"),
-		ElementPropsJson("ElementPropsJson"),
-		FileID("FileID"),
 		Name("Name"),
-		DeleteAfterDownload("DeleteAfterDownload"),
-		Contents("Contents"),
-		HasContents("HasContents"),
-		Size("Size");
+		ElementPropsJson("ElementPropsJson");
 
 		private final java.lang.String metaName;
 
@@ -46,10 +44,15 @@ public class SvgConverter extends system.proxies.FileDocument
 
 	protected SvgConverter(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject svgConverterMendixObject)
 	{
-		super(context, svgConverterMendixObject);
+		if (svgConverterMendixObject == null) {
+			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
+		}
 		if (!svgConverterMendixObject.isInstanceOf(entityName)) {
 			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
 		}	
+
+		this.svgConverterMendixObject = svgConverterMendixObject;
+		this.context = context;
 	}
 
 	/**
@@ -80,39 +83,39 @@ public class SvgConverter extends system.proxies.FileDocument
 	}
 
 	/**
-	 * @return value of ImageName
+	 * @return value of Name
 	 */
-	public final java.lang.String getImageName()
+	public final java.lang.String getName()
 	{
-		return getImageName(getContext());
+		return getName(getContext());
 	}
 
 	/**
 	 * @param context
-	 * @return value of ImageName
+	 * @return value of Name
 	 */
-	public final java.lang.String getImageName(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.lang.String getName(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.String) getMendixObject().getValue(context, MemberNames.ImageName.toString());
+		return (java.lang.String) getMendixObject().getValue(context, MemberNames.Name.toString());
 	}
 
 	/**
-	 * Set value of ImageName
-	 * @param imagename
+	 * Set value of Name
+	 * @param name
 	 */
-	public final void setImageName(java.lang.String imagename)
+	public final void setName(java.lang.String name)
 	{
-		setImageName(getContext(), imagename);
+		setName(getContext(), name);
 	}
 
 	/**
-	 * Set value of ImageName
+	 * Set value of Name
 	 * @param context
-	 * @param imagename
+	 * @param name
 	 */
-	public final void setImageName(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String imagename)
+	public final void setName(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String name)
 	{
-		getMendixObject().setValue(context, MemberNames.ImageName.toString(), imagename);
+		getMendixObject().setValue(context, MemberNames.Name.toString(), name);
 	}
 
 	/**
@@ -149,6 +152,18 @@ public class SvgConverter extends system.proxies.FileDocument
 	public final void setElementPropsJson(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String elementpropsjson)
 	{
 		getMendixObject().setValue(context, MemberNames.ElementPropsJson.toString(), elementpropsjson);
+	}
+
+	@java.lang.Override
+	public final com.mendix.systemwideinterfaces.core.IMendixObject getMendixObject()
+	{
+		return svgConverterMendixObject;
+	}
+
+	@java.lang.Override
+	public final com.mendix.systemwideinterfaces.core.IContext getContext()
+	{
+		return context;
 	}
 
 	@java.lang.Override

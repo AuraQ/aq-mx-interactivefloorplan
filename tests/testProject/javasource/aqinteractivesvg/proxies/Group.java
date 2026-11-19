@@ -69,14 +69,8 @@ public class Group implements com.mendix.systemwideinterfaces.core.IEntityProxy
 	 */
 	public static aqinteractivesvg.proxies.Group initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
-		if (mendixObject.isInstanceOf("DyanmicSVG.Area")) {
-			return dyanmicsvg.proxies.Area.initialize(context, mendixObject);
-		}
-		if (mendixObject.isInstanceOf("DeskBookingLocations.BookableAsset")) {
-			return deskbookinglocations.proxies.BookableAsset.initialize(context, mendixObject);
-		}
-		if (mendixObject.isInstanceOf("DyanmicSVG.Device")) {
-			return dyanmicsvg.proxies.Device.initialize(context, mendixObject);
+		if (mendixObject.isInstanceOf("AqInteractiveSvgCustom.AssetGroup")) {
+			return aqinteractivesvgcustom.proxies.AssetGroup.initialize(context, mendixObject);
 		}
 		return new aqinteractivesvg.proxies.Group(context, mendixObject);
 	}
@@ -85,15 +79,6 @@ public class Group implements com.mendix.systemwideinterfaces.core.IEntityProxy
 	{
 		com.mendix.systemwideinterfaces.core.IMendixObject mendixObject = com.mendix.core.Core.retrieveId(context, mendixIdentifier);
 		return aqinteractivesvg.proxies.Group.initialize(context, mendixObject);
-	}
-
-	public static java.util.List<? extends aqinteractivesvg.proxies.Group> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
-	{
-		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
-			.execute(context)
-			.stream()
-			.map(obj -> aqinteractivesvg.proxies.Group.initialize(context, obj))
-			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**

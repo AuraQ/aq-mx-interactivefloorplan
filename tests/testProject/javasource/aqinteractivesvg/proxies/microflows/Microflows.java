@@ -6,6 +6,7 @@ package aqinteractivesvg.proxies.microflows;
 
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 public final class Microflows
 {
@@ -34,25 +35,6 @@ public final class Microflows
 	{
 		aCT_CopySvgConverterActionToNewBuilder(
 				_sourceSvgConverterAction,
-				_svgConverter
-			)
-			.execute(context);
-	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder aCT_DownloadSVGBuilder(
-		aqinteractivesvg.proxies.SvgConverter _svgConverter
-	)
-	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.ACT_DownloadSVG");
-		builder = builder.withParam("SvgConverter", _svgConverter);
-		return builder;
-	}
-
-	public static void aCT_DownloadSVG(
-		IContext context,
-		aqinteractivesvg.proxies.SvgConverter _svgConverter
-	)
-	{
-		aCT_DownloadSVGBuilder(
 				_svgConverter
 			)
 			.execute(context);
@@ -96,5 +78,611 @@ public final class Microflows
 			)
 			.execute(context);
 		return (boolean) result;
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_ElementProperties_ToJSONBuilder(
+		java.util.List<aqinteractivesvg.proxies.ElementProperty> _elementPropertyList
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_ElementProperties_ToJSON");
+		builder = builder.withParam("ElementPropertyList", _elementPropertyList);
+		return builder;
+	}
+
+	public static java.lang.String sUB_ElementProperties_ToJSON(
+		IContext context,
+		java.util.List<aqinteractivesvg.proxies.ElementProperty> _elementPropertyList
+	)
+	{
+		Object result = sUB_ElementProperties_ToJSONBuilder(
+				_elementPropertyList
+			)
+			.execute(context);
+		return (java.lang.String) result;
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_ElementProperty_CreateBooleanBuilder(
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		boolean _value
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_ElementProperty_CreateBoolean");
+		builder = builder.withParam("GroupElement", _groupElement);
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.ElementProperty sUB_ElementProperty_CreateBoolean(
+		IContext context,
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		boolean _value
+	)
+	{
+		Object result = sUB_ElementProperty_CreateBooleanBuilder(
+				_groupElement,
+				_key,
+				_value
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.ElementProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_ElementProperty_CreateDateBuilder(
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.util.Date _value
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_ElementProperty_CreateDate");
+		builder = builder.withParam("GroupElement", _groupElement);
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.ElementProperty sUB_ElementProperty_CreateDate(
+		IContext context,
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.util.Date _value
+	)
+	{
+		Object result = sUB_ElementProperty_CreateDateBuilder(
+				_groupElement,
+				_key,
+				_value
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.ElementProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_ElementProperty_CreateDecimalBuilder(
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.math.BigDecimal _value
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_ElementProperty_CreateDecimal");
+		builder = builder.withParam("GroupElement", _groupElement);
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.ElementProperty sUB_ElementProperty_CreateDecimal(
+		IContext context,
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.math.BigDecimal _value
+	)
+	{
+		Object result = sUB_ElementProperty_CreateDecimalBuilder(
+				_groupElement,
+				_key,
+				_value
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.ElementProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_ElementProperty_CreateIntegerBuilder(
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.lang.Long _value
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_ElementProperty_CreateInteger");
+		builder = builder.withParam("GroupElement", _groupElement);
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.ElementProperty sUB_ElementProperty_CreateInteger(
+		IContext context,
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.lang.Long _value
+	)
+	{
+		Object result = sUB_ElementProperty_CreateIntegerBuilder(
+				_groupElement,
+				_key,
+				_value
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.ElementProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_ElementProperty_CreateLongBuilder(
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.lang.Long _value
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_ElementProperty_CreateLong");
+		builder = builder.withParam("GroupElement", _groupElement);
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.ElementProperty sUB_ElementProperty_CreateLong(
+		IContext context,
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.lang.Long _value
+	)
+	{
+		Object result = sUB_ElementProperty_CreateLongBuilder(
+				_groupElement,
+				_key,
+				_value
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.ElementProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_ElementProperty_CreateStringBuilder(
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.lang.String _value
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_ElementProperty_CreateString");
+		builder = builder.withParam("GroupElement", _groupElement);
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.ElementProperty sUB_ElementProperty_CreateString(
+		IContext context,
+		aqinteractivesvg.proxies.GroupElement _groupElement,
+		java.lang.String _key,
+		java.lang.String _value
+	)
+	{
+		Object result = sUB_ElementProperty_CreateStringBuilder(
+				_groupElement,
+				_key,
+				_value
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.ElementProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_Group_CalculateJSONBuilder(
+		aqinteractivesvg.proxies.Group _group
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_Group_CalculateJSON");
+		builder = builder.withParam("Group", _group);
+		return builder;
+	}
+
+	public static void sUB_Group_CalculateJSON(
+		IContext context,
+		aqinteractivesvg.proxies.Group _group
+	)
+	{
+		sUB_Group_CalculateJSONBuilder(
+				_group
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_CalculateJSONBuilder(
+		aqinteractivesvg.proxies.GroupElement _groupElement
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_CalculateJSON");
+		builder = builder.withParam("GroupElement", _groupElement);
+		return builder;
+	}
+
+	public static void sUB_GroupElement_CalculateJSON(
+		IContext context,
+		aqinteractivesvg.proxies.GroupElement _groupElement
+	)
+	{
+		sUB_GroupElement_CalculateJSONBuilder(
+				_groupElement
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_CreateImageBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		java.lang.String _href
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_CreateImage");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Top", _top);
+		builder = builder.withParam("Left", _left);
+		builder = builder.withParam("Width", _width);
+		builder = builder.withParam("Height", _height);
+		builder = builder.withParam("Href", _href);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.GroupElement sUB_GroupElement_CreateImage(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		java.lang.String _href
+	)
+	{
+		Object result = sUB_GroupElement_CreateImageBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_top,
+				_left,
+				_width,
+				_height,
+				_href
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.GroupElement.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_CreateLineBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.lang.String _coords
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_CreateLine");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Coords", _coords);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.GroupElement sUB_GroupElement_CreateLine(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.lang.String _coords
+	)
+	{
+		Object result = sUB_GroupElement_CreateLineBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_coords
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.GroupElement.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_CreatePathBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.lang.String _path
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_CreatePath");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Path", _path);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.GroupElement sUB_GroupElement_CreatePath(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.lang.String _path
+	)
+	{
+		Object result = sUB_GroupElement_CreatePathBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_path
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.GroupElement.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_CreateRectBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_CreateRect");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Left", _left);
+		builder = builder.withParam("Top", _top);
+		builder = builder.withParam("Width", _width);
+		builder = builder.withParam("Height", _height);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.GroupElement sUB_GroupElement_CreateRect(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		Object result = sUB_GroupElement_CreateRectBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_left,
+				_top,
+				_width,
+				_height,
+				_groupElement_ToMap
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.GroupElement.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_UpdateImageBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		java.lang.String _href,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_UpdateImage");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Top", _top);
+		builder = builder.withParam("Left", _left);
+		builder = builder.withParam("Width", _width);
+		builder = builder.withParam("Height", _height);
+		builder = builder.withParam("Href", _href);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static void sUB_GroupElement_UpdateImage(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		java.lang.String _href,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		sUB_GroupElement_UpdateImageBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_top,
+				_left,
+				_width,
+				_height,
+				_href,
+				_groupElement_ToMap
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_UpdateLineBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.lang.String _coords,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_UpdateLine");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Coords", _coords);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static void sUB_GroupElement_UpdateLine(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.lang.String _coords,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		sUB_GroupElement_UpdateLineBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_coords,
+				_groupElement_ToMap
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_UpdatePathBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.lang.String _path,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_UpdatePath");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Path", _path);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static void sUB_GroupElement_UpdatePath(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.lang.String _path,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		sUB_GroupElement_UpdatePathBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_path,
+				_groupElement_ToMap
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GroupElement_UpdateRectBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_GroupElement_UpdateRect");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Left", _left);
+		builder = builder.withParam("Top", _top);
+		builder = builder.withParam("Width", _width);
+		builder = builder.withParam("Height", _height);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static void sUB_GroupElement_UpdateRect(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.Group _group,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		aqinteractivesvg.proxies.GroupElement _groupElement_ToMap
+	)
+	{
+		sUB_GroupElement_UpdateRectBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_left,
+				_top,
+				_width,
+				_height,
+				_groupElement_ToMap
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_Image_GetRelativeURIBuilder(
+		system.proxies.Image _image
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_Image_GetRelativeURI");
+		builder = builder.withParam("Image", _image);
+		return builder;
+	}
+
+	public static java.lang.String sUB_Image_GetRelativeURI(
+		IContext context,
+		system.proxies.Image _image
+	)
+	{
+		Object result = sUB_Image_GetRelativeURIBuilder(
+				_image
+			)
+			.execute(context);
+		return (java.lang.String) result;
 	}
 }

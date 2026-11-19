@@ -9,7 +9,6 @@
 
 package aqinteractivesvg.actions;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +27,12 @@ import org.w3c.dom.svg.SVGDocument;
 import com.mendix.core.Core;
 import com.mendix.logging.ILogNode;
 import com.mendix.systemwideinterfaces.core.IContext;
+import aqinteractivesvg.proxies.ENUM_ValueType;
+import aqinteractivesvg.proxies.ElementProperty;
 import aqinteractivesvg.proxies.Group;
+import aqinteractivesvg.proxies.GroupElement;
 import aqinteractivesvg.proxies.GroupElementPropsType;
 import aqinteractivesvg.proxies.GroupPropertyMapping;
-import aqinteractivesvg.proxies.LineElement;
-import aqinteractivesvg.proxies.PathElement;
-import aqinteractivesvg.proxies.RectElement;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.meta.IMetaObject;
 import com.mendix.systemwideinterfaces.core.UserAction;
@@ -197,46 +196,35 @@ public class ConvertSvgGroup extends UserAction<java.util.List<IMendixObject>>
 	            	}
 	            }
 	            	            
+				IMendixObject mxGroupElement = Core.instantiate(getContext(), GroupElement.entityName);
+				mxGroupElement.setValue(getContext(), GroupElement.MemberNames.ElementId.toString(), id);
+				mxGroupElement.setValue(getContext(), GroupElement.MemberNames.GroupElement_Group.toString(), mxGroup.getId());
+				mxGroupElement.setValue(getContext(), GroupElement.MemberNames.Order.toString(), i + 1);
+				mxGroupElement.setValue(getContext(), GroupElement.MemberNames.Props.toString(), props);
+				groupElementList.add(mxGroupElement);
+
 	            switch(childElement.getNodeName()) {
 	            	case "path":
 	            		String d = childElement.getAttribute("d");
-	            		IMendixObject mxPathElement = Core.instantiate(getContext(), PathElement.entityName);
-	            		mxPathElement.setValue(getContext(), PathElement.MemberNames.ElementId.toString(), id);
-	            		mxPathElement.setValue(getContext(), PathElement.MemberNames.Path.toString(), d);
-	            		mxPathElement.setValue(getContext(), PathElement.MemberNames.Props.toString(), props);
-	            		mxPathElement.setValue(getContext(), PathElement.MemberNames.Order.toString(), i + 1);
-	            		mxPathElement.setValue(getContext(), PathElement.MemberNames.GroupElement_Group.toString(), mxGroup.getId());
-	            		groupElementList.add(mxPathElement);
+						addElementProperty(ENUM_ValueType.Decimal, "path", d, mxGroupElement);
 	            		break;
 	            	case "rect":
 	            		String x = childElement.getAttribute("x");
 	            		String y = childElement.getAttribute("y");	
 	            		String width = childElement.getAttribute("width");
 	            		String height = childElement.getAttribute("height");
-	            		IMendixObject mxRectElement = Core.instantiate(getContext(), RectElement.entityName);
-	            		mxRectElement.setValue(getContext(), RectElement.MemberNames.ElementId.toString(), id);
-	            		mxRectElement.setValue(getContext(), RectElement.MemberNames.Left.toString(), x);
-	            		mxRectElement.setValue(getContext(), RectElement.MemberNames.Top.toString(), y);
-	            		mxRectElement.setValue(getContext(), RectElement.MemberNames.Width.toString(), width);
-	            		mxRectElement.setValue(getContext(), RectElement.MemberNames.Height.toString(), height);
-	            		mxRectElement.setValue(getContext(), RectElement.MemberNames.Props.toString(), props);       		
-	            		mxRectElement.setValue(getContext(), RectElement.MemberNames.Order.toString(), i + 1);
-	            		mxRectElement.setValue(getContext(), RectElement.MemberNames.GroupElement_Group.toString(), mxGroup.getId()); 
-	            		groupElementList.add(mxRectElement);
+	            		addElementProperty(ENUM_ValueType.Decimal, "x", x, mxGroupElement);
+	            		addElementProperty(ENUM_ValueType.Decimal, "y", y, mxGroupElement);
+	            		addElementProperty(ENUM_ValueType.Decimal, "width", width, mxGroupElement);
+	            		addElementProperty(ENUM_ValueType.Decimal, "height", height, mxGroupElement);
 	            		break;
 	            	case "line":
 	            		String x1 = childElement.getAttribute("x1");
 	            		String y1 = childElement.getAttribute("y1"); 
 	            		String x2 = childElement.getAttribute("x2");
 	            		String y2 = childElement.getAttribute("y2");
-	            		IMendixObject mxLineElement = Core.instantiate(getContext(), LineElement.entityName);
-	            		mxLineElement.setValue(getContext(), LineElement.MemberNames.ElementId.toString(), id);
 	            		String coordinates = String.format("[%s,%s,%s,%s]", x1, y1, x2, y2);
-	            		mxLineElement.setValue(getContext(), LineElement.MemberNames.Coordinates.toString(), coordinates);
-	            		mxLineElement.setValue(getContext(), LineElement.MemberNames.Props.toString(), props);		
-	            		mxLineElement.setValue(getContext(), LineElement.MemberNames.Order.toString(), i + 1);
-	            		mxLineElement.setValue(getContext(), LineElement.MemberNames.GroupElement_Group.toString(), mxGroup.getId()); 
-	            		groupElementList.add(mxLineElement);
+						addElementProperty(ENUM_ValueType.String, "coords", coordinates, mxGroupElement);
 	            		break;
 	            	case "g":
 	            		_log.debug("Nested group with ID: " + id);
@@ -266,6 +254,36 @@ public class ConvertSvgGroup extends UserAction<java.util.List<IMendixObject>>
 		}
 		
 		return matchFound;
+	}
+
+	private IMendixObject addElementProperty(ENUM_ValueType valueType, String key, Object value, IMendixObject group) {
+		IMendixObject mxProperty = Core.instantiate(getContext(), ElementProperty.entityName);
+		mxProperty.setValue(getContext(), ElementProperty.MemberNames.Key.toString(), key);
+	    mxProperty.setValue(getContext(), ElementProperty.MemberNames.ValueType.toString(), valueType);
+	    mxProperty.setValue(getContext(), ElementProperty.MemberNames.ElementProperty_GroupElement.toString(), group);
+
+		switch (valueType) {
+			case Date:
+				mxProperty.setValue(getContext(), ElementProperty.MemberNames.DateValue.toString(), value);
+				break;
+			case Decimal:
+				mxProperty.setValue(getContext(), ElementProperty.MemberNames.DecimalValue.toString(), value);
+				break;
+			case Integer:
+				mxProperty.setValue(getContext(), ElementProperty.MemberNames.IntegerValue.toString(), value);
+				break;
+			case String:
+				mxProperty.setValue(getContext(), ElementProperty.MemberNames.StringValue.toString(), value);
+				break;
+			case _Boolean:
+				mxProperty.setValue(getContext(), ElementProperty.MemberNames.BooleanValue.toString(), value);
+				break;
+			case _Long:
+				mxProperty.setValue(getContext(), ElementProperty.MemberNames.LongValue.toString(), value);
+				break;
+		}
+
+		return mxProperty;
 	}
 	
 	private ILogNode _log = Core.getLogger("SVG Parser");	

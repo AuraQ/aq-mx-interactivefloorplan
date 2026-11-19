@@ -216,7 +216,7 @@ public class BookedAsset implements com.mendix.systemwideinterfaces.core.IEntity
 	 * @throws com.mendix.core.CoreException
 	 * @return value of BookedAsset_BookableAsset
 	 */
-	public final deskbookinglocations.proxies.BookableAsset getBookedAsset_BookableAsset() throws com.mendix.core.CoreException
+	public final deskbooking.proxies.BookableAsset getBookedAsset_BookableAsset() throws com.mendix.core.CoreException
 	{
 		return getBookedAsset_BookableAsset(getContext());
 	}
@@ -226,12 +226,12 @@ public class BookedAsset implements com.mendix.systemwideinterfaces.core.IEntity
 	 * @return value of BookedAsset_BookableAsset
 	 * @throws com.mendix.core.CoreException
 	 */
-	public final deskbookinglocations.proxies.BookableAsset getBookedAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	public final deskbooking.proxies.BookableAsset getBookedAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
-		deskbookinglocations.proxies.BookableAsset result = null;
+		deskbooking.proxies.BookableAsset result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.BookedAsset_BookableAsset.toString());
 		if (identifier != null) {
-			result = deskbookinglocations.proxies.BookableAsset.load(context, identifier);
+			result = deskbooking.proxies.BookableAsset.load(context, identifier);
 		}
 		return result;
 	}
@@ -240,7 +240,7 @@ public class BookedAsset implements com.mendix.systemwideinterfaces.core.IEntity
 	 * Set value of BookedAsset_BookableAsset
 	 * @param bookedasset_bookableasset
 	 */
-	public final void setBookedAsset_BookableAsset(deskbookinglocations.proxies.BookableAsset bookedasset_bookableasset)
+	public final void setBookedAsset_BookableAsset(deskbooking.proxies.BookableAsset bookedasset_bookableasset)
 	{
 		setBookedAsset_BookableAsset(getContext(), bookedasset_bookableasset);
 	}
@@ -250,7 +250,7 @@ public class BookedAsset implements com.mendix.systemwideinterfaces.core.IEntity
 	 * @param context
 	 * @param bookedasset_bookableasset
 	 */
-	public final void setBookedAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context, deskbookinglocations.proxies.BookableAsset bookedasset_bookableasset)
+	public final void setBookedAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context, deskbooking.proxies.BookableAsset bookedasset_bookableasset)
 	{
 		if (bookedasset_bookableasset == null) {
 			getMendixObject().setValue(context, MemberNames.BookedAsset_BookableAsset.toString(), null);

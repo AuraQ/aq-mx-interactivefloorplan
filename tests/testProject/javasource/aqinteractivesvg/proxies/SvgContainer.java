@@ -20,12 +20,14 @@ public class SvgContainer implements com.mendix.systemwideinterfaces.core.IEntit
 	 */
 	public enum MemberNames
 	{
-		ImageName("ImageName"),
 		ElementPropsJson("ElementPropsJson"),
 		InitialZoom("InitialZoom"),
 		InitialLeft("InitialLeft"),
 		InitialTop("InitialTop"),
-		GuidList("GuidList");
+		NewX("NewX"),
+		NewY("NewY"),
+		NewPath("NewPath"),
+		SvgContainer_SvgConverter("AqInteractiveSvg.SvgContainer_SvgConverter");
 
 		private final java.lang.String metaName;
 
@@ -68,12 +70,6 @@ public class SvgContainer implements com.mendix.systemwideinterfaces.core.IEntit
 	 */
 	public static aqinteractivesvg.proxies.SvgContainer initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
-		if (mendixObject.isInstanceOf("DeskBookingLocations.BookingLocation")) {
-			return deskbookinglocations.proxies.BookingLocation.initialize(context, mendixObject);
-		}
-		if (mendixObject.isInstanceOf("DyanmicSVG.Floor")) {
-			return dyanmicsvg.proxies.Floor.initialize(context, mendixObject);
-		}
 		if (mendixObject.isInstanceOf("SvgConverterDemo.SvgConverterDemo")) {
 			return svgconverterdemo.proxies.SvgConverterDemo.initialize(context, mendixObject);
 		}
@@ -84,51 +80,6 @@ public class SvgContainer implements com.mendix.systemwideinterfaces.core.IEntit
 	{
 		com.mendix.systemwideinterfaces.core.IMendixObject mendixObject = com.mendix.core.Core.retrieveId(context, mendixIdentifier);
 		return aqinteractivesvg.proxies.SvgContainer.initialize(context, mendixObject);
-	}
-
-	public static java.util.List<? extends aqinteractivesvg.proxies.SvgContainer> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
-	{
-		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
-			.execute(context)
-			.stream()
-			.map(obj -> aqinteractivesvg.proxies.SvgContainer.initialize(context, obj))
-			.collect(java.util.stream.Collectors.toList());
-	}
-
-	/**
-	 * @return value of ImageName
-	 */
-	public final java.lang.String getImageName()
-	{
-		return getImageName(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of ImageName
-	 */
-	public final java.lang.String getImageName(com.mendix.systemwideinterfaces.core.IContext context)
-	{
-		return (java.lang.String) getMendixObject().getValue(context, MemberNames.ImageName.toString());
-	}
-
-	/**
-	 * Set value of ImageName
-	 * @param imagename
-	 */
-	public final void setImageName(java.lang.String imagename)
-	{
-		setImageName(getContext(), imagename);
-	}
-
-	/**
-	 * Set value of ImageName
-	 * @param context
-	 * @param imagename
-	 */
-	public final void setImageName(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String imagename)
-	{
-		getMendixObject().setValue(context, MemberNames.ImageName.toString(), imagename);
 	}
 
 	/**
@@ -276,39 +227,158 @@ public class SvgContainer implements com.mendix.systemwideinterfaces.core.IEntit
 	}
 
 	/**
-	 * @return value of GuidList
+	 * @return value of NewX
 	 */
-	public final java.lang.String getGuidList()
+	public final java.math.BigDecimal getNewX()
 	{
-		return getGuidList(getContext());
+		return getNewX(getContext());
 	}
 
 	/**
 	 * @param context
-	 * @return value of GuidList
+	 * @return value of NewX
 	 */
-	public final java.lang.String getGuidList(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.math.BigDecimal getNewX(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.String) getMendixObject().getValue(context, MemberNames.GuidList.toString());
+		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.NewX.toString());
 	}
 
 	/**
-	 * Set value of GuidList
-	 * @param guidlist
+	 * Set value of NewX
+	 * @param newx
 	 */
-	public final void setGuidList(java.lang.String guidlist)
+	public final void setNewX(java.math.BigDecimal newx)
 	{
-		setGuidList(getContext(), guidlist);
+		setNewX(getContext(), newx);
 	}
 
 	/**
-	 * Set value of GuidList
+	 * Set value of NewX
 	 * @param context
-	 * @param guidlist
+	 * @param newx
 	 */
-	public final void setGuidList(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String guidlist)
+	public final void setNewX(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal newx)
 	{
-		getMendixObject().setValue(context, MemberNames.GuidList.toString(), guidlist);
+		getMendixObject().setValue(context, MemberNames.NewX.toString(), newx);
+	}
+
+	/**
+	 * @return value of NewY
+	 */
+	public final java.math.BigDecimal getNewY()
+	{
+		return getNewY(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of NewY
+	 */
+	public final java.math.BigDecimal getNewY(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.NewY.toString());
+	}
+
+	/**
+	 * Set value of NewY
+	 * @param newy
+	 */
+	public final void setNewY(java.math.BigDecimal newy)
+	{
+		setNewY(getContext(), newy);
+	}
+
+	/**
+	 * Set value of NewY
+	 * @param context
+	 * @param newy
+	 */
+	public final void setNewY(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal newy)
+	{
+		getMendixObject().setValue(context, MemberNames.NewY.toString(), newy);
+	}
+
+	/**
+	 * @return value of NewPath
+	 */
+	public final java.lang.String getNewPath()
+	{
+		return getNewPath(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of NewPath
+	 */
+	public final java.lang.String getNewPath(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.String) getMendixObject().getValue(context, MemberNames.NewPath.toString());
+	}
+
+	/**
+	 * Set value of NewPath
+	 * @param newpath
+	 */
+	public final void setNewPath(java.lang.String newpath)
+	{
+		setNewPath(getContext(), newpath);
+	}
+
+	/**
+	 * Set value of NewPath
+	 * @param context
+	 * @param newpath
+	 */
+	public final void setNewPath(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String newpath)
+	{
+		getMendixObject().setValue(context, MemberNames.NewPath.toString(), newpath);
+	}
+
+	/**
+	 * @throws com.mendix.core.CoreException
+	 * @return value of SvgContainer_SvgConverter
+	 */
+	public final aqinteractivesvg.proxies.SvgConverter getSvgContainer_SvgConverter() throws com.mendix.core.CoreException
+	{
+		return getSvgContainer_SvgConverter(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of SvgContainer_SvgConverter
+	 * @throws com.mendix.core.CoreException
+	 */
+	public final aqinteractivesvg.proxies.SvgConverter getSvgContainer_SvgConverter(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	{
+		aqinteractivesvg.proxies.SvgConverter result = null;
+		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.SvgContainer_SvgConverter.toString());
+		if (identifier != null) {
+			result = aqinteractivesvg.proxies.SvgConverter.load(context, identifier);
+		}
+		return result;
+	}
+
+	/**
+	 * Set value of SvgContainer_SvgConverter
+	 * @param svgcontainer_svgconverter
+	 */
+	public final void setSvgContainer_SvgConverter(aqinteractivesvg.proxies.SvgConverter svgcontainer_svgconverter)
+	{
+		setSvgContainer_SvgConverter(getContext(), svgcontainer_svgconverter);
+	}
+
+	/**
+	 * Set value of SvgContainer_SvgConverter
+	 * @param context
+	 * @param svgcontainer_svgconverter
+	 */
+	public final void setSvgContainer_SvgConverter(com.mendix.systemwideinterfaces.core.IContext context, aqinteractivesvg.proxies.SvgConverter svgcontainer_svgconverter)
+	{
+		if (svgcontainer_svgconverter == null) {
+			getMendixObject().setValue(context, MemberNames.SvgContainer_SvgConverter.toString(), null);
+		} else {
+			getMendixObject().setValue(context, MemberNames.SvgContainer_SvgConverter.toString(), svgcontainer_svgconverter.getMendixObject().getId());
+		}
 	}
 
 	@java.lang.Override

@@ -72,17 +72,8 @@ public class FileDocument implements com.mendix.systemwideinterfaces.core.IEntit
 	 */
 	public static system.proxies.FileDocument initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
-		if (mendixObject.isInstanceOf("DyanmicSVG.DeviceImage")) {
-			return dyanmicsvg.proxies.DeviceImage.initialize(context, mendixObject);
-		}
-		if (mendixObject.isInstanceOf("DyanmicSVG.FloorPlan")) {
-			return dyanmicsvg.proxies.FloorPlan.initialize(context, mendixObject);
-		}
 		if (mendixObject.isInstanceOf("System.Image")) {
 			return system.proxies.Image.initialize(context, mendixObject);
-		}
-		if (mendixObject.isInstanceOf("AqInteractiveSvg.SvgConverter")) {
-			return aqinteractivesvg.proxies.SvgConverter.initialize(context, mendixObject);
 		}
 		if (mendixObject.isInstanceOf("AqInteractiveSvgCustom.SvgProcessor")) {
 			return aqinteractivesvgcustom.proxies.SvgProcessor.initialize(context, mendixObject);

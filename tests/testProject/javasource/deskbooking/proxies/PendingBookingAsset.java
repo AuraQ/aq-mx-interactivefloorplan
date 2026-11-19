@@ -125,7 +125,7 @@ public class PendingBookingAsset implements com.mendix.systemwideinterfaces.core
 	 * @throws com.mendix.core.CoreException
 	 * @return value of PendingBookingAsset_BookableAsset
 	 */
-	public final deskbookinglocations.proxies.BookableAsset getPendingBookingAsset_BookableAsset() throws com.mendix.core.CoreException
+	public final deskbooking.proxies.BookableAsset getPendingBookingAsset_BookableAsset() throws com.mendix.core.CoreException
 	{
 		return getPendingBookingAsset_BookableAsset(getContext());
 	}
@@ -135,12 +135,12 @@ public class PendingBookingAsset implements com.mendix.systemwideinterfaces.core
 	 * @return value of PendingBookingAsset_BookableAsset
 	 * @throws com.mendix.core.CoreException
 	 */
-	public final deskbookinglocations.proxies.BookableAsset getPendingBookingAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	public final deskbooking.proxies.BookableAsset getPendingBookingAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
-		deskbookinglocations.proxies.BookableAsset result = null;
+		deskbooking.proxies.BookableAsset result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.PendingBookingAsset_BookableAsset.toString());
 		if (identifier != null) {
-			result = deskbookinglocations.proxies.BookableAsset.load(context, identifier);
+			result = deskbooking.proxies.BookableAsset.load(context, identifier);
 		}
 		return result;
 	}
@@ -149,7 +149,7 @@ public class PendingBookingAsset implements com.mendix.systemwideinterfaces.core
 	 * Set value of PendingBookingAsset_BookableAsset
 	 * @param pendingbookingasset_bookableasset
 	 */
-	public final void setPendingBookingAsset_BookableAsset(deskbookinglocations.proxies.BookableAsset pendingbookingasset_bookableasset)
+	public final void setPendingBookingAsset_BookableAsset(deskbooking.proxies.BookableAsset pendingbookingasset_bookableasset)
 	{
 		setPendingBookingAsset_BookableAsset(getContext(), pendingbookingasset_bookableasset);
 	}
@@ -159,7 +159,7 @@ public class PendingBookingAsset implements com.mendix.systemwideinterfaces.core
 	 * @param context
 	 * @param pendingbookingasset_bookableasset
 	 */
-	public final void setPendingBookingAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context, deskbookinglocations.proxies.BookableAsset pendingbookingasset_bookableasset)
+	public final void setPendingBookingAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context, deskbooking.proxies.BookableAsset pendingbookingasset_bookableasset)
 	{
 		if (pendingbookingasset_bookableasset == null) {
 			getMendixObject().setValue(context, MemberNames.PendingBookingAsset_BookableAsset.toString(), null);

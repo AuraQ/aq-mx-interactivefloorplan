@@ -16,13 +16,15 @@ public class SvgConverterDemo extends aqinteractivesvg.proxies.SvgContainer
 	 */
 	public enum MemberNames
 	{
-		ImageName("ImageName"),
 		ElementPropsJson("ElementPropsJson"),
 		InitialZoom("InitialZoom"),
 		InitialLeft("InitialLeft"),
 		InitialTop("InitialTop"),
-		GuidList("GuidList"),
-		SvgConverterDemo_Session("SvgConverterDemo.SvgConverterDemo_Session");
+		NewX("NewX"),
+		NewY("NewY"),
+		NewPath("NewPath"),
+		SvgConverterDemo_Session("SvgConverterDemo.SvgConverterDemo_Session"),
+		SvgContainer_SvgConverter("AqInteractiveSvg.SvgContainer_SvgConverter");
 
 		private final java.lang.String metaName;
 
@@ -67,15 +69,6 @@ public class SvgConverterDemo extends aqinteractivesvg.proxies.SvgContainer
 	{
 		com.mendix.systemwideinterfaces.core.IMendixObject mendixObject = com.mendix.core.Core.retrieveId(context, mendixIdentifier);
 		return svgconverterdemo.proxies.SvgConverterDemo.initialize(context, mendixObject);
-	}
-
-	public static java.util.List<svgconverterdemo.proxies.SvgConverterDemo> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
-	{
-		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
-			.execute(context)
-			.stream()
-			.map(obj -> svgconverterdemo.proxies.SvgConverterDemo.initialize(context, obj))
-			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**

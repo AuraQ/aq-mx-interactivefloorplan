@@ -68,18 +68,6 @@ public class GroupElement implements com.mendix.systemwideinterfaces.core.IEntit
 	 */
 	public static aqinteractivesvg.proxies.GroupElement initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
-		if (mendixObject.isInstanceOf("AqInteractiveSvg.ImageElement")) {
-			return aqinteractivesvg.proxies.ImageElement.initialize(context, mendixObject);
-		}
-		if (mendixObject.isInstanceOf("AqInteractiveSvg.LineElement")) {
-			return aqinteractivesvg.proxies.LineElement.initialize(context, mendixObject);
-		}
-		if (mendixObject.isInstanceOf("AqInteractiveSvg.PathElement")) {
-			return aqinteractivesvg.proxies.PathElement.initialize(context, mendixObject);
-		}
-		if (mendixObject.isInstanceOf("AqInteractiveSvg.RectElement")) {
-			return aqinteractivesvg.proxies.RectElement.initialize(context, mendixObject);
-		}
 		return new aqinteractivesvg.proxies.GroupElement(context, mendixObject);
 	}
 
@@ -87,15 +75,6 @@ public class GroupElement implements com.mendix.systemwideinterfaces.core.IEntit
 	{
 		com.mendix.systemwideinterfaces.core.IMendixObject mendixObject = com.mendix.core.Core.retrieveId(context, mendixIdentifier);
 		return aqinteractivesvg.proxies.GroupElement.initialize(context, mendixObject);
-	}
-
-	public static java.util.List<? extends aqinteractivesvg.proxies.GroupElement> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
-	{
-		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
-			.execute(context)
-			.stream()
-			.map(obj -> aqinteractivesvg.proxies.GroupElement.initialize(context, obj))
-			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
