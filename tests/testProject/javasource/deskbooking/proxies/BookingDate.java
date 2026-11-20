@@ -122,7 +122,7 @@ public class BookingDate implements com.mendix.systemwideinterfaces.core.IEntity
 	 * @throws com.mendix.core.CoreException
 	 * @return value of BookingDate_BookingLocation
 	 */
-	public final deskbookinglocations.proxies.BookingLocation getBookingDate_BookingLocation() throws com.mendix.core.CoreException
+	public final deskbooking.proxies.BookingLocation getBookingDate_BookingLocation() throws com.mendix.core.CoreException
 	{
 		return getBookingDate_BookingLocation(getContext());
 	}
@@ -132,12 +132,12 @@ public class BookingDate implements com.mendix.systemwideinterfaces.core.IEntity
 	 * @return value of BookingDate_BookingLocation
 	 * @throws com.mendix.core.CoreException
 	 */
-	public final deskbookinglocations.proxies.BookingLocation getBookingDate_BookingLocation(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	public final deskbooking.proxies.BookingLocation getBookingDate_BookingLocation(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
-		deskbookinglocations.proxies.BookingLocation result = null;
+		deskbooking.proxies.BookingLocation result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.BookingDate_BookingLocation.toString());
 		if (identifier != null) {
-			result = deskbookinglocations.proxies.BookingLocation.load(context, identifier);
+			result = deskbooking.proxies.BookingLocation.load(context, identifier);
 		}
 		return result;
 	}
@@ -146,7 +146,7 @@ public class BookingDate implements com.mendix.systemwideinterfaces.core.IEntity
 	 * Set value of BookingDate_BookingLocation
 	 * @param bookingdate_bookinglocation
 	 */
-	public final void setBookingDate_BookingLocation(deskbookinglocations.proxies.BookingLocation bookingdate_bookinglocation)
+	public final void setBookingDate_BookingLocation(deskbooking.proxies.BookingLocation bookingdate_bookinglocation)
 	{
 		setBookingDate_BookingLocation(getContext(), bookingdate_bookinglocation);
 	}
@@ -156,7 +156,7 @@ public class BookingDate implements com.mendix.systemwideinterfaces.core.IEntity
 	 * @param context
 	 * @param bookingdate_bookinglocation
 	 */
-	public final void setBookingDate_BookingLocation(com.mendix.systemwideinterfaces.core.IContext context, deskbookinglocations.proxies.BookingLocation bookingdate_bookinglocation)
+	public final void setBookingDate_BookingLocation(com.mendix.systemwideinterfaces.core.IContext context, deskbooking.proxies.BookingLocation bookingdate_bookinglocation)
 	{
 		if (bookingdate_bookinglocation == null) {
 			getMendixObject().setValue(context, MemberNames.BookingDate_BookingLocation.toString(), null);

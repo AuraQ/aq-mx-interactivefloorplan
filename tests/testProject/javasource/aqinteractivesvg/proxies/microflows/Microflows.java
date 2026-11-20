@@ -6,6 +6,7 @@ package aqinteractivesvg.proxies.microflows;
 
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 public final class Microflows
 {
@@ -38,63 +39,856 @@ public final class Microflows
 			)
 			.execute(context);
 	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder aCT_DownloadSVGBuilder(
-		aqinteractivesvg.proxies.SvgConverter _svgConverter
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder bCO_FabricElementBuilder(
+		aqinteractivesvg.proxies.FabricElement _groupElement
 	)
 	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.ACT_DownloadSVG");
-		builder = builder.withParam("SvgConverter", _svgConverter);
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.BCO_FabricElement");
+		builder = builder.withParam("GroupElement", _groupElement);
 		return builder;
 	}
 
-	public static void aCT_DownloadSVG(
+	public static boolean bCO_FabricElement(
 		IContext context,
-		aqinteractivesvg.proxies.SvgConverter _svgConverter
+		aqinteractivesvg.proxies.FabricElement _groupElement
 	)
 	{
-		aCT_DownloadSVGBuilder(
-				_svgConverter
+		Object result = bCO_FabricElementBuilder(
+				_groupElement
 			)
 			.execute(context);
+		return (boolean) result;
 	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder bCo_GroupBuilder(
-		aqinteractivesvg.proxies.Group _group
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder bCO_FabricGroupBuilder(
+		aqinteractivesvg.proxies.FabricGroup _group
 	)
 	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.BCo_Group");
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.BCO_FabricGroup");
 		builder = builder.withParam("Group", _group);
 		return builder;
 	}
 
-	public static boolean bCo_Group(
+	public static boolean bCO_FabricGroup(
 		IContext context,
-		aqinteractivesvg.proxies.Group _group
+		aqinteractivesvg.proxies.FabricGroup _group
 	)
 	{
-		Object result = bCo_GroupBuilder(
+		Object result = bCO_FabricGroupBuilder(
 				_group
 			)
 			.execute(context);
 		return (boolean) result;
 	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder bCo_GroupElementBuilder(
-		aqinteractivesvg.proxies.GroupElement _groupElement
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_CalculateJSONBuilder(
+		aqinteractivesvg.proxies.FabricElement _fabricElement
 	)
 	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.BCo_GroupElement");
-		builder = builder.withParam("GroupElement", _groupElement);
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_CalculateJSON");
+		builder = builder.withParam("FabricElement", _fabricElement);
 		return builder;
 	}
 
-	public static boolean bCo_GroupElement(
+	public static void sUB_FabricElement_CalculateJSON(
 		IContext context,
-		aqinteractivesvg.proxies.GroupElement _groupElement
+		aqinteractivesvg.proxies.FabricElement _fabricElement
 	)
 	{
-		Object result = bCo_GroupElementBuilder(
-				_groupElement
+		sUB_FabricElement_CalculateJSONBuilder(
+				_fabricElement
 			)
 			.execute(context);
-		return (boolean) result;
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_CreateImageBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		java.lang.String _href
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_CreateImage");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Top", _top);
+		builder = builder.withParam("Left", _left);
+		builder = builder.withParam("Width", _width);
+		builder = builder.withParam("Height", _height);
+		builder = builder.withParam("Href", _href);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricElement sUB_FabricElement_CreateImage(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		java.lang.String _href
+	)
+	{
+		Object result = sUB_FabricElement_CreateImageBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_top,
+				_left,
+				_width,
+				_height,
+				_href
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricElement.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_CreateLineBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.lang.String _coords
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_CreateLine");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Coords", _coords);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricElement sUB_FabricElement_CreateLine(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.lang.String _coords
+	)
+	{
+		Object result = sUB_FabricElement_CreateLineBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_coords
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricElement.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_CreatePathBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.lang.String _path
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_CreatePath");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Path", _path);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricElement sUB_FabricElement_CreatePath(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.lang.String _path
+	)
+	{
+		Object result = sUB_FabricElement_CreatePathBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_path
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricElement.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_CreateRectBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_CreateRect");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Left", _left);
+		builder = builder.withParam("Top", _top);
+		builder = builder.withParam("Width", _width);
+		builder = builder.withParam("Height", _height);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricElement sUB_FabricElement_CreateRect(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height
+	)
+	{
+		Object result = sUB_FabricElement_CreateRectBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_left,
+				_top,
+				_width,
+				_height
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricElement.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_UpdateImageBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		java.lang.String _href,
+		aqinteractivesvg.proxies.FabricElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_UpdateImage");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Top", _top);
+		builder = builder.withParam("Left", _left);
+		builder = builder.withParam("Width", _width);
+		builder = builder.withParam("Height", _height);
+		builder = builder.withParam("Href", _href);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static void sUB_FabricElement_UpdateImage(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		java.lang.String _href,
+		aqinteractivesvg.proxies.FabricElement _groupElement_ToMap
+	)
+	{
+		sUB_FabricElement_UpdateImageBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_top,
+				_left,
+				_width,
+				_height,
+				_href,
+				_groupElement_ToMap
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_UpdateLineBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.lang.String _coords,
+		aqinteractivesvg.proxies.FabricElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_UpdateLine");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Coords", _coords);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static void sUB_FabricElement_UpdateLine(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.lang.String _coords,
+		aqinteractivesvg.proxies.FabricElement _groupElement_ToMap
+	)
+	{
+		sUB_FabricElement_UpdateLineBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_coords,
+				_groupElement_ToMap
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_UpdatePathBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.lang.String _path,
+		aqinteractivesvg.proxies.FabricElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_UpdatePath");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Path", _path);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static void sUB_FabricElement_UpdatePath(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.lang.String _path,
+		aqinteractivesvg.proxies.FabricElement _groupElement_ToMap
+	)
+	{
+		sUB_FabricElement_UpdatePathBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_path,
+				_groupElement_ToMap
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricElement_UpdateRectBuilder(
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		aqinteractivesvg.proxies.FabricElement _groupElement_ToMap
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricElement_UpdateRect");
+		builder = builder.withParam("ElementId", _elementId);
+		builder = builder.withParam("Order", _order);
+		builder = builder.withParam("Props", _props);
+		builder = builder.withParam("Group", _group);
+		builder = builder.withParam("Left", _left);
+		builder = builder.withParam("Top", _top);
+		builder = builder.withParam("Width", _width);
+		builder = builder.withParam("Height", _height);
+		builder = builder.withParam("GroupElement_ToMap", _groupElement_ToMap);
+		return builder;
+	}
+
+	public static void sUB_FabricElement_UpdateRect(
+		IContext context,
+		java.lang.String _elementId,
+		java.lang.Long _order,
+		java.lang.String _props,
+		aqinteractivesvg.proxies.FabricGroup _group,
+		java.math.BigDecimal _left,
+		java.math.BigDecimal _top,
+		java.math.BigDecimal _width,
+		java.math.BigDecimal _height,
+		aqinteractivesvg.proxies.FabricElement _groupElement_ToMap
+	)
+	{
+		sUB_FabricElement_UpdateRectBuilder(
+				_elementId,
+				_order,
+				_props,
+				_group,
+				_left,
+				_top,
+				_width,
+				_height,
+				_groupElement_ToMap
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricGroup_CalculateElementsJSONBuilder(
+		aqinteractivesvg.proxies.FabricGroup _fabricGroup
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricGroup_CalculateElementsJSON");
+		builder = builder.withParam("FabricGroup", _fabricGroup);
+		return builder;
+	}
+
+	public static void sUB_FabricGroup_CalculateElementsJSON(
+		IContext context,
+		aqinteractivesvg.proxies.FabricGroup _fabricGroup
+	)
+	{
+		sUB_FabricGroup_CalculateElementsJSONBuilder(
+				_fabricGroup
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricGroup_CalculateJSONBuilder(
+		aqinteractivesvg.proxies.FabricGroup _fabricGroup
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricGroup_CalculateJSON");
+		builder = builder.withParam("FabricGroup", _fabricGroup);
+		return builder;
+	}
+
+	public static void sUB_FabricGroup_CalculateJSON(
+		IContext context,
+		aqinteractivesvg.proxies.FabricGroup _fabricGroup
+	)
+	{
+		sUB_FabricGroup_CalculateJSONBuilder(
+				_fabricGroup
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricObject_RemovePropertyByKeyBuilder(
+		aqinteractivesvg.proxies.FabricObject _fabricObject,
+		java.lang.String _key
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricObject_RemovePropertyByKey");
+		builder = builder.withParam("FabricObject", _fabricObject);
+		builder = builder.withParam("Key", _key);
+		return builder;
+	}
+
+	public static void sUB_FabricObject_RemovePropertyByKey(
+		IContext context,
+		aqinteractivesvg.proxies.FabricObject _fabricObject,
+		java.lang.String _key
+	)
+	{
+		sUB_FabricObject_RemovePropertyByKeyBuilder(
+				_fabricObject,
+				_key
+			)
+			.execute(context);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricObject_SetBooleanPropertyBuilder(
+		java.lang.String _key,
+		boolean _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricObject_SetBooleanProperty");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricObject_SetBooleanProperty(
+		IContext context,
+		java.lang.String _key,
+		boolean _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricObject_SetBooleanPropertyBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricObject_SetDatePropertyBuilder(
+		java.lang.String _key,
+		java.util.Date _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricObject_SetDateProperty");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricObject_SetDateProperty(
+		IContext context,
+		java.lang.String _key,
+		java.util.Date _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricObject_SetDatePropertyBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricObject_SetDecimalPropertyBuilder(
+		java.lang.String _key,
+		java.math.BigDecimal _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricObject_SetDecimalProperty");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricObject_SetDecimalProperty(
+		IContext context,
+		java.lang.String _key,
+		java.math.BigDecimal _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricObject_SetDecimalPropertyBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricObject_SetIntegerPropertyBuilder(
+		java.lang.String _key,
+		java.lang.Long _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricObject_SetIntegerProperty");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricObject_SetIntegerProperty(
+		IContext context,
+		java.lang.String _key,
+		java.lang.Long _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricObject_SetIntegerPropertyBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricObject_SetLongPropertyBuilder(
+		java.lang.String _key,
+		java.lang.Long _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricObject_SetLongProperty");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricObject_SetLongProperty(
+		IContext context,
+		java.lang.String _key,
+		java.lang.Long _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricObject_SetLongPropertyBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricObject_SetStringPropertyBuilder(
+		java.lang.String _key,
+		java.lang.String _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricObject_SetStringProperty");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricObject_SetStringProperty(
+		IContext context,
+		java.lang.String _key,
+		java.lang.String _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricObject_SetStringPropertyBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricProperties_ToJSONBuilder(
+		java.util.List<aqinteractivesvg.proxies.FabricProperty> _elementPropertyList
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricProperties_ToJSON");
+		builder = builder.withParam("ElementPropertyList", _elementPropertyList);
+		return builder;
+	}
+
+	public static java.lang.String sUB_FabricProperties_ToJSON(
+		IContext context,
+		java.util.List<aqinteractivesvg.proxies.FabricProperty> _elementPropertyList
+	)
+	{
+		Object result = sUB_FabricProperties_ToJSONBuilder(
+				_elementPropertyList
+			)
+			.execute(context);
+		return (java.lang.String) result;
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricProperty_CreateBooleanBuilder(
+		java.lang.String _key,
+		boolean _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricProperty_CreateBoolean");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricProperty_CreateBoolean(
+		IContext context,
+		java.lang.String _key,
+		boolean _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricProperty_CreateBooleanBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricProperty_CreateDateBuilder(
+		java.lang.String _key,
+		java.util.Date _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricProperty_CreateDate");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricProperty_CreateDate(
+		IContext context,
+		java.lang.String _key,
+		java.util.Date _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricProperty_CreateDateBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricProperty_CreateDecimalBuilder(
+		java.lang.String _key,
+		java.math.BigDecimal _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricProperty_CreateDecimal");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricProperty_CreateDecimal(
+		IContext context,
+		java.lang.String _key,
+		java.math.BigDecimal _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricProperty_CreateDecimalBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricProperty_CreateIntegerBuilder(
+		java.lang.String _key,
+		java.lang.Long _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricProperty_CreateInteger");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricProperty_CreateInteger(
+		IContext context,
+		java.lang.String _key,
+		java.lang.Long _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricProperty_CreateIntegerBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricProperty_CreateLongBuilder(
+		java.lang.String _key,
+		java.lang.Long _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricProperty_CreateLong");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricProperty_CreateLong(
+		IContext context,
+		java.lang.String _key,
+		java.lang.Long _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricProperty_CreateLongBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_FabricProperty_CreateStringBuilder(
+		java.lang.String _key,
+		java.lang.String _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_FabricProperty_CreateString");
+		builder = builder.withParam("Key", _key);
+		builder = builder.withParam("Value", _value);
+		builder = builder.withParam("FabricObject", _fabricObject);
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricProperty sUB_FabricProperty_CreateString(
+		IContext context,
+		java.lang.String _key,
+		java.lang.String _value,
+		aqinteractivesvg.proxies.FabricObject _fabricObject
+	)
+	{
+		Object result = sUB_FabricProperty_CreateStringBuilder(
+				_key,
+				_value,
+				_fabricObject
+			)
+			.execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricProperty.initialize(context, (IMendixObject) result);
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_Image_GetRelativeURIBuilder(
+		system.proxies.Image _image
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("AqInteractiveSvg.SUB_Image_GetRelativeURI");
+		builder = builder.withParam("Image", _image);
+		return builder;
+	}
+
+	public static java.lang.String sUB_Image_GetRelativeURI(
+		IContext context,
+		system.proxies.Image _image
+	)
+	{
+		Object result = sUB_Image_GetRelativeURIBuilder(
+				_image
+			)
+			.execute(context);
+		return (java.lang.String) result;
 	}
 }

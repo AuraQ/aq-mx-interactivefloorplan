@@ -23,7 +23,6 @@ public class SvgConverterAction implements com.mendix.systemwideinterfaces.core.
 		RootGroupId("RootGroupId"),
 		IsSelectable("IsSelectable"),
 		Order("Order"),
-		GroupElementPropsType("GroupElementPropsType"),
 		SvgConverterAction_SvgConverter("AqInteractiveSvg.SvgConverterAction_SvgConverter");
 
 		private final java.lang.String metaName;
@@ -191,51 +190,6 @@ public class SvgConverterAction implements com.mendix.systemwideinterfaces.core.
 	public final void setOrder(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Integer order)
 	{
 		getMendixObject().setValue(context, MemberNames.Order.toString(), order);
-	}
-
-	/**
-	 * Get value of GroupElementPropsType
-	 * @param groupelementpropstype
-	 */
-	public final aqinteractivesvg.proxies.GroupElementPropsType getGroupElementPropsType()
-	{
-		return getGroupElementPropsType(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of GroupElementPropsType
-	 */
-	public final aqinteractivesvg.proxies.GroupElementPropsType getGroupElementPropsType(com.mendix.systemwideinterfaces.core.IContext context)
-	{
-		Object obj = getMendixObject().getValue(context, MemberNames.GroupElementPropsType.toString());
-		if (obj == null) {
-			return null;
-		}
-		return aqinteractivesvg.proxies.GroupElementPropsType.valueOf((java.lang.String) obj);
-	}
-
-	/**
-	 * Set value of GroupElementPropsType
-	 * @param groupelementpropstype
-	 */
-	public final void setGroupElementPropsType(aqinteractivesvg.proxies.GroupElementPropsType groupelementpropstype)
-	{
-		setGroupElementPropsType(getContext(), groupelementpropstype);
-	}
-
-	/**
-	 * Set value of GroupElementPropsType
-	 * @param context
-	 * @param groupelementpropstype
-	 */
-	public final void setGroupElementPropsType(com.mendix.systemwideinterfaces.core.IContext context, aqinteractivesvg.proxies.GroupElementPropsType groupelementpropstype)
-	{
-		if (groupelementpropstype != null) {
-			getMendixObject().setValue(context, MemberNames.GroupElementPropsType.toString(), groupelementpropstype.toString());
-		} else {
-			getMendixObject().setValue(context, MemberNames.GroupElementPropsType.toString(), null);
-		}
 	}
 
 	/**

@@ -11,6 +11,10 @@ export function getProperties(values, defaultProperties) {
     if (!values.enableTooltips) {
         hidePropertiesIn(defaultProperties, values, ["tooltipContent", "groupTooltipOn"]);
     }
+    
+    if (!values.backgroundImage) {
+        hidePropertiesIn(defaultProperties, values, ["backgroundImageWidth", "backgroundImageHeight", "autoInitialZoom"]);
+    }
 
     return defaultProperties;
 }

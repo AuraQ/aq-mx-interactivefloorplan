@@ -67,10 +67,10 @@ export default class InteractiveFloorplan extends Component {
 
     onItemMoved = (mxItem, left, top) => {
         if (this.props.movedItemX) {
-            this.props.movedItemX.setValue(left.toString());
+            this.props.movedItemX.setTextValue(left.toString());
         }
         if (this.props.movedItemY) {
-            this.props.movedItemY.setValue(top.toString());
+            this.props.movedItemY.setTextValue(top.toString());
         }
         if (this.props.onItemMoved !== undefined) {
             const action = this.props.onItemMoved.get(mxItem);
@@ -101,25 +101,27 @@ export default class InteractiveFloorplan extends Component {
             return this.props.loadingContent;
         }
 
-        const elementPropsValue = this.props.elementPropsJson.value || "{}";
-        const elementProps = JSON.parse(elementPropsValue);
+        const groupCategoriesString = this.props.groupCategoriesJSON.value || "{}";
+        const groupCategories = JSON.parse(groupCategoriesString);
 
         var groups = [];
 
         for (var i = 0; i < this.props.data.items.length; i++) {
             const mxItem = this.props.data.items[i];
 
-            const groupElementsValue = this.props.groupElementsJson.get(mxItem).value || "[]";
-            const groupProps = elementProps[this.props.groupPropsName.get(mxItem).value] || "{}";
+            const groupElementsString = this.props.groupElementsJSON.get(mxItem).value || "[]";
+            const groupElements = JSON.parse(groupElementsString);
+            const groupPropertiesString = this.props.groupPropertiesJSON.get(mxItem).value || "{}";
+            const groupProperties = JSON.parse(groupPropertiesString);
 
             var group = {};
             group.mxItem = mxItem;
             group.id = this.props.groupId.get(mxItem).value;
+            group.category = this.props.groupCategory.get(mxItem).value;
             group.status = (this.props.groupStatus.get(mxItem).value || "__default").toLowerCase();
+            group.properties = groupProperties;
             group.isSelectable = this.props.groupIsSelectable.get(mxItem).value;
-            group.props = groupProps;
-            group.elements = JSON.parse(groupElementsValue);
-            group.elementPropsType = this.props.groupElementPropsType?.get(mxItem).value?.toLowerCase();
+            group.elements = groupElements;
             if (this.props.enableTooltips) group.tooltipOn = this.props.groupTooltipOn.get(mxItem).value;
 
             groups.push(group);
@@ -131,18 +133,20 @@ export default class InteractiveFloorplan extends Component {
 
         return (
             <Paper
+                groups={groups}
                 initialLeft={parseFloat(this.props.initialLeft?.value) || 0}
                 initialTop={parseFloat(this.props.initialTop?.value) || 0}
                 initialZoom={parseFloat(this.props.initialZoom?.value) || 1.0}
                 autoZoom={this.props.autoInitialZoom?.value}
-                floorplanWidth={parseFloat(this.props.floorplanWidth?.value) || 0}
-                floorplanHeight={parseFloat(this.props.floorplanHeight?.value) || 0}
-                multiselect={this.props.multiselect}
-                groups={groups}
-                elementProps={elementProps}
                 backgroundColour={this.props.backgroundColour}
                 backgroundImageUrl={this.props.backgroundImage?.value?.uri}
+                backgroundImageWidth={parseFloat(this.props.backgroundImageWidth?.value) || 0}
+                backgroundImageHeight={parseFloat(this.props.backgroundImageHeight?.value) || 0}
+                multiselect={this.props.multiselect}
                 readOnly={this.props.readOnly?.value}
+                groupCategories={groupCategories}
+                enableTooltips={this.props.enableTooltips}
+                tooltipContent={this.tooltipContent}
                 onSelection={this.onSelection}
                 onDeselection={this.onDeselection}
                 onMultiSelection={this.onMultiSelection}
@@ -150,8 +154,6 @@ export default class InteractiveFloorplan extends Component {
                 onMultiSelectionEnd={this.onMultiSelectionEnd}
                 onItemMoved={this.onItemMoved}
                 onPathCreated={this.onPathCreated}
-                enableTooltips={this.props.enableTooltips}
-                tooltipContent={this.tooltipContent}
                 className={this.props.className}
                 style={this.props.style}
             ></Paper>

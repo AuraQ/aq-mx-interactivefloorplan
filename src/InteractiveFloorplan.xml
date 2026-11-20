@@ -21,10 +21,6 @@
                     <caption>Background Colour</caption>
                     <description>The colour of the canvas</description>
                 </property>
-                <property key="backgroundImage" type="image" required="true" >
-                    <caption>Background Image</caption>
-                    <description></description>
-                </property>
                 <property key="initialZoom" type="attribute" required="false">
                     <caption>Initial Zoom</caption>
                     <description>Value indicating the initial zoom level of the canvas</description>
@@ -34,34 +30,36 @@
                         <attributeType name="Long" />
                     </attributeTypes>
                 </property>
+                <property key="backgroundImage" type="image" required="false">
+                    <caption>Background Image</caption>
+                    <description></description>
+                </property>
+                <property key="backgroundImageWidth" type="attribute" required="false">
+                    <caption>Background Image Width</caption>
+                    <description>Width of the background image to fit the canvas when auto zoom is enabled</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal" />
+                        <attributeType name="Integer" />
+                        <attributeType name="Long" />
+                    </attributeTypes>
+                </property>
+                <property key="backgroundImageHeight" type="attribute" required="false">
+                    <caption>Background Image Height</caption>
+                    <description>Height of the background image to fit the canvas when auto zoom is enabled</description>
+                    <attributeTypes>
+                        <attributeType name="Decimal" />
+                        <attributeType name="Integer" />
+                        <attributeType name="Long" />
+                    </attributeTypes>
+                </property>
                 <property key="autoInitialZoom" type="boolean" defaultValue="false">
                     <caption>Auto Initial Zoom</caption>
-                    <description>If enabled, the canvas will auto-scale to fit the provided floorplan width and height.</description>
+                    <description>If enabled, the canvas will auto-scale to fit the provided background image width and height.</description>
                 </property>
-                <property key="floorplanWidth" type="attribute" required="false">
-                    <caption>Floorplan Width</caption>
-                    <description>Width of the floorplan to fit into the canvas when auto zoom is enabled</description>
-                    <attributeTypes>
-                        <attributeType name="Decimal" />
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                    </attributeTypes>
-                </property>
-                <property key="floorplanHeight" type="attribute" required="false">
-                    <caption>Floorplan Height</caption>
-                    <description>Height of the floorplan to fit into the canvas when auto zoom is enabled</description>
-                    <attributeTypes>
-                        <attributeType name="Decimal" />
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                    </attributeTypes>
-                </property>
-                <property key="readOnly" type="attribute" required="false">
-                    <caption>Read Only</caption>
-                    <description>Boolean attribute on the entity that disables movement while still allowing selection.</description>
-                    <attributeTypes>
-                        <attributeType name="Boolean" />
-                    </attributeTypes>
+                <property key="readOnly" type="expression" defaultValue="true">
+                    <caption>Read Only?</caption>
+                    <description>Disable movement while still allowing selection.</description>
+                    <returnType type="Boolean" />
                 </property>
                 <property key="initialLeft" type="attribute" required="false">
                     <caption>Initial Left</caption>
@@ -85,9 +83,10 @@
                     <caption>Multi-Select</caption>
                     <description />
                 </property>
-                <property key="elementPropsJson" type="attribute">
-                    <caption>Element Props</caption>
-                    <description>JSON object holding named sets of applicable FabricJs properties</description>
+                <property key="groupCategoriesJSON" type="attribute">
+                    <caption>Group Categories JSON</caption>
+                    <description>JSON object holding named sets of FabricJS properties to style groups according state (selected/deselected). JSON structure should follow: 
+{ &lt;CategoryName&gt;: { &lt;StatusName&gt;: { "selected": ..., "deselected": ... } } }</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
@@ -109,15 +108,23 @@
             </propertyGroup>
             <propertyGroup caption="Group attributes">
                 <property key="groupId" type="attribute" dataSource="data">
-                    <caption>Group Id</caption>
+                    <caption>Group ID</caption>
                     <description>An identifier for the group</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
+                <property key="groupCategory" type="attribute" dataSource="data">
+                    <caption>Group Category</caption>
+                    <description>Category key name from 'Canvas &gt; Group Categories JSON' JSON object.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Enum" />
+                    </attributeTypes>
+                </property>
                 <property key="groupStatus" type="attribute" dataSource="data">
                     <caption>Group Status</caption>
-                    <description>A value to indicate the status of the group</description>
+                    <description>Status key name from 'Canvas &gt; Group Categories JSON' JSON object.</description>
                     <attributeTypes>
                         <attributeType name="String" />
                         <attributeType name="Enum" />
@@ -130,23 +137,16 @@
                         <attributeType name="Boolean" />
                     </attributeTypes>
                 </property>
-                <property key="groupPropsName" type="attribute" dataSource="data">
-                    <caption>Group Props</caption>
-                    <description>Name of a JSON object contained within Element Props</description>
+                <property key="groupPropertiesJSON" type="attribute" dataSource="data">
+                    <caption>Group Properties JSON</caption>
+                    <description>JSON object holding named sets of FabricJS properties to style group</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
-                <property key="groupElementPropsType" type="attribute" dataSource="data">
-                    <caption>Group Element Props Type</caption>
-                    <description>The type of properties for this group's elements</description>
-                    <attributeTypes>
-                        <attributeType name="Enum" />
-                    </attributeTypes>
-                </property>
-                <property key="groupElementsJson" type="attribute" dataSource="data">
-                    <caption>Group Elements</caption>
-                    <description>A JSON array holding configuration for all group elements, for supported elements (Path, Line, Rect, Triangle, Image)</description>
+                <property key="groupElementsJSON" type="attribute" dataSource="data">
+                    <caption>Group Elements JSON</caption>
+                    <description>JSON array holding all FabricJS elements, for supported element types: path, line, rect, triangle, image</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
@@ -200,6 +200,9 @@
                     <description>Attribute to store new X position</description>
                     <attributeTypes>
                         <attributeType name="String"/>
+                        <attributeType name="Decimal"/>
+                        <attributeType name="Integer"/>
+                        <attributeType name="Long"/>
                     </attributeTypes>
                 </property>
                 <property key="movedItemY" type="attribute" required="false">
@@ -207,6 +210,9 @@
                     <description>Attribute to store new Y position</description>
                     <attributeTypes>
                         <attributeType name="String"/>
+                        <attributeType name="Decimal"/>
+                        <attributeType name="Integer"/>
+                        <attributeType name="Long"/>
                     </attributeTypes>
                 </property>
                 <property key="onItemMoved" type="action" dataSource="data">

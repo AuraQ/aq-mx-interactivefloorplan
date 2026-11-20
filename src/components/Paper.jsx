@@ -356,15 +356,11 @@ export class Paper extends React.Component {
         const { canvas } = this.state;
 
         if (item != null && item.type === "group") {
-            for (var key of Object.keys(item.elementProps)) {
-                const elementProps = item.elementProps[key];
-                const element = item.item(elementProps.index);
-                element.set(elementProps.selected);
-            }
-
+            item.forEachObject(element => element.set(element.selectedProps));
+            item.set(item.selectedProps);
+            
             canvas.requestRenderAll();
 
-            // call back
             if (item.mxItem && this.props.onSelection && !isMulti) {
                 this.props.onSelection(item.mxItem);
             }
@@ -374,7 +370,11 @@ export class Paper extends React.Component {
             }
 
             const index = this.state.selectedItems.indexOf(item);
-            if (index === -1) this.state.selectedItems.push(item);
+            if (index === -1) {
+                const newSelectedItems = [...this.state.selectedItems];
+                newSelectedItems.push(item);
+                this.setState({ selectedItems: newSelectedItems });
+            }
         }
     }
 
@@ -390,22 +390,21 @@ export class Paper extends React.Component {
         const { canvas } = this.state;
 
         if (item != null && item.type === "group") {
-            for (var key of Object.keys(item.elementProps)) {
-                const elementProps = item.elementProps[key];
-                const element = item.item(elementProps.index);
-                element.set(elementProps.deselected);
-            }
+            item.forEachObject(element => element.set(element.deselectedProps));
+            item.set(item.deselectedProps);
 
             canvas.requestRenderAll();
 
-            // call back
             if (item.mxItem && this.props.onDeselection && !isMulti) {
                 this.props.onDeselection(item.mxItem);
             }
 
-            // Remove from state
             const index = this.state.selectedItems.indexOf(item);
-            if (index > -1) this.state.selectedItems.splice(index, 1);
+            if (index > -1) {
+                const newSelectedItems = [...this.state.selectedItems];
+                newSelectedItems.splice(index, 1);
+                this.setState({ selectedItems: newSelectedItems });
+            }
         }
     }
 
@@ -466,12 +465,12 @@ export class Paper extends React.Component {
     }
 
     calculateAutoZoom(containerWidth, containerHeight) {
-        const floorplanWidth = parseFloat(this.props.floorplanWidth);
-        const floorplanHeight = parseFloat(this.props.floorplanHeight);
-        if (!floorplanWidth || !floorplanHeight || !containerWidth || !containerHeight) {
+        const backgroundImageWidth = parseFloat(this.props.backgroundImageWidth);
+        const backgroundImageHeight = parseFloat(this.props.backgroundImageHeight);
+        if (!backgroundImageWidth || !backgroundImageHeight || !containerWidth || !containerHeight) {
             return this.props.initialZoom || 1.0;
         }
-        return Math.min(containerWidth / floorplanWidth, containerHeight / floorplanHeight);
+        return Math.min(containerWidth / backgroundImageWidth, containerHeight / backgroundImageHeight);
     }
 
     async initCanvas(paper) {
@@ -506,32 +505,29 @@ export class Paper extends React.Component {
 
         for (let i = 0; i < this.props.groups.length; i++) {
             const groupData = this.props.groups[i];
-            const groupItems = [];
-            const groupElementProps = {};
+
+            const fabricElements = [];
+            // const groupElementProps = {};
+
+            const categoryProperties = this.props.groupCategories[groupData.category] || {};
+            const statusProperties = categoryProperties[groupData.status] || {};
+
+            const groupSelectedProps = statusProperties.selected || {};
+            const groupDeselectedProps = statusProperties.deselected || {};
+
             for (let j = 0; j < groupData.elements.length; j++) {
                 const elementData = groupData.elements[j];
-                const elementProps = { ...elementData };
+
+                // Get the element properties
+                const elementSelectedProps = {...groupSelectedProps, ...(elementData.props?.selected || {})};
+                const elementDeselectedProps = {...groupDeselectedProps, ...(elementData.props?.deselected || {})};
+                const elementProps = { ...elementData, ...elementDeselectedProps };
                 delete elementProps.type;
                 delete elementProps.href;
                 delete elementProps.path;
+
+                // Create the element
                 let element;
-                let selectedProps;
-                let deselectedProps;
-                const propsCollection = this.props.elementProps[elementData.props] || "{}";
-                const statusPropsCollection = propsCollection[groupData.status] || "{}";
-
-                if (groupData.elementPropsType === "inline") {
-                    selectedProps = elementData.props;
-                } else {
-                    selectedProps = statusPropsCollection.selected || "{}";
-                }
-
-                if (groupData.elementPropsType === "inline") {
-                    deselectedProps = elementData.props;
-                } else {
-                    deselectedProps = statusPropsCollection.deselected || "{}";
-                }
-
                 switch (elementData.type) {
                     case "path":
                         element = new fabric.Path(elementData.path, elementProps);
@@ -547,35 +543,35 @@ export class Paper extends React.Component {
                         break;
                     case "image":
                         element = await fabric.FabricImage.fromURL(elementData.href, undefined, elementProps);
-                        element.setPositionByOrigin(new fabric.Point(0, 0), "left", "top");
-                        element.scale(1);
                         break;
                     default:
                         break;
                 }
-                const elementKey = `${elementData.type}_${j}`;
-                element.set(deselectedProps); // we want to set deselected as default
-                groupElementProps[elementKey] = {};
-                groupElementProps[elementKey].index = j;
-                groupElementProps[elementKey].selected = selectedProps;
-                groupElementProps[elementKey].deselected = deselectedProps;
 
-                groupItems.push(element);
+                element.selectedProps = elementSelectedProps;
+                element.deselectedProps = elementDeselectedProps;
+
+                fabricElements.push(element);
             }
 
-            const group = new fabric.Group(groupItems, { originX: "left", originY: "top" });
+            const group = new fabric.Group(fabricElements, { originX: "left", originY: "top" });
+
             if (DEBUG_MODE) console.log("Group bounds:", group.getBoundingRect());
-            const cursor = groupData.isSelectable ? "pointer" : "default";
-            group.setOptions({
+
+            group.set({
                 ...baseGroupOptions,
-                ...groupData.props,
                 selectable: groupData.isSelectable,
                 perPixelTargetFind: true,
-                hoverCursor: cursor
+                hoverCursor: groupData.isSelectable ? "pointer" : "default",
+                ...groupData.properties,
+                ...groupDeselectedProps
             });
+
             group.mxId = groupData.id;
             group.mxItem = groupData.mxItem;
-            group.elementProps = groupElementProps;
+            // group.elementProps = groupElementProps;
+            group.selectedProps = groupSelectedProps;
+            group.deselectedProps = groupDeselectedProps;
 
             if (this.props.enableTooltips && groupData.tooltipOn) {
                 group.on("mouseover", e => {
@@ -656,11 +652,11 @@ export class Paper extends React.Component {
         this.resizeCanvas(false);
         this.fullRender = !(
             JSON.stringify(nextProps.groups) === JSON.stringify(this.props.groups) &&
-            JSON.stringify(nextProps.elementProps) === JSON.stringify(this.props.elementProps) &&
+            JSON.stringify(nextProps.groupCategories) === JSON.stringify(this.props.groupCategories) &&
             nextProps.backgroundImageUrl === this.props.backgroundImageUrl
         );
 
-        return this.fullRender || !(nextState.tooltip === this.state.tooltip);
+        return true;
     }
 
     async componentDidUpdate(prevProps) {
