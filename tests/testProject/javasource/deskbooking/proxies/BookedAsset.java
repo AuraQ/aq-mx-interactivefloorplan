@@ -23,7 +23,8 @@ public class BookedAsset implements com.mendix.systemwideinterfaces.core.IEntity
 		BookedStatus("BookedStatus"),
 		IsSelectable("IsSelectable"),
 		BookedAsset_BookingDate("DeskBooking.BookedAsset_BookingDate"),
-		BookedAsset_BookableAsset("DeskBooking.BookedAsset_BookableAsset");
+		BookedAsset_BookableAsset("DeskBooking.BookedAsset_BookableAsset"),
+		BookedAsset_User_AllocatedTo("DeskBooking.BookedAsset_User_AllocatedTo");
 
 		private final java.lang.String metaName;
 
@@ -256,6 +257,53 @@ public class BookedAsset implements com.mendix.systemwideinterfaces.core.IEntity
 			getMendixObject().setValue(context, MemberNames.BookedAsset_BookableAsset.toString(), null);
 		} else {
 			getMendixObject().setValue(context, MemberNames.BookedAsset_BookableAsset.toString(), bookedasset_bookableasset.getMendixObject().getId());
+		}
+	}
+
+	/**
+	 * @throws com.mendix.core.CoreException
+	 * @return value of BookedAsset_User_AllocatedTo
+	 */
+	public final system.proxies.User getBookedAsset_User_AllocatedTo() throws com.mendix.core.CoreException
+	{
+		return getBookedAsset_User_AllocatedTo(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of BookedAsset_User_AllocatedTo
+	 * @throws com.mendix.core.CoreException
+	 */
+	public final system.proxies.User getBookedAsset_User_AllocatedTo(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	{
+		system.proxies.User result = null;
+		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.BookedAsset_User_AllocatedTo.toString());
+		if (identifier != null) {
+			result = system.proxies.User.load(context, identifier);
+		}
+		return result;
+	}
+
+	/**
+	 * Set value of BookedAsset_User_AllocatedTo
+	 * @param bookedasset_user_allocatedto
+	 */
+	public final void setBookedAsset_User_AllocatedTo(system.proxies.User bookedasset_user_allocatedto)
+	{
+		setBookedAsset_User_AllocatedTo(getContext(), bookedasset_user_allocatedto);
+	}
+
+	/**
+	 * Set value of BookedAsset_User_AllocatedTo
+	 * @param context
+	 * @param bookedasset_user_allocatedto
+	 */
+	public final void setBookedAsset_User_AllocatedTo(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.User bookedasset_user_allocatedto)
+	{
+		if (bookedasset_user_allocatedto == null) {
+			getMendixObject().setValue(context, MemberNames.BookedAsset_User_AllocatedTo.toString(), null);
+		} else {
+			getMendixObject().setValue(context, MemberNames.BookedAsset_User_AllocatedTo.toString(), bookedasset_user_allocatedto.getMendixObject().getId());
 		}
 	}
 

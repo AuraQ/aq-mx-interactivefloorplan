@@ -21,8 +21,8 @@ public class PendingBookingAsset implements com.mendix.systemwideinterfaces.core
 	public enum MemberNames
 	{
 		PendingBookingAsset_PendingBooking("DeskBooking.PendingBookingAsset_PendingBooking"),
-		PendingBookingAsset_BookableAsset("DeskBooking.PendingBookingAsset_BookableAsset"),
-		PendingBookingAsset_User_AllocatedTo("DeskBooking.PendingBookingAsset_User_AllocatedTo");
+		PendingBookingAsset_User_AllocatedTo("DeskBooking.PendingBookingAsset_User_AllocatedTo"),
+		PendingBookingAsset_AssetGroup("DeskBooking.PendingBookingAsset_AssetGroup");
 
 		private final java.lang.String metaName;
 
@@ -123,53 +123,6 @@ public class PendingBookingAsset implements com.mendix.systemwideinterfaces.core
 
 	/**
 	 * @throws com.mendix.core.CoreException
-	 * @return value of PendingBookingAsset_BookableAsset
-	 */
-	public final deskbooking.proxies.BookableAsset getPendingBookingAsset_BookableAsset() throws com.mendix.core.CoreException
-	{
-		return getPendingBookingAsset_BookableAsset(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of PendingBookingAsset_BookableAsset
-	 * @throws com.mendix.core.CoreException
-	 */
-	public final deskbooking.proxies.BookableAsset getPendingBookingAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
-	{
-		deskbooking.proxies.BookableAsset result = null;
-		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.PendingBookingAsset_BookableAsset.toString());
-		if (identifier != null) {
-			result = deskbooking.proxies.BookableAsset.load(context, identifier);
-		}
-		return result;
-	}
-
-	/**
-	 * Set value of PendingBookingAsset_BookableAsset
-	 * @param pendingbookingasset_bookableasset
-	 */
-	public final void setPendingBookingAsset_BookableAsset(deskbooking.proxies.BookableAsset pendingbookingasset_bookableasset)
-	{
-		setPendingBookingAsset_BookableAsset(getContext(), pendingbookingasset_bookableasset);
-	}
-
-	/**
-	 * Set value of PendingBookingAsset_BookableAsset
-	 * @param context
-	 * @param pendingbookingasset_bookableasset
-	 */
-	public final void setPendingBookingAsset_BookableAsset(com.mendix.systemwideinterfaces.core.IContext context, deskbooking.proxies.BookableAsset pendingbookingasset_bookableasset)
-	{
-		if (pendingbookingasset_bookableasset == null) {
-			getMendixObject().setValue(context, MemberNames.PendingBookingAsset_BookableAsset.toString(), null);
-		} else {
-			getMendixObject().setValue(context, MemberNames.PendingBookingAsset_BookableAsset.toString(), pendingbookingasset_bookableasset.getMendixObject().getId());
-		}
-	}
-
-	/**
-	 * @throws com.mendix.core.CoreException
 	 * @return value of PendingBookingAsset_User_AllocatedTo
 	 */
 	public final system.proxies.User getPendingBookingAsset_User_AllocatedTo() throws com.mendix.core.CoreException
@@ -212,6 +165,53 @@ public class PendingBookingAsset implements com.mendix.systemwideinterfaces.core
 			getMendixObject().setValue(context, MemberNames.PendingBookingAsset_User_AllocatedTo.toString(), null);
 		} else {
 			getMendixObject().setValue(context, MemberNames.PendingBookingAsset_User_AllocatedTo.toString(), pendingbookingasset_user_allocatedto.getMendixObject().getId());
+		}
+	}
+
+	/**
+	 * @throws com.mendix.core.CoreException
+	 * @return value of PendingBookingAsset_AssetGroup
+	 */
+	public final aqinteractivesvgcustom.proxies.AssetGroup getPendingBookingAsset_AssetGroup() throws com.mendix.core.CoreException
+	{
+		return getPendingBookingAsset_AssetGroup(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of PendingBookingAsset_AssetGroup
+	 * @throws com.mendix.core.CoreException
+	 */
+	public final aqinteractivesvgcustom.proxies.AssetGroup getPendingBookingAsset_AssetGroup(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	{
+		aqinteractivesvgcustom.proxies.AssetGroup result = null;
+		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.PendingBookingAsset_AssetGroup.toString());
+		if (identifier != null) {
+			result = aqinteractivesvgcustom.proxies.AssetGroup.load(context, identifier);
+		}
+		return result;
+	}
+
+	/**
+	 * Set value of PendingBookingAsset_AssetGroup
+	 * @param pendingbookingasset_assetgroup
+	 */
+	public final void setPendingBookingAsset_AssetGroup(aqinteractivesvgcustom.proxies.AssetGroup pendingbookingasset_assetgroup)
+	{
+		setPendingBookingAsset_AssetGroup(getContext(), pendingbookingasset_assetgroup);
+	}
+
+	/**
+	 * Set value of PendingBookingAsset_AssetGroup
+	 * @param context
+	 * @param pendingbookingasset_assetgroup
+	 */
+	public final void setPendingBookingAsset_AssetGroup(com.mendix.systemwideinterfaces.core.IContext context, aqinteractivesvgcustom.proxies.AssetGroup pendingbookingasset_assetgroup)
+	{
+		if (pendingbookingasset_assetgroup == null) {
+			getMendixObject().setValue(context, MemberNames.PendingBookingAsset_AssetGroup.toString(), null);
+		} else {
+			getMendixObject().setValue(context, MemberNames.PendingBookingAsset_AssetGroup.toString(), pendingbookingasset_assetgroup.getMendixObject().getId());
 		}
 	}
 

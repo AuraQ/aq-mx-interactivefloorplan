@@ -4,7 +4,7 @@
 
 package aqinteractivesvgcustom.proxies;
 
-public class AssetGroup extends aqinteractivesvg.proxies.Group
+public class AssetGroup extends aqinteractivesvg.proxies.FabricGroup
 {
 	/**
 	 * Internal name of this entity
@@ -16,14 +16,15 @@ public class AssetGroup extends aqinteractivesvg.proxies.Group
 	 */
 	public enum MemberNames
 	{
-		GroupId("GroupId"),
-		GroupIsSelectable("GroupIsSelectable"),
-		GroupProps("GroupProps"),
-		GroupElementsJson("GroupElementsJson"),
-		GroupElementPropsType("GroupElementPropsType"),
-		GroupStatus("GroupStatus"),
+		_ID("_ID"),
+		IsSelectable("IsSelectable"),
+		CategoryName("CategoryName"),
+		StatusName("StatusName"),
+		ElementsJSON("ElementsJSON"),
+		PropertiesJSON("PropertiesJSON"),
 		AssetGroup_BookableAsset("AqInteractiveSvgCustom.AssetGroup_BookableAsset"),
-		Group_SvgContainer("AqInteractiveSvg.Group_SvgContainer");
+		AssetGroup_BookedAsset("AqInteractiveSvgCustom.AssetGroup_BookedAsset"),
+		FabricGroup_FabricContainer("AqInteractiveSvg.FabricGroup_FabricContainer");
 
 		private final java.lang.String metaName;
 
@@ -114,6 +115,53 @@ public class AssetGroup extends aqinteractivesvg.proxies.Group
 			getMendixObject().setValue(context, MemberNames.AssetGroup_BookableAsset.toString(), null);
 		} else {
 			getMendixObject().setValue(context, MemberNames.AssetGroup_BookableAsset.toString(), assetgroup_bookableasset.getMendixObject().getId());
+		}
+	}
+
+	/**
+	 * @throws com.mendix.core.CoreException
+	 * @return value of AssetGroup_BookedAsset
+	 */
+	public final deskbooking.proxies.BookedAsset getAssetGroup_BookedAsset() throws com.mendix.core.CoreException
+	{
+		return getAssetGroup_BookedAsset(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of AssetGroup_BookedAsset
+	 * @throws com.mendix.core.CoreException
+	 */
+	public final deskbooking.proxies.BookedAsset getAssetGroup_BookedAsset(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	{
+		deskbooking.proxies.BookedAsset result = null;
+		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.AssetGroup_BookedAsset.toString());
+		if (identifier != null) {
+			result = deskbooking.proxies.BookedAsset.load(context, identifier);
+		}
+		return result;
+	}
+
+	/**
+	 * Set value of AssetGroup_BookedAsset
+	 * @param assetgroup_bookedasset
+	 */
+	public final void setAssetGroup_BookedAsset(deskbooking.proxies.BookedAsset assetgroup_bookedasset)
+	{
+		setAssetGroup_BookedAsset(getContext(), assetgroup_bookedasset);
+	}
+
+	/**
+	 * Set value of AssetGroup_BookedAsset
+	 * @param context
+	 * @param assetgroup_bookedasset
+	 */
+	public final void setAssetGroup_BookedAsset(com.mendix.systemwideinterfaces.core.IContext context, deskbooking.proxies.BookedAsset assetgroup_bookedasset)
+	{
+		if (assetgroup_bookedasset == null) {
+			getMendixObject().setValue(context, MemberNames.AssetGroup_BookedAsset.toString(), null);
+		} else {
+			getMendixObject().setValue(context, MemberNames.AssetGroup_BookedAsset.toString(), assetgroup_bookedasset.getMendixObject().getId());
 		}
 	}
 

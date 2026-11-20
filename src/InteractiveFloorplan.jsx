@@ -101,25 +101,27 @@ export default class InteractiveFloorplan extends Component {
             return this.props.loadingContent;
         }
 
-        const elementPropsValue = this.props.elementPropsJson.value || "{}";
-        const elementProps = JSON.parse(elementPropsValue);
+        const groupCategoriesString = this.props.groupCategoriesJSON.value || "{}";
+        const groupCategories = JSON.parse(groupCategoriesString);
 
         var groups = [];
 
         for (var i = 0; i < this.props.data.items.length; i++) {
             const mxItem = this.props.data.items[i];
 
-            const groupElementsValue = this.props.groupElementsJson.get(mxItem).value || "[]";
-            const groupProps = elementProps[this.props.groupPropsName.get(mxItem).value] || "{}";
+            const groupElementsString = this.props.groupElementsJSON.get(mxItem).value || "[]";
+            const groupElements = JSON.parse(groupElementsString);
+            const groupPropertiesString = this.props.groupPropertiesJSON.get(mxItem).value || "{}";
+            const groupProperties = JSON.parse(groupPropertiesString);
 
             var group = {};
             group.mxItem = mxItem;
             group.id = this.props.groupId.get(mxItem).value;
+            group.category = this.props.groupCategory.get(mxItem).value;
             group.status = (this.props.groupStatus.get(mxItem).value || "__default").toLowerCase();
+            group.properties = groupProperties;
             group.isSelectable = this.props.groupIsSelectable.get(mxItem).value;
-            group.props = groupProps;
-            group.elements = JSON.parse(groupElementsValue);
-            group.elementPropsType = this.props.groupElementPropsType?.get(mxItem).value?.toLowerCase();
+            group.elements = groupElements;
             if (this.props.enableTooltips) group.tooltipOn = this.props.groupTooltipOn.get(mxItem).value;
 
             groups.push(group);
@@ -142,7 +144,7 @@ export default class InteractiveFloorplan extends Component {
                 backgroundImageHeight={parseFloat(this.props.backgroundImageHeight?.value) || 0}
                 multiselect={this.props.multiselect}
                 readOnly={this.props.readOnly?.value}
-                elementProps={elementProps}
+                groupCategories={groupCategories}
                 enableTooltips={this.props.enableTooltips}
                 tooltipContent={this.tooltipContent}
                 onSelection={this.onSelection}

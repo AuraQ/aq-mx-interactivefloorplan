@@ -4,7 +4,7 @@
 
 package svgconverterdemo.proxies;
 
-public class SvgConverterDemo extends aqinteractivesvg.proxies.SvgContainer
+public class SvgConverterDemo extends aqinteractivesvg.proxies.FabricContainer
 {
 	/**
 	 * Internal name of this entity
@@ -16,15 +16,15 @@ public class SvgConverterDemo extends aqinteractivesvg.proxies.SvgContainer
 	 */
 	public enum MemberNames
 	{
-		ElementPropsJson("ElementPropsJson"),
 		InitialZoom("InitialZoom"),
 		InitialLeft("InitialLeft"),
 		InitialTop("InitialTop"),
+		GroupCategoriesJSON("GroupCategoriesJSON"),
 		NewX("NewX"),
 		NewY("NewY"),
 		NewPath("NewPath"),
 		SvgConverterDemo_Session("SvgConverterDemo.SvgConverterDemo_Session"),
-		SvgContainer_SvgConverter("AqInteractiveSvg.SvgContainer_SvgConverter");
+		FabricContainer_SvgConverter("AqInteractiveSvg.FabricContainer_SvgConverter");
 
 		private final java.lang.String metaName;
 

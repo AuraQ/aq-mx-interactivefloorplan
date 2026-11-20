@@ -22,8 +22,8 @@ public class BookableAsset implements com.mendix.systemwideinterfaces.core.IEnti
 	{
 		AssetNumber("AssetNumber"),
 		AssetType("AssetType"),
-		X("X"),
-		Y("Y"),
+		Left("Left"),
+		Top("Top"),
 		BookableAsset_BookingLocation("DeskBooking.BookableAsset_BookingLocation"),
 		BookableAsset_AssetImage("DeskBooking.BookableAsset_AssetImage");
 
@@ -168,75 +168,75 @@ public class BookableAsset implements com.mendix.systemwideinterfaces.core.IEnti
 	}
 
 	/**
-	 * @return value of X
+	 * @return value of Left
 	 */
-	public final java.math.BigDecimal getX()
+	public final java.math.BigDecimal getLeft()
 	{
-		return getX(getContext());
+		return getLeft(getContext());
 	}
 
 	/**
 	 * @param context
-	 * @return value of X
+	 * @return value of Left
 	 */
-	public final java.math.BigDecimal getX(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.math.BigDecimal getLeft(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.X.toString());
+		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.Left.toString());
 	}
 
 	/**
-	 * Set value of X
-	 * @param x
+	 * Set value of Left
+	 * @param left
 	 */
-	public final void setX(java.math.BigDecimal x)
+	public final void setLeft(java.math.BigDecimal left)
 	{
-		setX(getContext(), x);
+		setLeft(getContext(), left);
 	}
 
 	/**
-	 * Set value of X
+	 * Set value of Left
 	 * @param context
-	 * @param x
+	 * @param left
 	 */
-	public final void setX(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal x)
+	public final void setLeft(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal left)
 	{
-		getMendixObject().setValue(context, MemberNames.X.toString(), x);
+		getMendixObject().setValue(context, MemberNames.Left.toString(), left);
 	}
 
 	/**
-	 * @return value of Y
+	 * @return value of Top
 	 */
-	public final java.math.BigDecimal getY()
+	public final java.math.BigDecimal getTop()
 	{
-		return getY(getContext());
+		return getTop(getContext());
 	}
 
 	/**
 	 * @param context
-	 * @return value of Y
+	 * @return value of Top
 	 */
-	public final java.math.BigDecimal getY(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.math.BigDecimal getTop(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.Y.toString());
+		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.Top.toString());
 	}
 
 	/**
-	 * Set value of Y
-	 * @param y
+	 * Set value of Top
+	 * @param top
 	 */
-	public final void setY(java.math.BigDecimal y)
+	public final void setTop(java.math.BigDecimal top)
 	{
-		setY(getContext(), y);
+		setTop(getContext(), top);
 	}
 
 	/**
-	 * Set value of Y
+	 * Set value of Top
 	 * @param context
-	 * @param y
+	 * @param top
 	 */
-	public final void setY(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal y)
+	public final void setTop(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal top)
 	{
-		getMendixObject().setValue(context, MemberNames.Y.toString(), y);
+		getMendixObject().setValue(context, MemberNames.Top.toString(), top);
 	}
 
 	/**

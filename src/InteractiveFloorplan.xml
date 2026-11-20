@@ -83,9 +83,10 @@
                     <caption>Multi-Select</caption>
                     <description />
                 </property>
-                <property key="elementPropsJson" type="attribute">
-                    <caption>Element Props</caption>
-                    <description>JSON object holding named sets of applicable FabricJs properties</description>
+                <property key="groupCategoriesJSON" type="attribute">
+                    <caption>Group Categories JSON</caption>
+                    <description>JSON object holding named sets of FabricJS properties to style groups according state (selected/deselected). JSON structure should follow: 
+{ &lt;CategoryName&gt;: { &lt;StatusName&gt;: { "selected": ..., "deselected": ... } } }</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
@@ -107,15 +108,23 @@
             </propertyGroup>
             <propertyGroup caption="Group attributes">
                 <property key="groupId" type="attribute" dataSource="data">
-                    <caption>Group Id</caption>
+                    <caption>Group ID</caption>
                     <description>An identifier for the group</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
+                <property key="groupCategory" type="attribute" dataSource="data">
+                    <caption>Group Category</caption>
+                    <description>Category key name from 'Canvas &gt; Group Categories JSON' JSON object.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Enum" />
+                    </attributeTypes>
+                </property>
                 <property key="groupStatus" type="attribute" dataSource="data">
                     <caption>Group Status</caption>
-                    <description>A value to indicate the status of the group</description>
+                    <description>Status key name from 'Canvas &gt; Group Categories JSON' JSON object.</description>
                     <attributeTypes>
                         <attributeType name="String" />
                         <attributeType name="Enum" />
@@ -128,23 +137,16 @@
                         <attributeType name="Boolean" />
                     </attributeTypes>
                 </property>
-                <property key="groupPropsName" type="attribute" dataSource="data">
-                    <caption>Group Props</caption>
-                    <description>Name of a JSON object contained within Element Props</description>
+                <property key="groupPropertiesJSON" type="attribute" dataSource="data">
+                    <caption>Group Properties JSON</caption>
+                    <description>JSON object holding named sets of FabricJS properties to style group</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
-                <property key="groupElementPropsType" type="attribute" dataSource="data">
-                    <caption>Group Element Props Type</caption>
-                    <description>The type of properties for this group's elements</description>
-                    <attributeTypes>
-                        <attributeType name="Enum" />
-                    </attributeTypes>
-                </property>
-                <property key="groupElementsJson" type="attribute" dataSource="data">
-                    <caption>Group Elements</caption>
-                    <description>A JSON array holding configuration for all group elements, for supported elements (Path, Line, Rect, Triangle, Image)</description>
+                <property key="groupElementsJSON" type="attribute" dataSource="data">
+                    <caption>Group Elements JSON</caption>
+                    <description>JSON array holding all FabricJS elements, for supported element types: path, line, rect, triangle, image</description>
                     <attributeTypes>
                         <attributeType name="String" />
                     </attributeTypes>

@@ -52,7 +52,8 @@ public class UserActionsRegistrar
     registrator.registerUserAction(aqcommon.actions.StringLeftPad.class);
     registrator.registerUserAction(aqcommon.actions.VerifySignedStringWithPublicKey.class);
     registrator.registerUserAction(aqcommon.actions.WriteStringToFileDocument.class);
-    registrator.registerUserAction(aqinteractivesvg.actions.ConvertSvgGroup.class);
+    registrator.registerUserAction(aqinteractivesvg.actions.ConvertSvg2FabricGroup_ById.class);
+    registrator.registerUserAction(aqinteractivesvg.actions.ConvertSvg2FabricGroup_ByXPath.class);
     registrator.registerUserAction(aqinteractivesvgcustom.actions.RunSvgProcessor.class);
     registrator.registerUserAction(communitycommons.actions.Base64Decode.class);
     registrator.registerUserAction(communitycommons.actions.Base64DecodeToFile.class);
@@ -147,6 +148,8 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.TimeMeasureStart.class);
     registrator.registerUserAction(communitycommons.actions.XSSSanitize.class);
     registrator.registerUserAction(communitycommons.actions.YearsBetween.class);
+    registrator.registerUserAction(feedbackmodule.actions.ValidateEmail.class);
+    registrator.registerUserAction(feedbackmodule.actions.XSS_Sanitizer.class);
     registrator.registerUserAction(mxmodelreflection.actions.JA_EnumValueCaptions.class);
     registrator.registerUserAction(mxmodelreflection.actions.JA_EnumValueLanguages.class);
     registrator.registerUserAction(mxmodelreflection.actions.JA_ReferenceObjects.class);

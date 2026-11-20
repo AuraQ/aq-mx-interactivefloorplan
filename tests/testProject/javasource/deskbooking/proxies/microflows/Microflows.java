@@ -16,36 +16,9 @@ public final class Microflows
 	private Microflows() {}
 
 	// These are the microflows for the DeskBooking module
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder aCT_AssetDeselectedForBookingBuilder(
-		deskbooking.proxies.BookingLocation _bookingLocation,
-		deskbooking.proxies.BookableAsset _bookableAsset,
-		deskbooking.proxies.BookingDate _bookingDate
-	)
-	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.ACT_AssetDeselectedForBooking");
-		builder = builder.withParam("BookingLocation", _bookingLocation);
-		builder = builder.withParam("BookableAsset", _bookableAsset);
-		builder = builder.withParam("BookingDate", _bookingDate);
-		return builder;
-	}
-
-	public static void aCT_AssetDeselectedForBooking(
-		IContext context,
-		deskbooking.proxies.BookingLocation _bookingLocation,
-		deskbooking.proxies.BookableAsset _bookableAsset,
-		deskbooking.proxies.BookingDate _bookingDate
-	)
-	{
-		aCT_AssetDeselectedForBookingBuilder(
-				_bookingLocation,
-				_bookableAsset,
-				_bookingDate
-			)
-			.execute(context);
-	}
 	public static com.mendix.core.actionmanagement.MicroflowCallBuilder aCT_AssetGroup_MoveBuilder(
 		aqinteractivesvgcustom.proxies.AssetGroup _assetGroup,
-		aqinteractivesvg.proxies.SvgContainer _svgContainer
+		aqinteractivesvg.proxies.FabricContainer _svgContainer
 	)
 	{
 		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.ACT_AssetGroup_Move");
@@ -57,7 +30,7 @@ public final class Microflows
 	public static void aCT_AssetGroup_Move(
 		IContext context,
 		aqinteractivesvgcustom.proxies.AssetGroup _assetGroup,
-		aqinteractivesvg.proxies.SvgContainer _svgContainer
+		aqinteractivesvg.proxies.FabricContainer _svgContainer
 	)
 	{
 		aCT_AssetGroup_MoveBuilder(
@@ -66,72 +39,49 @@ public final class Microflows
 			)
 			.execute(context);
 	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder aCT_AssetSelectedForBookingBuilder(
-		deskbooking.proxies.BookingLocation _bookingLocation,
-		deskbooking.proxies.BookableAsset _bookableAsset,
-		deskbooking.proxies.BookingDate _bookingDate
-	)
-	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.ACT_AssetSelectedForBooking");
-		builder = builder.withParam("BookingLocation", _bookingLocation);
-		builder = builder.withParam("BookableAsset", _bookableAsset);
-		builder = builder.withParam("BookingDate", _bookingDate);
-		return builder;
-	}
-
-	public static void aCT_AssetSelectedForBooking(
-		IContext context,
-		deskbooking.proxies.BookingLocation _bookingLocation,
-		deskbooking.proxies.BookableAsset _bookableAsset,
-		deskbooking.proxies.BookingDate _bookingDate
-	)
-	{
-		aCT_AssetSelectedForBookingBuilder(
-				_bookingLocation,
-				_bookableAsset,
-				_bookingDate
-			)
-			.execute(context);
-	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder aCT_BookingLocation_SaveNewBuilder(
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder aCT_BookingLocation_NewBuilder(
 		deskbooking.proxies.BookingLocation _bookingLocation,
 		java.lang.String _assetImageName
 	)
 	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.ACT_BookingLocation_SaveNew");
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.ACT_BookingLocation_New");
 		builder = builder.withParam("BookingLocation", _bookingLocation);
 		builder = builder.withParam("AssetImageName", _assetImageName);
 		return builder;
 	}
 
-	public static void aCT_BookingLocation_SaveNew(
+	public static void aCT_BookingLocation_New(
 		IContext context,
 		deskbooking.proxies.BookingLocation _bookingLocation,
 		java.lang.String _assetImageName
 	)
 	{
-		aCT_BookingLocation_SaveNewBuilder(
+		aCT_BookingLocation_NewBuilder(
 				_bookingLocation,
 				_assetImageName
 			)
 			.execute(context);
 	}
 	public static com.mendix.core.actionmanagement.MicroflowCallBuilder aCT_ConfirmBookingBuilder(
-		deskbooking.proxies.PendingBooking _pendingBooking
+		deskbooking.proxies.PendingBooking _pendingBooking,
+		deskbooking.proxies.BookingDate _bookingDate
 	)
 	{
 		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.ACT_ConfirmBooking");
 		builder = builder.withParam("PendingBooking", _pendingBooking);
+		builder = builder.withParam("BookingDate", _bookingDate);
 		return builder;
 	}
 
 	public static void aCT_ConfirmBooking(
 		IContext context,
-		deskbooking.proxies.PendingBooking _pendingBooking
+		deskbooking.proxies.PendingBooking _pendingBooking,
+		deskbooking.proxies.BookingDate _bookingDate
 	)
 	{
 		aCT_ConfirmBookingBuilder(
-				_pendingBooking
+				_pendingBooking,
+				_bookingDate
 			)
 			.execute(context);
 	}
@@ -159,8 +109,43 @@ public final class Microflows
 			.execute(context);
 		return result == null ? null : com.mendix.utils.ListUtils.map((java.util.List<IMendixObject>) result, obj -> deskbooking.proxies.BookedAsset.initialize(context, obj));
 	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder dS_BookingDate_CreateSVGBuilder(
+		aqinteractivesvg.proxies.FabricContainer _svgContainer,
+		deskbooking.proxies.BookingDate _bookingDate
+	)
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.DS_BookingDate_CreateSVG");
+		builder = builder.withParam("SvgContainer", _svgContainer);
+		builder = builder.withParam("BookingDate", _bookingDate);
+		return builder;
+	}
+
+	public static java.util.List<aqinteractivesvgcustom.proxies.AssetGroup> dS_BookingDate_CreateSVG(
+		IContext context,
+		aqinteractivesvg.proxies.FabricContainer _svgContainer,
+		deskbooking.proxies.BookingDate _bookingDate
+	)
+	{
+		Object result = dS_BookingDate_CreateSVGBuilder(
+				_svgContainer,
+				_bookingDate
+			)
+			.execute(context);
+		return result == null ? null : com.mendix.utils.ListUtils.map((java.util.List<IMendixObject>) result, obj -> aqinteractivesvgcustom.proxies.AssetGroup.initialize(context, obj));
+	}
+	public static com.mendix.core.actionmanagement.MicroflowCallBuilder dS_BookingDate_CreateSVGContainerBuilder()
+	{
+		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.DS_BookingDate_CreateSVGContainer");
+		return builder;
+	}
+
+	public static aqinteractivesvg.proxies.FabricContainer dS_BookingDate_CreateSVGContainer(IContext context)
+	{
+		Object result = dS_BookingDate_CreateSVGContainerBuilder().execute(context);
+		return result == null ? null : aqinteractivesvg.proxies.FabricContainer.initialize(context, (IMendixObject) result);
+	}
 	public static com.mendix.core.actionmanagement.MicroflowCallBuilder dS_BookingLocation_CreateSVGBuilder(
-		aqinteractivesvg.proxies.SvgContainer _svgContainer,
+		aqinteractivesvg.proxies.FabricContainer _svgContainer,
 		deskbooking.proxies.BookingLocation _bookingLocation
 	)
 	{
@@ -172,7 +157,7 @@ public final class Microflows
 
 	public static java.util.List<aqinteractivesvgcustom.proxies.AssetGroup> dS_BookingLocation_CreateSVG(
 		IContext context,
-		aqinteractivesvg.proxies.SvgContainer _svgContainer,
+		aqinteractivesvg.proxies.FabricContainer _svgContainer,
 		deskbooking.proxies.BookingLocation _bookingLocation
 	)
 	{
@@ -192,7 +177,7 @@ public final class Microflows
 		return builder;
 	}
 
-	public static aqinteractivesvg.proxies.SvgContainer dS_BookingLocation_CreateSVGContainer(
+	public static aqinteractivesvg.proxies.FabricContainer dS_BookingLocation_CreateSVGContainer(
 		IContext context,
 		deskbooking.proxies.BookingLocation _bookingLocation
 	)
@@ -201,38 +186,7 @@ public final class Microflows
 				_bookingLocation
 			)
 			.execute(context);
-		return result == null ? null : aqinteractivesvg.proxies.SvgContainer.initialize(context, (IMendixObject) result);
-	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder dS_EmptyListForLocationViewBuilder()
-	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.DS_EmptyListForLocationView");
-		return builder;
-	}
-
-	public static java.util.List<deskbooking.proxies.BookedAsset> dS_EmptyListForLocationView(IContext context)
-	{
-		Object result = dS_EmptyListForLocationViewBuilder().execute(context);
-		return result == null ? null : com.mendix.utils.ListUtils.map((java.util.List<IMendixObject>) result, obj -> deskbooking.proxies.BookedAsset.initialize(context, obj));
-	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder dS_PendingBookingForSessionBuilder(
-		deskbooking.proxies.BookingDate _bookingDate
-	)
-	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.DS_PendingBookingForSession");
-		builder = builder.withParam("BookingDate", _bookingDate);
-		return builder;
-	}
-
-	public static deskbooking.proxies.PendingBooking dS_PendingBookingForSession(
-		IContext context,
-		deskbooking.proxies.BookingDate _bookingDate
-	)
-	{
-		Object result = dS_PendingBookingForSessionBuilder(
-				_bookingDate
-			)
-			.execute(context);
-		return result == null ? null : deskbooking.proxies.PendingBooking.initialize(context, (IMendixObject) result);
+		return result == null ? null : aqinteractivesvg.proxies.FabricContainer.initialize(context, (IMendixObject) result);
 	}
 	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_BookingLocation_GenerateAssetsBuilder(
 		deskbooking.proxies.BookingLocation _bookingLocation,
@@ -289,26 +243,6 @@ public final class Microflows
 		Object result = sUB_GetCustomPropertyMappingsBuilder().execute(context);
 		return result == null ? null : com.mendix.utils.ListUtils.map((java.util.List<IMendixObject>) result, obj -> aqinteractivesvg.proxies.GroupPropertyMapping.initialize(context, obj));
 	}
-	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_GetOrCreatePendingBookingBuilder(
-		deskbooking.proxies.BookingDate _bookingDate
-	)
-	{
-		com.mendix.core.actionmanagement.MicroflowCallBuilder builder = Core.microflowCall("DeskBooking.SUB_GetOrCreatePendingBooking");
-		builder = builder.withParam("BookingDate", _bookingDate);
-		return builder;
-	}
-
-	public static deskbooking.proxies.PendingBooking sUB_GetOrCreatePendingBooking(
-		IContext context,
-		deskbooking.proxies.BookingDate _bookingDate
-	)
-	{
-		Object result = sUB_GetOrCreatePendingBookingBuilder(
-				_bookingDate
-			)
-			.execute(context);
-		return result == null ? null : deskbooking.proxies.PendingBooking.initialize(context, (IMendixObject) result);
-	}
 	public static com.mendix.core.actionmanagement.MicroflowCallBuilder sUB_SvgContainer_FromSvgConverterBuilder(
 		java.lang.String _converterName
 	)
@@ -318,7 +252,7 @@ public final class Microflows
 		return builder;
 	}
 
-	public static aqinteractivesvg.proxies.SvgContainer sUB_SvgContainer_FromSvgConverter(
+	public static aqinteractivesvg.proxies.FabricContainer sUB_SvgContainer_FromSvgConverter(
 		IContext context,
 		java.lang.String _converterName
 	)
@@ -327,6 +261,6 @@ public final class Microflows
 				_converterName
 			)
 			.execute(context);
-		return result == null ? null : aqinteractivesvg.proxies.SvgContainer.initialize(context, (IMendixObject) result);
+		return result == null ? null : aqinteractivesvg.proxies.FabricContainer.initialize(context, (IMendixObject) result);
 	}
 }

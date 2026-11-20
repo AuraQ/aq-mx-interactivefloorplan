@@ -20,8 +20,7 @@ public class PendingBooking implements com.mendix.systemwideinterfaces.core.IEnt
 	 */
 	public enum MemberNames
 	{
-		PendingBooking_BookingDate("DeskBooking.PendingBooking_BookingDate"),
-		PendingBooking_Session("DeskBooking.PendingBooking_Session");
+		Pending("Pending");
 
 		private final java.lang.String metaName;
 
@@ -74,97 +73,39 @@ public class PendingBooking implements com.mendix.systemwideinterfaces.core.IEnt
 	}
 
 	/**
-	 * @throws com.mendix.core.CoreException
-	 * @return value of PendingBooking_BookingDate
+	 * @return value of Pending
 	 */
-	public final deskbooking.proxies.BookingDate getPendingBooking_BookingDate() throws com.mendix.core.CoreException
+	public final java.lang.Integer getPending()
 	{
-		return getPendingBooking_BookingDate(getContext());
+		return getPending(getContext());
 	}
 
 	/**
 	 * @param context
-	 * @return value of PendingBooking_BookingDate
-	 * @throws com.mendix.core.CoreException
+	 * @return value of Pending
 	 */
-	public final deskbooking.proxies.BookingDate getPendingBooking_BookingDate(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	public final java.lang.Integer getPending(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		deskbooking.proxies.BookingDate result = null;
-		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.PendingBooking_BookingDate.toString());
-		if (identifier != null) {
-			result = deskbooking.proxies.BookingDate.load(context, identifier);
-		}
-		return result;
+		return (java.lang.Integer) getMendixObject().getValue(context, MemberNames.Pending.toString());
 	}
 
 	/**
-	 * Set value of PendingBooking_BookingDate
-	 * @param pendingbooking_bookingdate
+	 * Set value of Pending
+	 * @param pending
 	 */
-	public final void setPendingBooking_BookingDate(deskbooking.proxies.BookingDate pendingbooking_bookingdate)
+	public final void setPending(java.lang.Integer pending)
 	{
-		setPendingBooking_BookingDate(getContext(), pendingbooking_bookingdate);
+		setPending(getContext(), pending);
 	}
 
 	/**
-	 * Set value of PendingBooking_BookingDate
+	 * Set value of Pending
 	 * @param context
-	 * @param pendingbooking_bookingdate
+	 * @param pending
 	 */
-	public final void setPendingBooking_BookingDate(com.mendix.systemwideinterfaces.core.IContext context, deskbooking.proxies.BookingDate pendingbooking_bookingdate)
+	public final void setPending(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Integer pending)
 	{
-		if (pendingbooking_bookingdate == null) {
-			getMendixObject().setValue(context, MemberNames.PendingBooking_BookingDate.toString(), null);
-		} else {
-			getMendixObject().setValue(context, MemberNames.PendingBooking_BookingDate.toString(), pendingbooking_bookingdate.getMendixObject().getId());
-		}
-	}
-
-	/**
-	 * @throws com.mendix.core.CoreException
-	 * @return value of PendingBooking_Session
-	 */
-	public final system.proxies.Session getPendingBooking_Session() throws com.mendix.core.CoreException
-	{
-		return getPendingBooking_Session(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of PendingBooking_Session
-	 * @throws com.mendix.core.CoreException
-	 */
-	public final system.proxies.Session getPendingBooking_Session(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
-	{
-		system.proxies.Session result = null;
-		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.PendingBooking_Session.toString());
-		if (identifier != null) {
-			result = system.proxies.Session.load(context, identifier);
-		}
-		return result;
-	}
-
-	/**
-	 * Set value of PendingBooking_Session
-	 * @param pendingbooking_session
-	 */
-	public final void setPendingBooking_Session(system.proxies.Session pendingbooking_session)
-	{
-		setPendingBooking_Session(getContext(), pendingbooking_session);
-	}
-
-	/**
-	 * Set value of PendingBooking_Session
-	 * @param context
-	 * @param pendingbooking_session
-	 */
-	public final void setPendingBooking_Session(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.Session pendingbooking_session)
-	{
-		if (pendingbooking_session == null) {
-			getMendixObject().setValue(context, MemberNames.PendingBooking_Session.toString(), null);
-		} else {
-			getMendixObject().setValue(context, MemberNames.PendingBooking_Session.toString(), pendingbooking_session.getMendixObject().getId());
-		}
+		getMendixObject().setValue(context, MemberNames.Pending.toString(), pending);
 	}
 
 	@java.lang.Override
